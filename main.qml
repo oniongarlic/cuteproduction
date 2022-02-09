@@ -223,7 +223,7 @@ ApplicationWindow {
             }
         }
         Menu {
-            title: "Edit"
+            title: "Message"
             MenuItem {
                 text: "Paste"
                 enabled: textMsg.canPaste
@@ -248,6 +248,28 @@ ApplicationWindow {
                 text: "Clear"
                 onClicked: {
                     l3Model.source=""
+                }
+            }
+        }
+        Menu {
+            title: "Prompt"
+            MenuItem {
+                text: "Open..."
+                enabled: false
+                onClicked: tsf.startSelector();
+            }
+            MenuItem {
+                text: "Paste"
+                enabled: textPrompter.canPaste
+                onClicked: {
+                    textPrompter.paste()
+                    l3window.telepromtSetText(textPrompter.text)
+                }
+            }
+            MenuItem {
+                text: "Clear"
+                onClicked: {
+                    l3window.telepromtSetText("")
                 }
             }
         }
@@ -367,8 +389,8 @@ ApplicationWindow {
             height: c.height
             ColumnLayout {
                 id: c
-                Text { text: primary; font.pointSize: 18 }
-                Text { text: secondary; font.pointSize: 14 }
+                Text { text: primary; font.pointSize: 14 }
+                Text { text: secondary; font.pointSize: 12 }
             }
             onClicked: {
                 l3selector.currentIndex=index;
@@ -421,8 +443,7 @@ ApplicationWindow {
                 delegate: l3delegate
                 clip: true
                 Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.minimumWidth: parent.width/2
+                Layout.fillWidth: true                
                 highlight: Rectangle { color: "lightblue" }
                 onCurrentIndexChanged: {
                     main.primary=l3Model.get(currentIndex).primary
@@ -438,6 +459,9 @@ ApplicationWindow {
                 Button {
                     text: "Next"
                     onClicked: l3selector.incrementCurrentIndex()
+                }
+                Label {
+                    text: 1+l3selector.currentIndex+"/"+l3selector.count
                 }
             }
         }
@@ -466,13 +490,13 @@ ApplicationWindow {
                 Switch {
                     id: showTime
                     Layout.alignment: Qt.AlignLeft
-                    text: "Show Time"
+                    text: "Time"
                     checked: true
                 }
                 Switch {
                     id: showCounter
                     Layout.alignment: Qt.AlignLeft
-                    text: "Show Counter"
+                    text: "Counter"
                     checked: true
                 }
             }
@@ -497,18 +521,31 @@ ApplicationWindow {
         }
 
         ColumnLayout {
+            id: cl2
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            RowLayout {
+            ScrollView {
+                Layout.fillHeight: false
+                Layout.fillWidth: true
+                Layout.maximumWidth: parent.width
+                Layout.maximumHeight: cl2.height/4
+                TextArea {
+                    id: textPrompter
+                    placeholderText: "Telepromt text here"
+                    selectByKeyboard: true
+                    selectByMouse: true
+                    textFormat: TextEdit.PlainText
+                }
+            }
 
+            RowLayout {
                 Switch {
                     id: telepromtShow
                     Layout.alignment: Qt.AlignLeft
                     text: "Telepromt"
-                    checked: true
+                    checked: false
                 }
-
                 Switch {
                     id: telepromtMirror
                     Layout.alignment: Qt.AlignLeft
@@ -526,6 +563,12 @@ ApplicationWindow {
 
             RowLayout {
                 Button {
+                    text: "Update"
+                    onClicked: {
+                        l3window.telepromtSetText(textPrompter.text)
+                    }
+                }
+                Button {
                     text: "Start"
                     onClicked: {
                         l3window.telepromtStart();
@@ -536,7 +579,7 @@ ApplicationWindow {
                     onClicked: {
                         l3window.telepromtStop();
                     }
-                }
+                }                
             }
             RowLayout {
                 Button {
