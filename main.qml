@@ -378,6 +378,7 @@ ApplicationWindow {
         columnSpacing: 8
 
         ColumnLayout {
+            id: itemMessage
             Layout.fillHeight: true
             Layout.fillWidth: true
 
@@ -385,30 +386,41 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                Layout.minimumHeight: gl.height/6
+                Layout.maximumHeight: gl.height/4
                 TextArea {
                     id: textMsg
                     placeholderText: "Write a message for the talent here"
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
-                    Layout.minimumHeight: gl.height/6
-                    Layout.maximumHeight: gl.height/5
                 }
             }
-            Switch {
-                Layout.alignment: Qt.AlignLeft
-                text: "Display message"
-                onCheckedChanged: {
-                    if (checked)
+            RowLayout {
+                Switch {
+                    id: msgSwitch
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Display message"
+                    onCheckedChanged: {
+                        if (checked)
+                            l3window.setMessage(textMsg.text)
+                        else
+                            l3window.setMessage("")
+                    }
+                }
+                Button {
+                    text: "Update"
+                    enabled: msgSwitch.checked
+                    onClicked: {
                         l3window.setMessage(textMsg.text)
-                    else
-                        l3window.setMessage("")
+                    }
                 }
             }
         }
 
         ColumnLayout {
-
+            id: itemSelector
+            Layout.fillWidth: true
             ListView {
                 id: l3selector
                 model: l3Model
