@@ -328,34 +328,6 @@ ApplicationWindow {
             }
         }
     }
-    
-    footer: ToolBar {
-        RowLayout {
-            ToolButton {
-                text: "Preview"
-                enabled: !l3.isActive
-                onClicked: {
-                    l3.show()
-                }
-            }
-            ToolButton {
-                text: "Secondary"
-                onClicked: {
-                    l3window.show();
-                }
-            }
-            SpinBox {
-                id: delayTime
-                from: 1
-                to: 10
-                stepSize: 1
-                value: 5
-            }
-            Label {
-                id: msg
-            }
-        }
-    }
 
     Timer {
         id: timerGeneric
@@ -412,15 +384,15 @@ ApplicationWindow {
             ScrollView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 TextArea {
                     id: textMsg
                     placeholderText: "Write a message for the talent here"
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
-                    Layout.maximumWidth: parent.width/2
-                    Layout.minimumHeight: gl.height/4
-                    Layout.maximumHeight: gl.height/3
+                    Layout.minimumHeight: gl.height/6
+                    Layout.maximumHeight: gl.height/5
                 }
             }
             Switch {
@@ -443,7 +415,7 @@ ApplicationWindow {
                 delegate: l3delegate
                 clip: true
                 Layout.fillHeight: true
-                Layout.fillWidth: true                
+                Layout.fillWidth: true
                 highlight: Rectangle { color: "lightblue" }
                 onCurrentIndexChanged: {
                     main.primary=l3Model.get(currentIndex).primary
@@ -462,6 +434,21 @@ ApplicationWindow {
                 }
                 Label {
                     text: 1+l3selector.currentIndex+"/"+l3selector.count
+                }
+            }
+            RowLayout {
+                SpinBox {
+                    id: delayTime
+                    from: 1
+                    to: 10
+                    stepSize: 1
+                    value: 5
+                }
+                Button {
+                    text: "Show"
+                    onClicked: {
+                        l3window.show();
+                    }
                 }
             }
         }
@@ -529,7 +516,9 @@ ApplicationWindow {
                 Layout.fillHeight: false
                 Layout.fillWidth: true
                 Layout.maximumWidth: parent.width
+                Layout.minimumHeight: cl2.height/6
                 Layout.maximumHeight: cl2.height/4
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 TextArea {
                     id: textPrompter
                     placeholderText: "Telepromt text here"
@@ -579,7 +568,7 @@ ApplicationWindow {
                     onClicked: {
                         l3window.telepromtStop();
                     }
-                }                
+                }
             }
             RowLayout {
                 Button {
