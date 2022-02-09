@@ -136,9 +136,11 @@ Rectangle {
             Layout.margins: 4
             Layout.rightMargin: 16
             Layout.minimumWidth: Math.max(txtPrimary.contentWidth, txtSecondary.contentWidth)+box.width+32
+            Layout.maximumWidth: l3.parent.width/2
             Text {
                 id: txtPrimary
-                Layout.fillWidth: true
+                //Layout.fillWidth: true
+                Layout.alignment: Qt.AlignRight
                 color: "#1e7eec"
                 text: "Kaj-Michael Lang"
                 font.family: "FreeSans"
@@ -149,7 +151,8 @@ Rectangle {
             }
             Text {
                 id: txtSecondary
-                Layout.fillWidth: true
+                //Layout.fillWidth: true
+                Layout.alignment: Qt.AlignRight
                 color: "#1e7eec"
                 text: "AV-Expert"
                 font.family: "FreeSans"
