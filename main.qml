@@ -147,6 +147,11 @@ ApplicationWindow {
                     flip: telepromtFlip.checked
                 }
             }
+
+            ParticleAnimation {
+                id: particle
+                running: showAnimation.checked
+            }
             
             Timer {
                 id: timerGeneric
@@ -497,6 +502,12 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignLeft
                     text: "Counter"
                     checked: true
+                }
+                Switch {
+                    id: showAnimation
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Snow"
+                    checked: false
                 }
             }
             RowLayout {

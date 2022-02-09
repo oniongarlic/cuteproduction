@@ -6,5 +6,7 @@
         <file>TelepromptScroller.qml</file>
         <file>TextSelector.qml</file>
         <file>persons.xml</file>
+        <file>ParticleAnimation.qml</file>
+        <file>snowflake.png</file>
     </qresource>
 </RCC>
