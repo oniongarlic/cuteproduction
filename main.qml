@@ -605,9 +605,4 @@ ApplicationWindow {
             }
         }
     }
-    
-    LowerThirdBase {
-        id: l3
-    }
-    
 }
