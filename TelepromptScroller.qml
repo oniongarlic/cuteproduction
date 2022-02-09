@@ -93,11 +93,7 @@ Flickable {
         id: txt
         width: sv.width
         color: "white"
-        text: "Sometimes, a font will apply complex rules to a set of characters in order to display them correctly.
-
-In some writing systems, such as Brahmic scripts, this is required in order for the text to be legible, but in e.g. Latin script, it is merely a cosmetic feature.
-
-Setting the preferShaping property to false will disable all such features when they are not required, which will improve performance in most cases."
+        text: ""
         minimumPointSize: 18
         fontSizeMode: Text.Fit
         font.pointSize: 32
