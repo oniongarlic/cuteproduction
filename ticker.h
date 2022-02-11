@@ -13,6 +13,7 @@ public:
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void setAlarm(long seconds);
+    Q_INVOKABLE void setCountdownSeconds(long seconds);
     Q_INVOKABLE long seconds() { return m_seconds; };
 
     Q_INVOKABLE void start();
@@ -20,15 +21,18 @@ public:
 
 signals:
     void secondsChanged(long seconds);
+    void alarm();
+    void countdown();
 
 protected:
     void ticker();
 
 private:
-    timespec m_ts,m_tm;
+    timespec m_ts,m_tm;    
     long m_counter;
     long m_start;
-    long m_seconds;    
+    long m_seconds;
+    long m_alarm;
 };
 
 #endif // TICKER_H
