@@ -7,7 +7,8 @@
 class Ticker : public QTimer
 {
     Q_OBJECT
-    Q_PROPERTY(int seconds READ seconds NOTIFY secondsChanged)    
+    Q_PROPERTY(int seconds READ seconds NOTIFY secondsChanged)
+    Q_PROPERTY(int countdown READ countdown NOTIFY countdownChanged)
 public:
     explicit Ticker(QObject *parent = nullptr);
 
@@ -15,14 +16,16 @@ public:
     Q_INVOKABLE void setAlarm(long seconds);
     Q_INVOKABLE void setCountdownSeconds(long seconds);
     Q_INVOKABLE long seconds() { return m_seconds; };
+    Q_INVOKABLE long countdown() { return m_counter; };
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
 
 signals:
     void secondsChanged(long seconds);
+    void countdownChanged(long seconds);
     void alarm();
-    void countdown();
+    void zero();
 
 protected:
     void ticker();

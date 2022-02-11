@@ -49,8 +49,9 @@ void Ticker::ticker()
 
     if (m_counter>0) {
         m_counter--;
+        emit countdownChanged(m_counter);
         if (m_counter==0)
-            emit countdown();
+            emit zero();
     }
 
     if (m_alarm>0 && m_seconds==m_alarm) {
