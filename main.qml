@@ -134,7 +134,7 @@ ApplicationWindow {
                     text: formatSeconds(ticker.countdown)
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: secondaryWindow.height/5
-                    visible: showCounter.checked
+                    visible: showCountdown.checked
                 }
                 Text {
                     id: msgText
@@ -504,7 +504,13 @@ ApplicationWindow {
                     id: showCounter
                     Layout.alignment: Qt.AlignLeft
                     text: "Counter"
-                    checked: true
+                    checked: false
+                }
+                Switch {
+                    id: showCountdown
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Down"
+                    checked: false
                 }
                 Switch {
                     id: showAnimation
@@ -521,6 +527,10 @@ ApplicationWindow {
                 Button {
                     text: "Stop"
                     onClicked: ticker.stop()
+                }
+                Button {
+                    text: "5min"
+                    onClicked: ticker.setCountdownSeconds(5*60);
                 }
                 DelayButton {
                     text: "Reset"
