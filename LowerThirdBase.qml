@@ -135,38 +135,43 @@ Rectangle {
             Layout.fillHeight: true
             Layout.margins: 4
             Layout.rightMargin: 16
-            Layout.minimumWidth: Math.max(txtPrimary.contentWidth, txtSecondary.contentWidth)+box.width+32
-            Layout.maximumWidth: l3.parent.width/2
+            Layout.leftMargin: 16
+
+            Layout.minimumWidth: wc+32
+            Layout.preferredWidth: wc+64
+            Layout.maximumWidth: Math.max(l3.parent.width/2, wc+128)
+
+            readonly property int wc: Math.max(txtPrimary.contentWidth, txtSecondary.contentWidth)
+
             Text {
                 id: txtPrimary
-                //Layout.fillWidth: true
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
                 color: "#1e7eec"
                 text: "Kaj-Michael Lang"
-                font.family: "FreeSans"
+                font.family: "Helvetica"
                 font.bold: true
-                font.pointSize: 42
+                font.pixelSize: 42
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
             }
             Text {
                 id: txtSecondary
-                //Layout.fillWidth: true
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
                 color: "#1e7eec"
                 text: "AV-Expert"
-                font.family: "FreeSans"
-                font.pointSize: 32
+                font.family: "Helvetica"
+                font.pixelSize: 32
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
             }
         }
     }
-
-
-
     
     function show() {
+        l3animation.stop()
+        resetLocation();
         l3animation.start()
     }
     function hide() {
