@@ -397,16 +397,16 @@ ApplicationWindow {
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 Layout.minimumHeight: gl.height/7
                 Layout.maximumHeight: gl.height/6
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
+                }
                 TextArea {
                     id: textMsg
                     placeholderText: "Write a message for the talent here"
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
-                }
-                background: Rectangle {
-                    border.color: "black"
-                    border.width: 1
                 }
             }
             RowLayout {
@@ -442,13 +442,17 @@ ApplicationWindow {
         ColumnLayout {
             id: itemSelector
             Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignTop
             ListView {
                 id: l3selector
                 model: l3Model
                 delegate: l3delegate
                 clip: true
-                Layout.fillHeight: true
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.minimumHeight: gl.height/6
+                Layout.maximumHeight: gl.height/3
                 highlight: Rectangle { color: "lightblue" }
                 onCurrentIndexChanged: {
                     main.primary=l3Model.get(currentIndex).primary
@@ -539,8 +543,12 @@ ApplicationWindow {
                 Switch {
                     id: showAnimation
                     Layout.alignment: Qt.AlignLeft
-                    text: "Snow"
+                    text: "Animation"
                     checked: false
+                }
+                ComboBox {
+                    id: animationSelector
+                    model: [ "Snow" ]
                 }
             }
             RowLayout {
@@ -576,9 +584,13 @@ ApplicationWindow {
                 Layout.fillHeight: false
                 Layout.fillWidth: true
                 Layout.maximumWidth: parent.width
-                Layout.minimumHeight: cl2.height/6
-                Layout.maximumHeight: cl2.height/4
+                Layout.minimumHeight: gl.height/7
+                Layout.maximumHeight: gl.height/6
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
+                }
                 TextArea {
                     id: textPrompter
                     placeholderText: "Telepromt text here"
