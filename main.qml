@@ -359,10 +359,7 @@ ApplicationWindow {
 
     Ticker {
         id: ticker
-        onSecondsChanged: {
-            timeCount.text=seconds+"s";
-        }
-    }    
+    }
 
     Component {
         id: l3delegate
@@ -484,14 +481,23 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 text: "00:00:00"
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 64
+                font.pixelSize: 48
             }
-            Text {
-                id: timeCount
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter                
-                text: "00:00:00"
-                font.pixelSize: 64
+            RowLayout {
+                Text {
+                    id: timeCount
+                    Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignHCenter
+                    text: formatSeconds(ticker.seconds)
+                    font.pixelSize: 32
+                }
+                Text {
+                    id: timeCountdown
+                    Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignHCenter
+                    text: formatSeconds(ticker.countdown)
+                    font.pixelSize: 32
+                }
             }
             RowLayout {
                 Switch {
