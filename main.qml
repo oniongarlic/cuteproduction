@@ -215,6 +215,9 @@ ApplicationWindow {
             function telepromtSetText(txt) {
                 telepromt.text=txt;
             }
+            function telepromtSetPosition(pos) {
+                telepromt.setPosition(pos)
+            }
         }
     }
     
@@ -407,6 +410,7 @@ ApplicationWindow {
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
+                    wrapMode: TextEdit.WordWrap
                 }
             }
             RowLayout {
@@ -491,9 +495,6 @@ ApplicationWindow {
         }
 
         ColumnLayout {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
             RowLayout {
                 Switch {
                     id: showTime
@@ -577,13 +578,9 @@ ApplicationWindow {
 
         ColumnLayout {
             id: cl2
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
             ScrollView {
-                Layout.fillHeight: false
+                Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.maximumWidth: parent.width
                 Layout.minimumHeight: gl.height/7
                 Layout.maximumHeight: gl.height/6
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
@@ -597,6 +594,7 @@ ApplicationWindow {
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
+                    wrapMode: TextEdit.WordWrap
                 }
             }
 
@@ -671,7 +669,7 @@ ApplicationWindow {
                 value: l3window.promptPos
                 onValueChanged: {
                     if (pressed) {
-
+                        l3window.telepromtSetPosition(value)
                     }
                 }
             }
