@@ -20,6 +20,7 @@ ApplicationWindow {
     //flags: Qt.WA_TranslucentBackground
     property int oflags;
     //color: "#00000040"
+    color: "white"
     
     property Window l3window;
     property Window telepromtpwindow;
@@ -120,6 +121,17 @@ ApplicationWindow {
                     styleColor: "#202020"
                     style: Text.Outline
                     text: formatSeconds(ticker.seconds)
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: secondaryWindow.height/5
+                    visible: showCounter.checked
+                }
+                Text {
+                    id: timeCountdown
+                    Layout.fillWidth: true
+                    color: "#ffffff"
+                    styleColor: "#202020"
+                    style: Text.Outline
+                    text: formatSeconds(ticker.countdown)
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: secondaryWindow.height/5
                     visible: showCounter.checked
@@ -350,14 +362,7 @@ ApplicationWindow {
         onSecondsChanged: {
             timeCount.text=seconds+"s";
         }
-    }
-    
-    Rectangle {
-        id: blackBackground
-        anchors.fill: parent
-        visible: !windowTransparent.checked
-        color: "grey"
-    }
+    }    
 
     Component {
         id: l3delegate
@@ -477,7 +482,6 @@ ApplicationWindow {
             Text {
                 id: timeCurrent
                 Layout.fillWidth: true
-                color: "#ffffff"
                 text: "00:00:00"
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: 64
@@ -485,8 +489,7 @@ ApplicationWindow {
             Text {
                 id: timeCount
                 Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter
-                color: "#ffffff"
+                horizontalAlignment: Text.AlignHCenter                
                 text: "00:00:00"
                 font.pixelSize: 64
             }
