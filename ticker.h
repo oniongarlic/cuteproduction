@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE long countdown() { return m_counter; };
 
     Q_INVOKABLE void start();
+    Q_INVOKABLE void resume();
     Q_INVOKABLE void stop();
 
 signals:

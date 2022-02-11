@@ -10,8 +10,7 @@ Ticker::Ticker(QObject *parent)
 }
 
 void Ticker::reset()
-{
-    m_counter=0;
+{   
     clock_gettime(CLOCK_MONOTONIC, &m_tm);
     m_start=m_tm.tv_sec;
     m_seconds=0;
@@ -26,11 +25,17 @@ void Ticker::setAlarm(long seconds)
 void Ticker::setCountdownSeconds(long seconds)
 {
     m_counter=seconds;
+    emit countdownChanged(m_counter);
 }
 
 void Ticker::start()
 {
     reset();
+    QTimer::start();
+}
+
+void Ticker::resume()
+{
     QTimer::start();
 }
 
