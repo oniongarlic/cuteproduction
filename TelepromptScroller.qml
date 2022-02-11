@@ -1,10 +1,16 @@
-import QtQuick 2.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 Flickable {
     id: sv    
     boundsBehavior: Flickable.StopAtBounds
     interactive: !timerScroll.running
+    topMargin: 64
+    bottomMargin: 64
+    leftMargin: 8
+    rightMargin: 8
     contentHeight: txt.height
+    pixelAligned: false
     clip: true
 
     property bool mirror: true
@@ -22,6 +28,10 @@ Flickable {
     property int countDownSeconds: 4
 
     property int countDown: 4
+
+    ScrollBar.vertical: ScrollBar {
+        policy: ScrollBar.AlwaysOn
+    }
 
     function start() {
         startScroll();
@@ -54,11 +64,14 @@ Flickable {
             svanim.resume()
     }
     function reset() {
-        sv.contentY=0;
+        sv.contentY=topMargin;
     }
     function restart() {
         reset();
         start();
+    }
+    function setPosition(pos) {
+        sv.contentY=pos;
     }
 
     Timer {
@@ -78,13 +91,17 @@ Flickable {
     }
 
     property alias scrollPosition: sv.contentY
+    readonly property real relpos: scrollPosition/(svanim.to+topMargin)
+    readonly property int positionSeconds: Math.round(scrollSpeedSeconds*relpos)
+
+    onPositionSecondsChanged: console.debug("SECPOS:"+positionSeconds)
 
     NumberAnimation {
         id: svanim
         target: sv
         property: "contentY"
         duration: scrollSpeedSeconds*1000
-        from: 0
+        from: -topMargin
         to: sv.contentHeight
         easing.type: Easing.Linear
     }
@@ -94,21 +111,15 @@ Flickable {
         width: sv.width
         color: "white"
         text: ""
-        minimumPointSize: 18
-        fontSizeMode: Text.Fit
         font.pointSize: 32
         wrapMode: Text.WordWrap
-        // transform: Matrix4x4 { matrix: Qt.matrix4x4(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1) }
-        // transform:  Matrix4x4 { matrix: Qt.matrix4x4( txt.mirror ? -1 : 0, 0, 0, txt.width, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1) }
-
+        padding: 16
         transform: Scale {
             origin.x: txt.width/2
             origin.y: txt.height/2
             xScale: sv.mirror ? -1 : 1
             yScale: sv.flip ? -1 : 1
         }
-
-        padding: 20
     }
 
 }
