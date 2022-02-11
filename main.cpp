@@ -14,6 +14,11 @@ int main(int argc, char *argv[])
     qputenv("QSG_INFO", "1");
     
     QGuiApplication app(argc, argv);
+
+    QCoreApplication::setOrganizationDomain("org.tal.cuteproduction");
+    QCoreApplication::setOrganizationName("tal.org");
+    QCoreApplication::setApplicationName("CuteProduction");
+    QCoreApplication::setApplicationVersion("0.1");
     
     QList<QScreen *> screens = app.screens();
     qDebug("Application sees %d screens", screens.count());
