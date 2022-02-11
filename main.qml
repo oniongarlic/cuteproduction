@@ -56,7 +56,7 @@ ApplicationWindow {
             id: secondaryWindow
             visible: true
             //visibility: Window.FullScreen
-            title: ""
+            title: "Information"
             minimumWidth: 800
             minimumHeight: 480
             //width: 1920
@@ -337,7 +337,7 @@ ApplicationWindow {
         onStatusChanged: {
             switch (status) {
             case XmlListModel.Ready:
-                msg.text="T"
+                //msg.text="T"
                 break;
             case XmlListModel.Error:
                 console.debug(errorString())
@@ -383,9 +383,11 @@ ApplicationWindow {
         columns: 2
         rowSpacing: 8
         columnSpacing: 8
+        anchors.margins: 8
 
         ColumnLayout {
             id: itemMessage
+            Layout.alignment: Qt.AlignTop
             Layout.fillHeight: true
             Layout.fillWidth: true
 
@@ -393,14 +395,18 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                Layout.minimumHeight: gl.height/6
-                Layout.maximumHeight: gl.height/4
+                Layout.minimumHeight: gl.height/7
+                Layout.maximumHeight: gl.height/6
                 TextArea {
                     id: textMsg
                     placeholderText: "Write a message for the talent here"
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
+                }
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
                 }
             }
             RowLayout {
@@ -420,6 +426,14 @@ ApplicationWindow {
                     enabled: msgSwitch.checked
                     onClicked: {
                         l3window.setMessage(textMsg.text)
+                    }
+                }
+                Button {
+                    text: "Send"
+                    enabled: msgSwitch.checked
+                    onClicked: {
+                        l3window.setMessage(textMsg.text)
+                        textMsg.text=""
                     }
                 }
             }
@@ -476,20 +490,42 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignCenter
-            Text {
-                id: timeCurrent
-                Layout.fillWidth: true
-                text: "00:00:00"
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 48
+            RowLayout {
+                Switch {
+                    id: showTime
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Time"
+                    checked: true
+                }
+                Text {
+                    id: timeCurrent
+                    Layout.fillWidth: true
+                    text: "00:00:00"
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 48
+                }
             }
             RowLayout {
+                Switch {
+                    id: showCounter
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Counter"
+                    checked: false
+                }
                 Text {
                     id: timeCount
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(ticker.seconds)
                     font.pixelSize: 32
+                }
+            }
+            RowLayout {
+                Switch {
+                    id: showCountdown
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Down"
+                    checked: false
                 }
                 Text {
                     id: timeCountdown
@@ -500,24 +536,6 @@ ApplicationWindow {
                 }
             }
             RowLayout {
-                Switch {
-                    id: showTime
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Time"
-                    checked: true
-                }
-                Switch {
-                    id: showCounter
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Counter"
-                    checked: false
-                }
-                Switch {
-                    id: showCountdown
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Down"
-                    checked: false
-                }
                 Switch {
                     id: showAnimation
                     Layout.alignment: Qt.AlignLeft
