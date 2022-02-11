@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QQuickStyle>
 #include <QScreen>
 
 #include "ticker.h"
@@ -19,6 +20,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("tal.org");
     QCoreApplication::setApplicationName("CuteProduction");
     QCoreApplication::setApplicationVersion("0.1");
+
+    QQuickStyle::setStyle("Universal");
     
     QList<QScreen *> screens = app.screens();
     qDebug("Application sees %d screens", screens.count());
