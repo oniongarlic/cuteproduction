@@ -4,16 +4,17 @@
 #include <QObject>
 #include <QTimer>
 
-class Ticker : public QObject
+class Ticker : public QTimer
 {
     Q_OBJECT
-    Q_PROPERTY(int seconds READ seconds NOTIFY secondsChanged)
+    Q_PROPERTY(int seconds READ seconds NOTIFY secondsChanged)    
 public:
     explicit Ticker(QObject *parent = nullptr);
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void setAlarm(long seconds);
     Q_INVOKABLE long seconds() { return m_seconds; };
+
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
 
@@ -27,8 +28,7 @@ private:
     timespec m_ts,m_tm;
     long m_counter;
     long m_start;
-    long m_seconds;
-    QTimer *timer;
+    long m_seconds;    
 };
 
 #endif // TICKER_H

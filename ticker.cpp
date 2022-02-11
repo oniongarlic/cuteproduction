@@ -1,13 +1,11 @@
 #include "ticker.h"
 
 Ticker::Ticker(QObject *parent)
-    : QObject{parent}, m_seconds(0)
-{    
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &Ticker::ticker);
-    timer->start(1000);
-
+    : QTimer{parent}, m_seconds(0)
+{        
+    connect(this, &QTimer::timeout, this, &Ticker::ticker);
     reset();
+    setInterval(1000);
 }
 
 void Ticker::reset()
@@ -27,12 +25,12 @@ void Ticker::setAlarm(long seconds)
 void Ticker::start()
 {
     reset();
-    timer->start();
+    QTimer::start();
 }
 
 void Ticker::stop()
 {
-    timer->stop();
+    QTimer::stop();
 }
 
 void Ticker::ticker()
