@@ -47,6 +47,7 @@ Rectangle {
     
     property alias mainTitle: txtPrimary.text
     property alias secondaryTitle: txtSecondary.text
+    property alias topic: txtTopic.text
     property alias image: person.source
     
     property alias displayTime: displayTimer.duration
@@ -125,6 +126,20 @@ Rectangle {
                 height: width
                 fillMode: Image.PreserveAspectFit
                 anchors.bottom: parent.bottom
+            }
+
+            Text {
+                id: txtTopic
+                anchors.fill: parent
+                color: "#f0f0f0"
+                text: ""
+                font.family: "Helvetica"
+                font.bold: false
+                font.pixelSize: 22
+                minimumPixelSize: 18
+                fontSizeMode: Text.Fit
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
             }
         }
 
