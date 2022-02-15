@@ -169,6 +169,12 @@ ApplicationWindow {
             function clearMessagesLeft() {
                 msgModelLeft.clear()
             }
+            function removeMessageRight() {
+                msgModelRight.remove(msgModelRight.count-1, 1)
+            }
+            function clearMessagesRight() {
+                msgModelRight.clear()
+            }
 
             Component {
                 id: msgDelegate
