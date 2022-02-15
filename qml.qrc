@@ -8,5 +8,6 @@
         <file>persons.xml</file>
         <file>ParticleAnimation.qml</file>
         <file>snowflake.png</file>
+        <file>MessageListView.qml</file>
     </qresource>
 </RCC>

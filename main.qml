@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.15
 import QtQuick.XmlListModel 2.15
-import QtQuick3D 1.15
+//import QtQuick3D 1.15
 
 import org.tal 1.0
 
@@ -23,6 +23,7 @@ ApplicationWindow {
     color: "white"
     
     property Window l3window;
+    property Window alphawindow;
     property Window telepromtpwindow;
     
     Component.onCompleted: {
@@ -32,6 +33,7 @@ ApplicationWindow {
             console.debug(i)
         }
         l3window=aws.createObject(main, { screen: Qt.application.screens[1]});
+
         if (Qt.application.screens.length>2) {
 
         }
@@ -100,8 +102,111 @@ ApplicationWindow {
                 secondaryTitle: main.secondary
                 displayTime: delayTime.value*1000
             }
+
+            MessageListView {
+                id: msgLeftBottom
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+                anchors.top: parent.top
+
+                model: msgModelLeft
+                delegate: msgDelegate
+            }
+
+            MessageListView {
+                id: msgRightBottom
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.top: parent.top
+
+                model: msgModelRight
+                delegate: msgDelegate
+
+                xpos: x+width+32
+            }
+
+            // Testing timer
+            Timer {
+                running: false
+                repeat: true
+                interval: 1800
+                onTriggered: {
+                    var item={'primary': "Dynamic item: "+ new Date().toDateString(), 'secondary': new Date().toLocaleTimeString() }
+                    //msgModel.append(item)
+                    msgModel.insert(0, item)
+                    if (msgModel.count>5)
+                        msgModel.remove(5, 1)
+                }
+            }
+
+            ListModel {
+                id: msgModelLeft
+            }
+            ListModel {
+                id: msgModelRight
+            }
+
+            function addMessage(p, s, m) {
+                var item={'primary': p, 'secondary': s }
+                m.insert(0, item)
+                if (m.count>5)
+                    m.remove(5, 1)
+            }
+
+            function addMessageLeft(p, s) {
+                addMessage(p, s, msgModelLeft)
+            }
+            function addMessageRight(p, s) {
+                addMessage(p, s, msgModelRight)
+            }
+            function removeMessageLeft() {
+                msgModelLeft.remove(msgModelLeft.count-1, 1)
+            }
+            function clearMessagesLeft() {
+                msgModelLeft.clear()
+            }
+
+            Component {
+                id: msgDelegate
+                ItemDelegate {
+                    width: parent.width
+                    height: c.height+32
+                    background: Rectangle {
+                        color: "#b5f1ff"
+                        radius: 8
+                        border.color: "#2065c6"
+                    }
+
+                    ColumnLayout {
+                        id: c
+                        spacing: 4
+                        width: parent.width
+                        Text {
+                            text: primary;
+                            maximumLineCount: 1
+                            Layout.fillWidth: true
+                            Layout.margins: 8
+                            elide: Text.ElideRight
+                            font.pointSize: 14
+                            textFormat: Text.PlainText
+                            wrapMode: Text.NoWrap
+                        }
+                        Text {
+                            Layout.fillWidth: true
+                            Layout.margins: 8
+                            text: secondary;
+                            textFormat: Text.PlainText
+                            font.pointSize: 12
+                            elide: Text.ElideRight
+                            maximumLineCount: 6
+                            wrapMode: Text.Wrap
+                        }
+                    }
+                }
+            }
             
             ColumnLayout {
+                id: cl
                 anchors.fill: parent
                 Text {
                     id: timeCurrent
@@ -336,6 +441,8 @@ ApplicationWindow {
 
         XmlRole { name: "primary"; query: "primary/string()"; }
         XmlRole { name: "secondary"; query: "secondary/string()"; }
+        XmlRole { name: "topic"; query: "topic/string()"; }
+        XmlRole { name: "image"; query: "image/string()"; }
 
         onStatusChanged: {
             switch (status) {
@@ -438,6 +545,44 @@ ApplicationWindow {
                     onClicked: {
                         l3window.setMessage(textMsg.text)
                         textMsg.text=""
+                    }
+                }
+            }
+            Frame {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                ColumnLayout {
+                    anchors.fill: parent
+                    TextField {
+                        id: bP
+                        Layout.fillWidth: true
+
+                    }
+                    TextArea {
+                        id: bS
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+                    RowLayout {
+                        Button {
+                            text: "Send"
+                            enabled: bP.length>0
+                            onClicked: {
+                                l3window.addMessageLeft(bP.text, bS.text);
+                            }
+                        }
+                        Button {
+                            text: "Remove"
+                            onClicked: {
+                                l3window.removeMessageLeft();
+                            }
+                        }
+                        Button {
+                            text: "Clear"
+                            onClicked: {
+                                l3window.clearMessagesLeft();
+                            }
+                        }
                     }
                 }
             }
