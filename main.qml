@@ -111,6 +111,8 @@ ApplicationWindow {
 
                 model: msgModelLeft
                 delegate: msgDelegate
+
+                visible: switchMessageListLeft.checked
             }
 
             MessageListView {
@@ -123,6 +125,8 @@ ApplicationWindow {
                 delegate: msgDelegate
 
                 xpos: x+width+32
+
+                visible: switchMessageListRight.checked
             }
 
             // Testing timer
@@ -564,11 +568,20 @@ ApplicationWindow {
                         Layout.fillHeight: true
                     }
                     RowLayout {
+                        Switch {
+                            id: switchMessageListLeft
+                            Layout.alignment: Qt.AlignLeft
+                            text: "Left"
+                            onCheckedChanged: {
+                            }
+                        }
                         Button {
                             text: "Send"
                             enabled: bP.length>0
                             onClicked: {
                                 l3window.addMessageLeft(bP.text, bS.text);
+                                bP.text=''
+                                bS.text=''
                             }
                         }
                         Button {
@@ -581,6 +594,36 @@ ApplicationWindow {
                             text: "Clear"
                             onClicked: {
                                 l3window.clearMessagesLeft();
+                            }
+                        }
+                    }
+                    RowLayout {
+                        Switch {
+                            id: switchMessageListRight
+                            Layout.alignment: Qt.AlignLeft
+                            text: "Right"
+                            onCheckedChanged: {
+                            }
+                        }
+                        Button {
+                            text: "Send"
+                            enabled: bP.length>0
+                            onClicked: {
+                                l3window.addMessageRight(bP.text, bS.text);
+                                bP.text=''
+                                bS.text=''
+                            }
+                        }
+                        Button {
+                            text: "Remove"
+                            onClicked: {
+                                l3window.removeMessageRight();
+                            }
+                        }
+                        Button {
+                            text: "Clear"
+                            onClicked: {
+                                l3window.clearMessagesRight();
                             }
                         }
                     }
