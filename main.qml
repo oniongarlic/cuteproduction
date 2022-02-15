@@ -25,7 +25,7 @@ ApplicationWindow {
     property Window l3window;
     property Window alphawindow;
     property Window telepromtpwindow;
-    
+
     Component.onCompleted: {
         oflags=flags;
         console.debug(Qt.application.screens.length)
@@ -61,6 +61,8 @@ ApplicationWindow {
             title: "Information"
             minimumWidth: 800
             minimumHeight: 480
+            width: 1024
+            height: 720
             //width: 1920
             //height: 1080
             modality: Qt.NonModal
@@ -68,6 +70,8 @@ ApplicationWindow {
             // flags: Qt.WA_AlwaysStackOnTop
             
             property var startTime;
+
+            property bool tickerVisible: menuTickerVisible.checked;
 
             property alias promptPos: telepromt.contentY
             readonly property alias promptHeight: telepromt.contentHeight
@@ -275,6 +279,142 @@ ApplicationWindow {
                 }
             }
 
+            ColumnLayout {
+                id: newsTicker
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 32
+                spacing: 0
+                visible: tickerModel.count>0 && secondaryWindow.tickerVisible
+
+                ListView {
+                    id: tickerList
+                    Layout.fillWidth: true
+                    Layout.margins: 0
+                    clip: true
+                    height: 48
+                    interactive: false
+                    orientation: ListView.Horizontal
+                    delegate: tickerDelegate
+                    model: tickerModel
+                    highlightFollowsCurrentItem: true
+                    // highlight: Rectangle { color: "lightblue" }
+                    onCurrentIndexChanged: {
+                        console.debug("Tick: "+currentIndex)
+                        tickerMsg.text=tickerModel.get(currentIndex).msg
+                        tickerMsg.opacity=1
+                    }
+                }
+
+                Rectangle {
+                    height: 8
+                    color: "red"
+                    width: (parent.width/100)*tickerTimer.ct
+                    Behavior on width { NumberAnimation { } }
+                }
+
+                Rectangle {
+                    height: tickerMsg.height
+                    Layout.fillWidth: true
+                    color: "white"
+                    Text {
+                        id: tickerMsg
+                        color: "#101010"
+                        padding: 8
+                        maximumLineCount: secondaryWindow.width>1208 ? 1 : 2
+                        width: parent.width
+                        height: secondaryWindow.height>720 ? 48 : 86
+                        elide: Text.ElideRight
+                        font.pointSize: 24
+                        textFormat: Text.PlainText
+                        wrapMode: Text.Wrap
+                        text: ""
+                        Behavior on opacity { NumberAnimation { duration: 200 } }
+                    }
+                }
+            }
+
+//            DropShadow {
+//                enabled: false
+//                anchors.fill: newsTicker
+//                horizontalOffset: 3
+//                verticalOffset: 3
+//                radius: 8.0
+//                samples: 17
+//                color: "#80000000"
+//                source: newsTicker
+//            }
+
+            Timer {
+                id: tickerTimer
+                interval: 100
+                running: newsTicker.visible
+                repeat: true
+
+                property int ct: 100
+
+                onTriggered: {
+                    ct--
+                    if (ct<5)
+                        tickerMsg.opacity=0
+                    if (ct>1)
+                        return;
+
+                    ct=100;
+
+                    if (tickerList.currentIndex<tickerList.count-1)
+                        tickerList.currentIndex++
+                    else
+                        tickerList.currentIndex=0
+                }
+            }
+
+            ListModel {
+                id: tickerModel
+            }
+
+            function clearNews() {
+                tickerModel.clear()
+            }
+
+            function addNewsItem(item) {
+                tickerModel.append(item)
+            }
+
+            Component {
+                id: tickerDelegate
+                ItemDelegate {
+                    width: tickerList.width/4
+                    highlighted: ListView.isCurrentItem
+                    height: c.height
+                    background: Rectangle {
+                        color: highlighted ? "#ffffff" : "#a0a0a0"
+                        radius: 0
+                    }
+                    onClicked: {
+                        console.debug("Click: "+index)
+                        ListView.currentIndex=index
+                    }
+
+                    Text {
+                        id: c
+                        color: "#292929"
+                        padding: 8
+                        font.capitalization: Font.AllUppercase
+                        font.weight: Font.Bold
+                        text: topic;
+                        anchors.verticalCenter: parent.verticalCenter
+                        verticalAlignment: Text.AlignVCenter
+                        maximumLineCount: 1
+                        elide: Text.ElideRight
+                        font.pointSize: 18
+                        textFormat: Text.PlainText
+                        wrapMode: Text.NoWrap
+                    }
+                }
+            }
+
             ParticleAnimation {
                 id: particle
                 running: showAnimation.checked
@@ -410,6 +550,29 @@ ApplicationWindow {
         }
 
         Menu {
+            title: "News"
+            MenuItem {
+                id: menuTickerVisible
+                text: "Ticker visible"
+                checkable: true
+                checked: false
+            }
+
+            MenuItem {
+                text: "Clear"
+                onClicked: {
+                    l3window.clearNews()
+                }
+            }
+            MenuItem {
+                text: "Add.."
+                onClicked: {
+                    newsDrawer.open()
+                }
+            }
+        }
+
+        Menu {
             title: "Background"
 
             MenuItem {
@@ -441,6 +604,51 @@ ApplicationWindow {
         filter: [ "*.xml" ]
         onFileSelected: {
             l3Model.source=src
+        }
+    }
+
+    Drawer {
+        id: newsDrawer
+        interactive: false
+        width: parent.width/3
+        height: parent.height
+        ColumnLayout {
+            anchors.fill: parent
+            TextField {
+                id: newsKeyword
+                Layout.fillWidth: true
+                placeholderText: "Keyword"
+            }
+            TextArea {
+                id: newsBody
+                Layout.fillWidth: true
+                placeholderText: "Body"
+            }
+            RowLayout {
+                Button {
+                    text: "Add"
+                    onClicked: {
+                        const item={ "topic": newsKeyword.text, "msg": newsBody.text }
+                        l3window.addNewsItem(item)
+                        newsKeyword.clear()
+                        newsBody.clear()
+                        newsDrawer.close()
+                    }
+                }
+                Button {
+                    text: "Clear"
+                    onClicked: {
+                        newsKeyword.clear()
+                        newsBody.clear()
+                    }
+                }
+                Button {
+                    text: "Close"
+                    onClicked: {
+                        newsDrawer.close()
+                    }
+                }
+            }
         }
     }
 
@@ -758,6 +966,10 @@ ApplicationWindow {
                 Button {
                     text: "5min"
                     onClicked: ticker.setCountdownSeconds(5*60);
+                }
+                Button {
+                    text: "15min"
+                    onClicked: ticker.setCountdownSeconds(15*60);
                 }
                 DelayButton {
                     text: "Reset"
