@@ -614,6 +614,8 @@ ApplicationWindow {
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
             TextField {
                 id: newsKeyword
                 Layout.fillWidth: true
@@ -622,9 +624,11 @@ ApplicationWindow {
             TextArea {
                 id: newsBody
                 Layout.fillWidth: true
+                Layout.fillHeight: true
                 placeholderText: "Body"
             }
             RowLayout {
+                spacing: 8
                 Button {
                     text: "Add"
                     onClicked: {
