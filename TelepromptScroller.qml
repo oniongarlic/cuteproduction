@@ -23,7 +23,7 @@ Flickable {
     property alias text: txt.text
 
     property real scrollSpeed: 1
-    property int scrollSpeedSeconds: 60
+    property int scrollSpeedSeconds: txt.lineCount/0.8
 
     property int countDownSeconds: 4
 
@@ -94,7 +94,7 @@ Flickable {
     readonly property real relpos: scrollPosition/(svanim.to+topMargin)
     readonly property int positionSeconds: Math.round(scrollSpeedSeconds*relpos)
 
-    onPositionSecondsChanged: console.debug("SECPOS:"+positionSeconds)
+    onPositionSecondsChanged: console.debug("SECPOS:"+positionSeconds)        
 
     NumberAnimation {
         id: svanim
@@ -113,7 +113,10 @@ Flickable {
         text: ""
         font.pointSize: 32
         wrapMode: Text.WordWrap
-        padding: 16
+        topPadding: 32
+        leftPadding: 16
+        rightPadding: 32
+        bottomPadding: 16
         transform: Scale {
             origin.x: txt.width/2
             origin.y: txt.height/2
@@ -121,6 +124,5 @@ Flickable {
             yScale: sv.flip ? -1 : 1
         }
     }
-
 }
 
