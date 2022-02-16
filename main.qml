@@ -71,6 +71,8 @@ ApplicationWindow {
             property alias promptPos: telepromt.contentY
             readonly property alias promptHeight: telepromt.contentHeight
 
+            property ListModel newsTickerModel: tickerModel
+
             onClosing: {
                 close.accepted=false;
             }
@@ -506,6 +508,7 @@ ApplicationWindow {
                         font.pointSize: 18
                         textFormat: Text.PlainText
                         wrapMode: Text.NoWrap
+                        width: parent.width
                     }
                 }
             }
@@ -698,7 +701,7 @@ ApplicationWindow {
     Drawer {
         id: newsDrawer
         interactive: false
-        width: parent.width/3
+        width: parent.width/2
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
@@ -713,6 +716,7 @@ ApplicationWindow {
                 id: newsBody
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.maximumHeight: newsKeyword.height*4
                 placeholderText: "Body"
             }
             RowLayout {
@@ -724,7 +728,7 @@ ApplicationWindow {
                         l3window.addNewsItem(item)
                         newsKeyword.clear()
                         newsBody.clear()
-                        newsDrawer.close()
+                        // newsDrawer.close()
                     }
                 }
                 Button {
@@ -740,7 +744,104 @@ ApplicationWindow {
                         newsDrawer.close()
                     }
                 }
+                Button {
+                    text: "RSS"
+                    onClicked: {
+                        rssFile.startSelector()
+                    }
+                }
             }
+            ListView {
+                id: newsEditorList
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: l3window.newsTickerModel
+                delegate: newsEditorDelegate
+            }
+            Label {
+                text: "Items: "+newsEditorList.count
+            }
+            ListView {
+                id: newsFeedList
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: rssModel
+                delegate: rssItemModel
+                clip: true
+            }
+            Label {
+                text: "RSS: "+newsFeedList.count
+            }
+        }
+    }
+
+    XmlListModel {
+        id: rssModel
+        query: "/rss/channel/item"
+
+        XmlRole { name: "title"; query: "title/string()"; }
+        XmlRole { name: "description"; query: "description/string()"; }
+
+        onStatusChanged: {
+            switch (status) {
+            case XmlListModel.Ready:
+
+                break;
+            case XmlListModel.Error:
+                console.debug(errorString())
+                break;
+            }
+        }
+    }
+
+    Component {
+        id: rssItemModel
+        ItemDelegate {
+            width: ListView.view.width
+            height: c.height
+            ColumnLayout {
+                id: c
+                spacing: 2
+                Text { text: title;
+                    font.bold: true;
+                    maximumLineCount: 1;
+                    elide: Text.ElideRight
+                }
+                Text { text: description;
+                    wrapMode: Text.Wrap;
+                    maximumLineCount: 2;
+                    elide: Text.ElideRight
+                }
+            }
+            onClicked: {
+                newsFeedList.currentIndex=index;
+                newsKeyword.text=rssModel.get(index).title
+                newsBody.text=rssModel.get(index).description
+            }
+        }
+    }
+
+    Component {
+        id: newsEditorDelegate
+        ItemDelegate {
+            width: ListView.view.width
+            height: c.height
+            ColumnLayout {
+                id: c
+                Text { text: topic;  }
+                Text { text: msg; }
+            }
+            onClicked: {
+                newsEditorList.currentIndex=index;
+            }
+        }
+    }
+
+    TextSelector {
+        id: rssFile
+        filter: [ "*.xml" ]
+        onFileSelected: {
+            rssModel.source=src
         }
     }
 
