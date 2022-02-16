@@ -10,8 +10,8 @@ import org.tal 1.0
 
 ApplicationWindow {
     id: main
-    width: 800
-    height: 600
+    width: 1024
+    height: 768
     minimumHeight: 600
     minimumWidth: 800
     visible: true
@@ -70,6 +70,10 @@ ApplicationWindow {
 
             property alias promptPos: telepromt.contentY
             readonly property alias promptHeight: telepromt.contentHeight
+
+            onClosing: {
+                close.accepted=false;
+            }
 
             MouseArea {
                 anchors.fill: parent
