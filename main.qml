@@ -1056,12 +1056,20 @@ ApplicationWindow {
                     onClicked: ticker.stop()
                 }
                 Button {
-                    text: "5min"
-                    onClicked: ticker.setCountdownSeconds(5*60);
+                    text: "+1min"
+                    onClicked: ticker.addCountdownSeconds(60);
                 }
                 Button {
-                    text: "15min"
-                    onClicked: ticker.setCountdownSeconds(15*60);
+                    text: "+5min"
+                    onClicked: ticker.addCountdownSeconds(5*60);
+                }
+                Button {
+                    text: "+15min"
+                    onClicked: ticker.addCountdownSeconds(15*60);
+                }
+                Button {
+                    text: "0"
+                    onClicked: ticker.setCountdownSeconds(0);
                 }
                 DelayButton {
                     text: "Reset"
