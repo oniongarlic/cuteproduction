@@ -28,6 +28,12 @@ void Ticker::setCountdownSeconds(long seconds)
     emit countdownChanged(m_counter);
 }
 
+void Ticker::addCountdownSeconds(long seconds)
+{
+    m_counter+=seconds;
+    emit countdownChanged(m_counter);
+}
+
 void Ticker::start()
 {
     reset();

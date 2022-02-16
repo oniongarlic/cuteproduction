@@ -14,6 +14,7 @@ public:
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void setAlarm(long seconds);
+    Q_INVOKABLE void addCountdownSeconds(long seconds);
     Q_INVOKABLE void setCountdownSeconds(long seconds);
     Q_INVOKABLE long seconds() { return m_seconds; };
     Q_INVOKABLE long countdown() { return m_counter; };
