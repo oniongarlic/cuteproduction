@@ -24,7 +24,7 @@ ApplicationWindow {
     
     property Window l3window;
     property Window alphawindow;
-    property Window telepromtpwindow;
+    property Window tpwindow;
 
     Component.onCompleted: {
         oflags=flags;
@@ -32,7 +32,9 @@ ApplicationWindow {
         for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
         }
+
         l3window=aws.createObject(main, { screen: Qt.application.screens[1]});
+        tpwindow=tpw.createObject(main, { screen: Qt.application.screens[2]});
 
         if (Qt.application.screens.length>2) {
 
@@ -51,30 +53,98 @@ ApplicationWindow {
         var ss = s % 60;
         return [h,m,ss].map(v => v < 10 ? "0" + v : v).join(":")
     }
+
+    Component {
+        id: tpw
+        Window {
+            id: teleWindow
+            visible: true
+            title: "Teleprompt"
+            minimumWidth: 800
+            minimumHeight: 480
+            width: 1024
+            height: 720
+            modality: Qt.NonModal
+            transientParent: null
+            color: "black"
+
+            property alias promptPos: telepromt.contentY
+            readonly property alias promptHeight: telepromt.contentHeight
+
+            MouseArea {
+                anchors.fill: parent
+                onDoubleClicked: {
+                    teleWindow.visibility=Window.FullScreen
+                }
+                onClicked: {
+                    teleWindow.visibility=Window.Windowed
+                }
+            }
+
+            ColumnLayout {
+                id: cl
+                anchors.fill: parent
+
+                TelepromptScroller {
+                    id: telepromt
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    visible: telepromtShow.checked
+                    mirror: telepromtMirror.checked
+                    flip: telepromtFlip.checked
+                }
+
+                RowLayout {
+                    id: tpStatusBar
+                    Slider {
+                        Layout.fillWidth: true
+                        from: 0
+                        to: tpwindow.promptHeight
+                        value: tpwindow.promptPos
+                    }
+                }
+            }
+
+            function telepromtStart() {
+                telepromt.start()
+            }
+            function telepromtPause() {
+                telepromt.pause()
+            }
+            function telepromtResume() {
+                telepromt.resume()
+            }
+            function telepromtStop() {
+                telepromt.stop()
+            }
+            function telepromtReset() {
+                telepromt.reset()
+            }
+            function telepromtSetText(txt) {
+                telepromt.text=txt;
+            }
+            function telepromtSetPosition(pos) {
+                telepromt.setPosition(pos)
+            }
+        }
+    }
     
     Component {
         id: aws
         Window {
             id: secondaryWindow
             visible: true
-            //visibility: Window.FullScreen
             title: "Information"
             minimumWidth: 800
             minimumHeight: 480
             width: 1024
             height: 720
-            //width: 1920
-            //height: 1080
             modality: Qt.NonModal
             transientParent: null
-            // flags: Qt.WA_AlwaysStackOnTop
             
             property var startTime;
-
             property bool tickerVisible: menuTickerVisible.checked;
 
-            property alias promptPos: telepromt.contentY
-            readonly property alias promptHeight: telepromt.contentHeight
             
             Component.onCompleted: {
                 startTime=new Date()
@@ -222,42 +292,18 @@ ApplicationWindow {
             ColumnLayout {
                 id: cl
                 anchors.fill: parent
-                Text {
-                    id: timeCurrent
-                    Layout.fillWidth: true
-                    color: "#ffffff"
-                    text: "00:00:00"
-                    styleColor: "#202020"
-                    style: Text.Outline
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: secondaryWindow.height/5
-                    visible: showTime.checked
-                }
-                Text {
-                    id: timeCount
-                    Layout.fillWidth: true
-                    color: "#ffffff"
-                    styleColor: "#202020"
-                    style: Text.Outline
-                    text: formatSeconds(ticker.seconds)
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: secondaryWindow.height/5
-                    visible: showCounter.checked
-                }
-                Text {
-                    id: timeCountdown
-                    Layout.fillWidth: true
-                    color: "#ffffff"
-                    styleColor: "#202020"
-                    style: Text.Outline
-                    text: formatSeconds(ticker.countdown)
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: secondaryWindow.height/5
-                    visible: showCountdown.checked
-                }
+                anchors.leftMargin: 32
+                anchors.rightMargin: 32
+                anchors.topMargin: 128
+                anchors.bottomMargin: 128
+                spacing: 16
+
+                property real fontSizeRatioTime: 5
+
                 Text {
                     id: msgText
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
                     color: "#ffffff"
                     text: ""
                     styleColor: "#202020"
@@ -269,14 +315,54 @@ ApplicationWindow {
                     wrapMode: Text.WordWrap
                     maximumLineCount: 4
                 }
-                TelepromptScroller {
-                    id: telepromt
+                Text {
+                    id: timeCurrent
                     Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    visible: telepromtShow.checked
-                    mirror: telepromtMirror.checked
-                    flip: telepromtFlip.checked
+                    Layout.alignment: Qt.AlignCenter
+                    color: "#ffffff"
+                    text: "00:00:00"
+                    font.family: "FreeMono"
+                    styleColor: "#202020"
+                    style: Text.Outline
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+                    visible: showTime.checked
                 }
+                Text {
+                    id: timeCount
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignCenter
+                    color: "#ffffff"
+                    styleColor: "#202020"
+                    style: Text.Outline
+                    text: formatSeconds(ticker.seconds)
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+                    visible: showCounter.checked
+                }
+                Text {
+                    id: timeCountdown
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignCenter
+                    color: "#ffffff"
+                    styleColor: "#202020"
+                    style: Text.Outline
+                    text: formatSeconds(ticker.countdown)
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+                    visible: showCountdown.checked
+                }
+            }
+
+            DropShadow {
+                visible: false
+                anchors.fill: cl
+                horizontalOffset: 3
+                verticalOffset: 3
+                radius: 8.0
+                samples: 17
+                color: "#80000000"
+                source: cl
             }
 
             ColumnLayout {
@@ -335,16 +421,16 @@ ApplicationWindow {
                 }
             }
 
-//            DropShadow {
-//                enabled: false
-//                anchors.fill: newsTicker
-//                horizontalOffset: 3
-//                verticalOffset: 3
-//                radius: 8.0
-//                samples: 17
-//                color: "#80000000"
-//                source: newsTicker
-//            }
+            //            DropShadow {
+            //                enabled: false
+            //                anchors.fill: newsTicker
+            //                horizontalOffset: 3
+            //                verticalOffset: 3
+            //                radius: 8.0
+            //                samples: 17
+            //                color: "#80000000"
+            //                source: newsTicker
+            //            }
 
             Timer {
                 id: tickerTimer
@@ -452,27 +538,7 @@ ApplicationWindow {
                 timerGeneric.start()
             }
 
-            function telepromtStart() {
-                telepromt.start()
-            }
-            function telepromtPause() {
-                telepromt.pause()
-            }
-            function telepromtResume() {
-                telepromt.resume()
-            }
-            function telepromtStop() {
-                telepromt.stop()
-            }
-            function telepromtReset() {
-                telepromt.reset()
-            }
-            function telepromtSetText(txt) {
-                telepromt.text=txt;
-            }
-            function telepromtSetPosition(pos) {
-                telepromt.setPosition(pos)
-            }
+
         }
     }
     
@@ -490,6 +556,12 @@ ApplicationWindow {
                 checkable: true
                 checked: l3window.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: l3window.visibility=!checked ? Window.Windowed : Window.FullScreen
+            }
+            MenuItem {
+                text: "Full screen (Telepromt)"
+                checkable: true
+                checked: tpwindow.visibility==Window.FullScreen ? true : false
+                onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
             
             MenuItem {
@@ -538,13 +610,20 @@ ApplicationWindow {
                 enabled: textPrompter.canPaste
                 onClicked: {
                     textPrompter.paste()
-                    l3window.telepromtSetText(textPrompter.text)
+                    tpwindow.telepromtSetText(textPrompter.text)
                 }
             }
             MenuItem {
                 text: "Clear"
                 onClicked: {
-                    l3window.telepromtSetText("")
+                    tpwindow.telepromtSetText("")
+                }
+            }
+            MenuItem {
+                text: "Show window"
+                checkable: true
+                onCheckedChanged: {
+                    tpwindow.visible=checked
                 }
             }
         }
@@ -1034,19 +1113,19 @@ ApplicationWindow {
                 Button {
                     text: "Update"
                     onClicked: {
-                        l3window.telepromtSetText(textPrompter.text)
+                        tpwindow.telepromtSetText(textPrompter.text)
                     }
                 }
                 Button {
                     text: "Start"
                     onClicked: {
-                        l3window.telepromtStart();
+                        tpwindow.telepromtStart();
                     }
                 }
                 Button {
                     text: "Stop"
                     onClicked: {
-                        l3window.telepromtStop();
+                        tpwindow.telepromtStop();
                     }
                 }
             }
@@ -1054,19 +1133,19 @@ ApplicationWindow {
                 Button {
                     text: "Pause"
                     onClicked: {
-                        l3window.telepromtPause();
+                        tpwindow.telepromtPause();
                     }
                 }
                 Button {
                     text: "Resume"
                     onClicked: {
-                        l3window.telepromtResume();
+                        tpwindow.telepromtResume();
                     }
                 }
                 Button {
                     text: "Reset"
                     onClicked: {
-                        l3window.telepromtStop();
+                        tpwindow.telepromtStop();
                     }
                 }
             }
@@ -1075,11 +1154,11 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 id: telePromtPos
                 from: 0
-                to: l3window.promptHeight
-                value: l3window.promptPos
+                to: tpwindow.promptHeight
+                value: tpwindow.promptPos
                 onValueChanged: {
                     if (pressed) {
-                        l3window.telepromtSetPosition(value)
+                        tpwindow.telepromtSetPosition(value)
                     }
                 }
             }
