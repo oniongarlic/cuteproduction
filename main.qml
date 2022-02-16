@@ -324,8 +324,9 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignCenter
                     color: "#ffffff"
-                    text: "00:00:00"
-                    font.family: "FreeMono"
+                    text: ""
+                    font.family: "FreeSans"
+                    font.bold: true
                     styleColor: "#202020"
                     style: Text.Outline
                     horizontalAlignment: Text.AlignHCenter
@@ -337,6 +338,8 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignCenter
                     color: "#ffffff"
+                    font.family: "FreeSans"
+                    font.bold: true
                     styleColor: "#202020"
                     style: Text.Outline
                     text: formatSeconds(ticker.seconds)
@@ -349,6 +352,8 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignCenter
                     color: "#ffffff"
+                    font.family: "FreeSans"
+                    font.bold: true
                     styleColor: "#202020"
                     style: Text.Outline
                     text: formatSeconds(ticker.countdown)
