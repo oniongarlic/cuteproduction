@@ -15,7 +15,16 @@ ParticleSystem {
         rotationVariation: 45
         rotationVelocity: 3
         rotationVelocityVariation: 4
-    }       
+    }
+    
+    Timer {
+        running: sys.running
+        interval: 100
+        repeat: true
+        onTriggered: {
+            snowEmitter.x=Math.random()*parent.width
+        }
+    }
 
     Emitter {
         id: snowEmitter
