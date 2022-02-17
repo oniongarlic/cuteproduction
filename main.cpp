@@ -47,5 +47,9 @@ int main(int argc, char *argv[])
     
 #endif
     
+#ifdef Q_OS_WIN32
+  SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
+#endif
+    
     return app.exec();
 }
