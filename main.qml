@@ -1212,7 +1212,7 @@ ApplicationWindow {
                     id: telepromptShow
                     Layout.alignment: Qt.AlignLeft
                     text: "teleprompt"
-                    checked: false
+                    checked: true
                 }
                 Switch {
                     id: telepromptMirror
