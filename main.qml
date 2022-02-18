@@ -68,8 +68,9 @@ ApplicationWindow {
             transientParent: null
             color: "black"
 
-            property alias promptPos: telepromt.contentY
-            readonly property alias promptHeight: telepromt.contentHeight
+            property alias promptPos: teleprompt.contentY
+            property alias lineSpeed: teleprompt.lineSpeed
+            readonly property alias promptHeight: teleprompt.contentHeight
 
             property ListModel newsTickerModel: tickerModel
 
@@ -90,14 +91,15 @@ ApplicationWindow {
             ColumnLayout {
                 id: cl
                 anchors.fill: parent
+                anchors.margins: 64
 
                 TelepromptScroller {
-                    id: telepromt
+                    id: teleprompt
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    visible: telepromtShow.checked
-                    mirror: telepromtMirror.checked
-                    flip: telepromtFlip.checked
+                    visible: telepromptShow.checked
+                    mirror: telepromptMirror.checked
+                    flip: telepromptFlip.checked
                 }
 
                 RowLayout {
@@ -111,26 +113,26 @@ ApplicationWindow {
                 }
             }
 
-            function telepromtStart() {
-                telepromt.start()
+            function telepromptStart() {
+                teleprompt.start()
             }
-            function telepromtPause() {
-                telepromt.pause()
+            function telepromptPause() {
+                teleprompt.pause()
             }
-            function telepromtResume() {
-                telepromt.resume()
+            function telepromptResume() {
+                teleprompt.resume()
             }
-            function telepromtStop() {
-                telepromt.stop()
+            function telepromptStop() {
+                teleprompt.stop()
             }
-            function telepromtReset() {
-                telepromt.reset()
+            function telepromptReset() {
+                teleprompt.reset()
             }
-            function telepromtSetText(txt) {
-                telepromt.text=txt;
+            function telepromptSetText(txt) {
+                teleprompt.text=txt;
             }
-            function telepromtSetPosition(pos) {
-                telepromt.setPosition(pos)
+            function telepromptSetPosition(pos) {
+                teleprompt.setPosition(pos)
             }
         }
     }
@@ -570,7 +572,7 @@ ApplicationWindow {
                 onCheckedChanged: l3window.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
             MenuItem {
-                text: "Full screen (Telepromt)"
+                text: "Full screen (Teleprompt)"
                 checkable: true
                 checked: tpwindow.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
@@ -622,13 +624,13 @@ ApplicationWindow {
                 enabled: textPrompter.canPaste
                 onClicked: {
                     textPrompter.paste()
-                    tpwindow.telepromtSetText(textPrompter.text)
+                    tpwindow.telepromptSetText(textPrompter.text)
                 }
             }
             MenuItem {
                 text: "Clear"
                 onClicked: {
-                    tpwindow.telepromtSetText("")
+                    tpwindow.telepromptSetText("")
                 }
             }
             MenuItem {
@@ -1197,7 +1199,7 @@ ApplicationWindow {
                 }
                 TextArea {
                     id: textPrompter
-                    placeholderText: "Telepromt text here"
+                    placeholderText: "Teleprompt text here"
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
@@ -1207,23 +1209,33 @@ ApplicationWindow {
 
             RowLayout {
                 Switch {
-                    id: telepromtShow
+                    id: telepromptShow
                     Layout.alignment: Qt.AlignLeft
-                    text: "Telepromt"
+                    text: "teleprompt"
                     checked: false
                 }
                 Switch {
-                    id: telepromtMirror
+                    id: telepromptMirror
                     Layout.alignment: Qt.AlignLeft
                     text: "Mirror"
                     checked: false
                 }
 
                 Switch {
-                    id: telepromtFlip
+                    id: telepromptFlip
                     Layout.alignment: Qt.AlignLeft
                     text: "Flip"
                     checked: false
+                }
+                SpinBox {
+                    id: lineSpeed
+                    from: 1
+                    to: 10
+                    stepSize: 1
+                    value: 8
+                    onValueChanged: {
+                        tpwindow.lineSpeed=value/10.0
+                    }
                 }
             }
 
@@ -1231,19 +1243,19 @@ ApplicationWindow {
                 Button {
                     text: "Update"
                     onClicked: {
-                        tpwindow.telepromtSetText(textPrompter.text)
+                        tpwindow.telepromptSetText(textPrompter.text)
                     }
                 }
                 Button {
                     text: "Start"
                     onClicked: {
-                        tpwindow.telepromtStart();
+                        tpwindow.telepromptStart();
                     }
                 }
                 Button {
                     text: "Stop"
                     onClicked: {
-                        tpwindow.telepromtStop();
+                        tpwindow.telepromptStop();
                     }
                 }
             }
@@ -1251,32 +1263,32 @@ ApplicationWindow {
                 Button {
                     text: "Pause"
                     onClicked: {
-                        tpwindow.telepromtPause();
+                        tpwindow.telepromptPause();
                     }
                 }
                 Button {
                     text: "Resume"
                     onClicked: {
-                        tpwindow.telepromtResume();
+                        tpwindow.telepromptResume();
                     }
                 }
                 Button {
                     text: "Reset"
                     onClicked: {
-                        tpwindow.telepromtStop();
+                        tpwindow.telepromptStop();
                     }
                 }
             }
 
             Slider {
                 Layout.fillWidth: true
-                id: telePromtPos
+                id: telePromptPos
                 from: 0
                 to: tpwindow.promptHeight
                 value: tpwindow.promptPos
                 onValueChanged: {
                     if (pressed) {
-                        tpwindow.telepromtSetPosition(value)
+                        tpwindow.telepromptSetPosition(value)
                     }
                 }
             }
