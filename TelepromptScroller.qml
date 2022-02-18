@@ -7,8 +7,8 @@ Flickable {
     interactive: !timerScroll.running
     topMargin: 64
     bottomMargin: 64
-    leftMargin: 8
-    rightMargin: 8
+    leftMargin: 64
+    rightMargin: 64
     contentHeight: txt.height
     pixelAligned: false
     clip: true
@@ -23,7 +23,8 @@ Flickable {
     property alias text: txt.text
 
     property real scrollSpeed: 1
-    property int scrollSpeedSeconds: txt.lineCount/0.8
+    property real lineSpeed: 0.6
+    property int scrollSpeedSeconds: txt.lineCount/lineSpeed
 
     property int countDownSeconds: 4
 
@@ -111,10 +112,10 @@ Flickable {
         width: sv.width
         color: "white"
         text: ""
-        font.pointSize: 32
+        font.pointSize: 72
         wrapMode: Text.WordWrap
         topPadding: 32
-        leftPadding: 16
+        leftPadding: 32
         rightPadding: 32
         bottomPadding: 16
         transform: Scale {
