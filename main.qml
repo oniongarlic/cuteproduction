@@ -165,7 +165,7 @@ ApplicationWindow {
             Rectangle {
                 id: background
                 anchors.fill: parent
-                color: bgBlack.checked ? "black" : "green"
+                color: bgBlack.checked ? "black" : bgGreen.checked ? "green" : "blue"
             }
             
             MouseArea {
@@ -678,6 +678,12 @@ ApplicationWindow {
             MenuItem {
                 id: bgGreen
                 text: "Green"
+                checkable: true
+                autoExclusive: true
+            }
+            MenuItem {
+                id: bgBlue
+                text: "Blue"
                 checkable: true
                 autoExclusive: true
             }
