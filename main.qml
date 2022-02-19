@@ -708,7 +708,7 @@ ApplicationWindow {
 
     Drawer {
         id: newsDrawer
-        interactive: false
+        dragMargin: 0
         width: parent.width/2
         height: parent.height
         ColumnLayout {
