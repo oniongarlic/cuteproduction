@@ -718,7 +718,8 @@ ApplicationWindow {
             TextField {
                 id: newsKeyword
                 Layout.fillWidth: true
-                placeholderText: "Keyword"
+                placeholderText: "Keyword"                
+                selectByMouse: true
             }
             TextArea {
                 id: newsBody
@@ -726,6 +727,8 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 Layout.maximumHeight: newsKeyword.height*4
                 placeholderText: "Body"
+                selectByKeyboard: true
+                selectByMouse: true
             }
             RowLayout {
                 spacing: 8
@@ -975,12 +978,14 @@ ApplicationWindow {
                     TextField {
                         id: bP
                         Layout.fillWidth: true
-
+                        selectByMouse: true
                     }
                     TextArea {
                         id: bS
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        selectByKeyboard: true
+                        selectByMouse: true
                     }
                     RowLayout {
                         Switch {
