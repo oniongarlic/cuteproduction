@@ -54,6 +54,24 @@ ApplicationWindow {
         return [h,m,ss].map(v => v < 10 ? "0" + v : v).join(":")
     }
 
+    signal textFileResponse(string text)
+
+    function readLocalTextFile(uri) {
+        var xhr = new XMLHttpRequest;
+        console.debug(uri)
+        xhr.open("GET", uri);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                textFileResponse(xhr.responseText)
+            }
+        };
+        xhr.send();
+    }
+
+    onTextFileResponse: {
+        textPrompter.text=text
+    }
+
     Component {
         id: tpw
         Window {
@@ -616,8 +634,8 @@ ApplicationWindow {
             title: "Prompt"
             MenuItem {
                 text: "Open..."
-                enabled: false
-                onClicked: tsf.startSelector();
+                enabled: true
+                onClicked: tsftp.startSelector();
             }
             MenuItem {
                 text: "Paste"
@@ -694,7 +712,7 @@ ApplicationWindow {
         id: tsftp
         filter: [ "*.txt" ]
         onFileSelected: {
-            // l3Model.source=src
+            readLocalTextFile(src)
         }
     }
 

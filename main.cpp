@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
 #endif
     
     qputenv("QSG_INFO", "1");
+
+    qputenv("QML_XHR_ALLOW_FILE_READ", "1");
     
     QGuiApplication app(argc, argv);
 
