@@ -4,11 +4,7 @@ import QtQuick.Controls 2.15
 Flickable {
     id: sv    
     boundsBehavior: Flickable.StopAtBounds
-    interactive: !timerScroll.running
-    topMargin: 64
-    bottomMargin: 64
-    leftMargin: 64
-    rightMargin: 64
+    interactive: !timerScroll.running    
     contentHeight: txt.height
     pixelAligned: false
     clip: true
@@ -31,6 +27,11 @@ Flickable {
     property int countDown: 4
 
     ScrollBar.vertical: ScrollBar {
+        parent: sv.parent
+        anchors.top: sv.top
+        anchors.bottom: sv.bottom
+        anchors.left: sv.right
+        anchors.leftMargin: 32
         policy: ScrollBar.AlwaysOn
     }
 
