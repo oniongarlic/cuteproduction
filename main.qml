@@ -632,7 +632,7 @@ ApplicationWindow {
             MenuItem {
                 text: "Add.."
                 onClicked: {
-                    newsDrawer.open()
+                    thirdsDrawer.open()
                 }
             }
             MenuSeparator {
@@ -742,6 +742,53 @@ ApplicationWindow {
         filter: [ "*.xml" ]
         onFileSelected: {
             l3Model.source=src
+        }
+    }
+
+    Drawer {
+        id: thirdsDrawer
+        dragMargin: 0
+        width: parent.width/2
+        height: parent.height
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
+            TextField {
+                id: textl3Primary
+                Layout.fillWidth: true
+                placeholderText: "Primary"
+                selectByMouse: true
+            }
+            TextField {
+                id: textl3Secondary
+                Layout.fillWidth: true
+                placeholderText: "Secondary"
+                selectByMouse: true
+            }
+            RowLayout {
+                spacing: 8
+                Button {
+                    text: "Add"
+                    onClicked: {
+                        const item={ "topic": textl3Primary.text, "msg": textl3Secondary.text }
+                        l3window.addNewsItem(item)
+                    }
+                }
+                Button {
+                    text: "Clear"
+                    onClicked: {
+                        textl3Primary.clear()
+                        textl3Secondary.clear()
+                    }
+                }
+                Button {
+                    text: "Close"
+                    onClicked: {
+                        thirdsDrawer.close()
+                    }
+                }
+            }
         }
     }
 
