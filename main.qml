@@ -575,6 +575,15 @@ ApplicationWindow {
     menuBar: MenuBar {
         Menu {
             title: "File"
+
+            
+            MenuItem {
+                text: "Quit"
+                onClicked: Qt.quit()
+            }
+        }
+        Menu {
+            title: "View"
             MenuItem {
                 text: "Full screen (Operation)"
                 checkable: true
@@ -593,12 +602,8 @@ ApplicationWindow {
                 checked: tpwindow.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
-            
-            MenuItem {
-                text: "Quit"
-                onClicked: Qt.quit()
-            }
         }
+
         Menu {
             title: "Message"
             MenuItem {
@@ -610,6 +615,9 @@ ApplicationWindow {
                 text: "Select all"
                 onClicked: textMsg.selectAll()
             }
+            MenuSeparator {
+
+            }
             MenuItem {
                 text: "Clear all"
                 onClicked: textMsg.clear()
@@ -620,6 +628,15 @@ ApplicationWindow {
             MenuItem {
                 text: "Open..."
                 onClicked: tsf.startSelector();
+            }
+            MenuItem {
+                text: "Add.."
+                onClicked: {
+                    newsDrawer.open()
+                }
+            }
+            MenuSeparator {
+
             }
             MenuItem {
                 text: "Clear"
@@ -643,11 +660,17 @@ ApplicationWindow {
                     tpwindow.telepromptSetText(textPrompter.text)
                 }
             }
+            MenuSeparator {
+
+            }
             MenuItem {
                 text: "Clear"
                 onClicked: {
                     tpwindow.telepromptSetText("")
                 }
+            }
+            MenuSeparator {
+
             }
             MenuItem {
                 text: "Show window"
