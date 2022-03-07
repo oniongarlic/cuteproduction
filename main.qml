@@ -33,8 +33,8 @@ ApplicationWindow {
             console.debug(i)
         }
 
-        l3window=aws.createObject(main, { screen: Qt.application.screens[1]});
-        tpwindow=tpw.createObject(main, { screen: Qt.application.screens[2]});
+        l3window=aws.createObject(main, { screen: Qt.application.screens[1], visible: true });
+        tpwindow=tpw.createObject(main, { screen: Qt.application.screens[2], visible: false });
 
         if (Qt.application.screens.length>2) {
 
@@ -75,8 +75,7 @@ ApplicationWindow {
     Component {
         id: tpw
         Window {
-            id: teleWindow
-            visible: true
+            id: teleWindow            
             title: "Teleprompt"
             minimumWidth: 800
             minimumHeight: 480
@@ -158,8 +157,7 @@ ApplicationWindow {
     Component {
         id: aws
         Window {
-            id: secondaryWindow
-            visible: true
+            id: secondaryWindow            
             title: "Information"
             minimumWidth: 800
             minimumHeight: 480
