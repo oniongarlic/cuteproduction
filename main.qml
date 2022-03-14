@@ -28,7 +28,7 @@ ApplicationWindow {
 
     Component.onCompleted: {
         oflags=flags;
-        console.debug(Qt.application.screens.length)
+        console.debug("Screens: " + Qt.application.screens.length)
         for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
         }
@@ -88,8 +88,6 @@ ApplicationWindow {
             property alias promptPos: teleprompt.contentY
             property alias lineSpeed: teleprompt.lineSpeed
             readonly property alias promptHeight: teleprompt.contentHeight
-
-            property ListModel newsTickerModel: tickerModel
 
             onClosing: {
                 close.accepted=false;
@@ -168,7 +166,8 @@ ApplicationWindow {
             
             property var startTime;
             property bool tickerVisible: menuTickerVisible.checked;
-
+            
+            property ListModel newsTickerModel: tickerModel
             
             Component.onCompleted: {
                 startTime=new Date()
