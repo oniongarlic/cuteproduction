@@ -942,6 +942,10 @@ ApplicationWindow {
         }
     }
 
+    ListModel {
+        id: l3ModelCustom
+    }
+
     XmlListModel {
         id: l3Model
         query: "/thirds/item"
@@ -1153,8 +1157,8 @@ ApplicationWindow {
                 Layout.maximumHeight: gl.height/3
                 highlight: Rectangle { color: "lightblue" }
                 onCurrentIndexChanged: {
-                    main.primary=l3Model.get(currentIndex).primary
-                    main.secondary=l3Model.get(currentIndex).secondary
+                    main.primary=model.get(currentIndex).primary
+                    main.secondary=model.get(currentIndex).secondary
                 }
             }
 
