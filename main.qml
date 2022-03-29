@@ -401,7 +401,7 @@ ApplicationWindow {
             Timer {
                 id: tickerTimer
                 interval: 100
-                running: newsTicker.visible
+                running: newsTicker.visible && tickerList.count>1
                 repeat: true
 
                 property int ct: 100
