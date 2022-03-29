@@ -446,7 +446,7 @@ ApplicationWindow {
                     Behavior on opacity { NumberAnimation { duration: 500 } }
                     Text {
                         id: tickerMsg
-                        color: "#202020"
+                        color: "#292929"
                         padding: 8
                         maximumLineCount: secondaryWindow.width>1208 ? 1 : 2
                         width: parent.width
@@ -534,7 +534,7 @@ ApplicationWindow {
 
                     Text {
                         id: c
-                        color: "#292929"
+                        color: highlighted ? "red" : "#292929"
                         padding: 8
                         font.capitalization: Font.AllUppercase
                         font.weight: Font.Bold
