@@ -33,6 +33,9 @@ ApplicationWindow {
             console.debug(i)
         }
 
+        console.debug(Screen.desktopAvailableWidth)
+        console.debug(Screen.desktopAvailableHeight)
+
         l3window=aws.createObject(main, { screen: Qt.application.screens[1], visible: true });
         tpwindow=tpw.createObject(main, { screen: Qt.application.screens[2], visible: false });
 
@@ -157,14 +160,17 @@ ApplicationWindow {
         Window {
             id: secondaryWindow            
             title: "Information"
-            minimumWidth: 800
-            minimumHeight: 480
+            minimumWidth: spanWindow ? Screen.desktopAvailableWidth : 800
+            minimumHeight: spanWindow ? Screen.desktopAvailableHeight : 480
             width: 1024
             height: 720
             modality: Qt.NonModal
             transientParent: null
             
             property var startTime;
+
+            property bool spanWindow: false;
+
             property bool tickerVisible: menuTickerVisible.checked;
             
             property ListModel newsTickerModel: tickerModel
@@ -350,7 +356,7 @@ ApplicationWindow {
                     style: Text.Outline
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
-                    visible: showTime.checked
+                    visible: showTime.checked                    
                 }
                 Text {
                     id: timeCount
@@ -418,23 +424,29 @@ ApplicationWindow {
                         console.debug("Tick: "+currentIndex)
                         tickerMsg.text=tickerModel.get(currentIndex).msg
                         tickerMsg.opacity=1
+                        tickerMsgContainer.opacity=1
                     }
                 }
 
                 Rectangle {
+                    id: tickerDelayBar
                     height: 8
                     color: "red"
                     width: (parent.width/100)*tickerTimer.ct
+                    opacity: tickerMsg.opacity
                     Behavior on width { NumberAnimation { } }
+                    Behavior on opacity { NumberAnimation { } }
                 }
 
                 Rectangle {
+                    id: tickerMsgContainer
                     height: tickerMsg.height
                     Layout.fillWidth: true
-                    color: "white"
+                    color: "#ffffff"
+                    Behavior on opacity { NumberAnimation { duration: 500 } }
                     Text {
                         id: tickerMsg
-                        color: "#101010"
+                        color: "#202020"
                         padding: 8
                         maximumLineCount: secondaryWindow.width>1208 ? 1 : 2
                         width: parent.width
@@ -444,7 +456,7 @@ ApplicationWindow {
                         textFormat: Text.PlainText
                         wrapMode: Text.Wrap
                         text: ""
-                        Behavior on opacity { NumberAnimation { duration: 200 } }
+                        Behavior on opacity { NumberAnimation { duration: 250 } }
                     }
                 }
             }
@@ -467,15 +479,24 @@ ApplicationWindow {
                 repeat: true
 
                 property int ct: 100
+                property int delay: 10
 
                 onTriggered: {
+                    if (delay>0) {
+                        delay--;
+                        return;
+                    }
+
                     ct--
-                    if (ct<5)
-                        tickerMsg.opacity=0
+                    if (ct<5) {
+                        tickerMsg.opacity=0;
+                        tickerMsgContainer.opacity=1;
+                    }
                     if (ct>1)
                         return;
 
                     ct=100;
+                    delay=10;
 
                     if (tickerList.currentIndex<tickerList.count-1)
                         tickerList.currentIndex++
