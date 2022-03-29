@@ -97,6 +97,7 @@ ApplicationWindow {
             height: 720
             modality: Qt.NonModal
             transientParent: null
+            color: bgBlack.checked ? "black" : bgGreen.checked ? "green" : "blue"
             
             property var startTime;
 
@@ -113,13 +114,7 @@ ApplicationWindow {
             onClosing: {
                 close.accepted=false;
             }
-            
-            Rectangle {
-                id: background
-                anchors.fill: parent
-                color: bgBlack.checked ? "black" : bgGreen.checked ? "green" : "blue"
-            }
-            
+                      
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
