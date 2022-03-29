@@ -81,6 +81,8 @@ ApplicationWindow {
         id: tpw
         TelepromptWindow {
             id: teleWindow
+            mirror: telepromptMirror.checked
+            flip: telepromptFlip.checked
         }
     }
     

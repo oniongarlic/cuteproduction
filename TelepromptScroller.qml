@@ -9,7 +9,7 @@ Flickable {
     pixelAligned: false
     clip: true
 
-    property bool mirror: true
+    property bool mirror: false
     property bool flip: false
 
     property int scrollType: 0
@@ -21,10 +21,6 @@ Flickable {
     property real scrollSpeed: 1
     property real lineSpeed: 0.6
     property int scrollSpeedSeconds: txt.lineCount/lineSpeed
-
-    property int countDownSeconds: 4
-
-    property int countDown: 4
 
     ScrollBar.vertical: ScrollBar {
         parent: sv.parent
@@ -74,13 +70,6 @@ Flickable {
     }
     function setPosition(pos) {
         sv.contentY=pos;
-    }
-
-    Timer {
-        id: countDownTimer
-        onTriggered: {
-
-        }
     }
 
     Timer {

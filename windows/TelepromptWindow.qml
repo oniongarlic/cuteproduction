@@ -20,6 +20,11 @@ Window {
     property alias lineSpeed: teleprompt.lineSpeed
     readonly property alias promptHeight: teleprompt.contentHeight
 
+    property int countdownSeconds: 4;
+
+    property bool mirror: false
+    property bool flip: false
+
     onClosing: {
         close.accepted=false;
     }
@@ -44,8 +49,8 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
             visible: telepromptShow.checked
-            mirror: telepromptMirror.checked
-            flip: telepromptFlip.checked
+            mirror: teleWindow.mirror
+            flip: teleWindow.flip
         }
 
         RowLayout {
@@ -59,8 +64,53 @@ Window {
         }
     }
 
+    Rectangle {
+        id: countDownBackground
+        anchors.fill: parent
+        color: "blue"
+        opacity: 0.7
+        visible: countdownTimer.running
+    }
+
+    Text {
+        id: countDownText
+        anchors.centerIn: countDownBackground
+        color: "white"
+        font.pixelSize: 128
+        text: countdownTimer.count
+        visible: countdownTimer.running
+        transform: Scale {
+            origin.x: countDownText.width/2
+            origin.y: countDownText.height/2
+            xScale: mirror ? -1 : 1
+            yScale: flip ? -1 : 1
+        }
+    }
+
+    Timer {
+        id: countdownTimer
+        interval: 1000
+        repeat: true
+        property int count: 0
+        onTriggered: {
+            count--
+            if (count==0) {
+                countdownTimer.stop();
+                teleprompt.start()
+            }
+        }
+
+        function startCountdown() {
+            count=countdownSeconds;
+            countdownTimer.start()
+        }
+    }
+
     function telepromptStart() {
-        teleprompt.start()
+        if (countdownSeconds>0)
+            countdownTimer.startCountdown()
+        else
+            teleprompt.start()
     }
     function telepromptPause() {
         teleprompt.pause()
