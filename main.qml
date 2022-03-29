@@ -766,12 +766,22 @@ ApplicationWindow {
                 spacing: 8
                 Button {
                     text: "Add"
+                    enabled: newsKeyword.length>0 && newsBody.length>0
                     onClicked: {
                         const item={ "topic": newsKeyword.text, "msg": newsBody.text }
                         l3window.addNewsItem(item)
                         newsKeyword.clear()
                         newsBody.clear()
-                        // newsDrawer.close()
+                    }
+                }
+                Button {
+                    text: "Update"
+                    enabled: newsKeyword.length>0 && newsBody.length>0 && newsEditorList.currentIndex>-1
+                    onClicked: {
+                        const item={ "topic": newsKeyword.text, "msg": newsBody.text }
+                        newsEditorList.model.set(newsEditorList.currentIndex, item)
+                        newsKeyword.clear()
+                        newsBody.clear()
                     }
                 }
                 Button {
@@ -897,6 +907,10 @@ ApplicationWindow {
             onClicked: {
                 console.debug(index)
                 ListView.view.currentIndex=index;
+            }
+            onDoubleClicked: {
+                newsKeyword.text=ListView.view.model.get(index).topic
+                newsBody.text=ListView.view.model.get(index).msg
             }
         }
     }
