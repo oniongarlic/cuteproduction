@@ -775,6 +775,13 @@ ApplicationWindow {
                     }
                 }
                 Button {
+                    text: "Remove"
+                    enabled: newsEditorList.currentIndex>-1
+                    onClicked: {
+                        newsEditorList.model.remove(newsEditorList.currentIndex)
+                    }
+                }
+                Button {
                     text: "Clear"
                     onClicked: {
                         newsKeyword.clear()
@@ -800,6 +807,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 model: l3window.newsTickerModel
                 delegate: newsEditorDelegate
+                clip: true
             }
             Label {
                 text: "Items: "+newsEditorList.count
@@ -845,12 +853,14 @@ ApplicationWindow {
             ColumnLayout {
                 id: c
                 spacing: 2
-                Text { text: title;
+                Text {
+                    text: title;
                     font.bold: true;
                     maximumLineCount: 1;
                     elide: Text.ElideRight
                 }
-                Text { text: description;
+                Text {
+                    text: description;
                     wrapMode: Text.Wrap;
                     maximumLineCount: 2;
                     elide: Text.ElideRight
@@ -869,13 +879,24 @@ ApplicationWindow {
         ItemDelegate {
             width: ListView.view.width
             height: c.height
+            highlighted: ListView.isCurrentItem
             ColumnLayout {
                 id: c
-                Text { text: topic;  }
-                Text { text: msg; }
+                width: parent.width
+                Text {
+                    text: topic;
+                    font.bold: true;
+                    maximumLineCount: 1;
+                    elide: Text.ElideRight
+                }
+                Text {
+                    text: msg;
+                    wrapMode: Text.Wrap;
+                }
             }
             onClicked: {
-                newsEditorList.currentIndex=index;
+                console.debug(index)
+                ListView.view.currentIndex=index;
             }
         }
     }
