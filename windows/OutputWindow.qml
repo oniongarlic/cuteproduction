@@ -78,6 +78,17 @@ Window {
         visible: switchMessageListRight.checked
     }
 
+    ListModel {
+        id: msgModelLeft
+    }
+    ListModel {
+        id: msgModelRight
+    }
+
+    ListModel {
+        id: tickerModel
+    }
+
     // Testing timer
     Timer {
         running: false
@@ -92,11 +103,78 @@ Window {
         }
     }
 
-    ListModel {
-        id: msgModelLeft
+    Timer {
+        id: timerGeneric
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: {
+            updateCurrentTime();
+            updateCounter();
+        }
     }
-    ListModel {
-        id: msgModelRight
+
+    Timer {
+        id: tickerTimer
+        interval: 100
+        running: newsTicker.visible && tickerList.count>1
+        repeat: true
+
+        property int ct: 100
+        property int delay: 10
+
+        onTriggered: {
+            if (delay>0) {
+                delay--;
+                return;
+            }
+
+            ct--
+            if (ct<5) {
+                tickerMsg.opacity=0;
+                tickerMsgContainer.opacity=1;
+            }
+            if (ct>1)
+                return;
+
+            ct=100;
+            delay=10;
+
+            if (tickerList.currentIndex<tickerList.count-1)
+                tickerList.currentIndex++
+            else
+                tickerList.currentIndex=0
+        }
+    }
+
+
+    function clearNews() {
+        tickerModel.clear()
+    }
+
+    function addNewsItem(item) {
+        tickerModel.append(item)
+    }
+
+    function show() {
+        l3.show();
+    }
+
+    function setMessage(msg) {
+        msgText.text=msg;
+    }
+
+    function updateCurrentTime() {
+        var date = new Date;
+        timeCurrent.text=Qt.formatTime(date, "hh:mm:ss");
+    }
+
+    function updateCounter() {
+
+    }
+
+    function timerStart() {
+        timerGeneric.start()
     }
 
     function addMessage(p, s, m) {
@@ -318,50 +396,8 @@ Window {
     //                source: newsTicker
     //            }
 
-    Timer {
-        id: tickerTimer
-        interval: 100
-        running: newsTicker.visible && tickerList.count>1
-        repeat: true
 
-        property int ct: 100
-        property int delay: 10
 
-        onTriggered: {
-            if (delay>0) {
-                delay--;
-                return;
-            }
-
-            ct--
-            if (ct<5) {
-                tickerMsg.opacity=0;
-                tickerMsgContainer.opacity=1;
-            }
-            if (ct>1)
-                return;
-
-            ct=100;
-            delay=10;
-
-            if (tickerList.currentIndex<tickerList.count-1)
-                tickerList.currentIndex++
-            else
-                tickerList.currentIndex=0
-        }
-    }
-
-    ListModel {
-        id: tickerModel
-    }
-
-    function clearNews() {
-        tickerModel.clear()
-    }
-
-    function addNewsItem(item) {
-        tickerModel.append(item)
-    }
 
     Component {
         id: tickerDelegate
@@ -402,35 +438,4 @@ Window {
         running: showAnimation.checked
     }
 
-    Timer {
-        id: timerGeneric
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: {
-            updateCurrentTime();
-            updateCounter();
-        }
-    }
-
-    function show() {
-        l3.show();
-    }
-
-    function setMessage(msg) {
-        msgText.text=msg;
-    }
-
-    function updateCurrentTime() {
-        var date = new Date;
-        timeCurrent.text=Qt.formatTime(date, "hh:mm:ss");
-    }
-
-    function updateCounter() {
-
-    }
-
-    function timerStart() {
-        timerGeneric.start()
-    }
 }
