@@ -24,6 +24,7 @@ Window {
 
     property bool spanWindow: false;
 
+    property int tickerItemsVisible: 4
     property bool tickerVisible: menuTickerVisible.checked;
 
     property ListModel newsTickerModel: tickerModel
@@ -313,6 +314,9 @@ Window {
             model: tickerModel
             highlightFollowsCurrentItem: true
             highlight: tickerHighlight
+            highlightMoveDuration: 500
+            snapMode: ListView.SnapToItem
+            highlightRangeMode: ListView.StrictlyEnforceRange
             onCurrentIndexChanged: {
                 console.debug("Tick: "+currentIndex)
                 tickerMsg.text=tickerModel.get(currentIndex).msg
@@ -379,7 +383,7 @@ Window {
     Component {
         id: tickerDelegate
         ItemDelegate {
-            width: tickerList.width/4
+            width: tickerList.width/tickerItemsVisible
             highlighted: ListView.isCurrentItem
             height: c.height
             background: Rectangle {

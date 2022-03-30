@@ -89,7 +89,8 @@ ApplicationWindow {
     Component {
         id: aws
         OutputWindow {
-            id: secondaryWindow               
+            id: secondaryWindow
+            tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
         }
     }
     
@@ -210,7 +211,12 @@ ApplicationWindow {
                 checkable: true
                 checked: false
             }
-
+            MenuItem {
+                id: menuTickerFullWidth
+                text: "Full width title"
+                checkable: true
+                checked: false
+            }
             MenuItem {
                 text: "Clear"
                 onClicked: {
@@ -405,8 +411,21 @@ ApplicationWindow {
                 delegate: rssItemModel
                 clip: true
             }
-            Label {
-                text: "RSS: "+newsFeedList.count
+            RowLayout {
+                Button {
+                    text: "Add all"
+                    enabled: rssModel.count>0
+                    onClicked: {
+                        let i;
+                        for (i=0;i<rssModel.count;i++) {
+                            const item={ "topic": rssModel.get(i).title, "msg": rssModel.get(i).description }
+                            l3window.addNewsItem(item)
+                        }
+                    }
+                }
+                Label {
+                    text: "RSS: "+newsFeedList.count
+                }
             }
         }
     }
