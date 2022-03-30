@@ -12,5 +12,6 @@
         <file>windows/TelepromptWindow.qml</file>
         <file>windows/OutputWindow.qml</file>
         <file>animations/SnowAnimation.qml</file>
+        <file>delegates/MessageDelegate.qml</file>
     </qresource>
 </RCC>
