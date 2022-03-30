@@ -333,19 +333,19 @@ Window {
 
         Rectangle {
             id: tickerMsgContainer
-            height: tickerMsg.height
+            height: tickerMsg.height+16
             Layout.fillWidth: true
             color: "#ffffff"
             Behavior on opacity { NumberAnimation { duration: 500 } }
             Text {
-                id: tickerMsg
+                id: tickerMsg                
                 color: "#292929"
                 padding: 8
-                maximumLineCount: secondaryWindow.width>1208 ? 1 : 2
+                maximumLineCount: 2
                 width: parent.width
-                height: secondaryWindow.height>720 ? 48 : 86
+                height: secondaryWindow.height>720 ? 96 : 64
                 elide: Text.ElideRight
-                font.pointSize: 24
+                font.pixelSize: secondaryWindow.height>720 ? 28 : 24
                 textFormat: Text.PlainText
                 wrapMode: Text.Wrap
                 text: ""
