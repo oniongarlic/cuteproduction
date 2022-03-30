@@ -8,6 +8,8 @@ import QtQuick.XmlListModel 2.15
 
 import org.tal 1.0
 
+import "windows"
+
 ApplicationWindow {
     id: main
     width: 1024
@@ -32,6 +34,9 @@ ApplicationWindow {
         for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
         }
+
+        console.debug(Screen.desktopAvailableWidth)
+        console.debug(Screen.desktopAvailableHeight)
 
         l3window=aws.createObject(main, { screen: Qt.application.screens[1], visible: true });
         tpwindow=tpw.createObject(main, { screen: Qt.application.screens[2], visible: false });
@@ -74,81 +79,10 @@ ApplicationWindow {
 
     Component {
         id: tpw
-        Window {
-            id: teleWindow            
-            title: "Teleprompt"
-            minimumWidth: 800
-            minimumHeight: 480
-            width: 1024
-            height: 720
-            modality: Qt.NonModal
-            transientParent: null
-            color: "black"
-
-            property alias promptPos: teleprompt.contentY
-            property alias lineSpeed: teleprompt.lineSpeed
-            readonly property alias promptHeight: teleprompt.contentHeight
-
-            onClosing: {
-                close.accepted=false;
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onDoubleClicked: {
-                    teleWindow.visibility=Window.FullScreen
-                }
-                onClicked: {
-                    teleWindow.visibility=Window.Windowed
-                }
-            }
-
-            ColumnLayout {
-                id: cl
-                anchors.fill: parent
-                anchors.margins: 64
-
-                TelepromptScroller {
-                    id: teleprompt
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    visible: telepromptShow.checked
-                    mirror: telepromptMirror.checked
-                    flip: telepromptFlip.checked
-                }
-
-                RowLayout {
-                    id: tpStatusBar
-                    Slider {
-                        Layout.fillWidth: true
-                        from: 0
-                        to: tpwindow.promptHeight
-                        value: tpwindow.promptPos
-                    }
-                }
-            }
-
-            function telepromptStart() {
-                teleprompt.start()
-            }
-            function telepromptPause() {
-                teleprompt.pause()
-            }
-            function telepromptResume() {
-                teleprompt.resume()
-            }
-            function telepromptStop() {
-                teleprompt.stop()
-            }
-            function telepromptReset() {
-                teleprompt.reset()
-            }
-            function telepromptSetText(txt) {
-                teleprompt.text=txt;
-            }
-            function telepromptSetPosition(pos) {
-                teleprompt.setPosition(pos)
-            }
+        TelepromptWindow {
+            id: teleWindow
+            mirror: telepromptMirror.checked
+            flip: telepromptFlip.checked
         }
     }
     
@@ -157,14 +91,18 @@ ApplicationWindow {
         Window {
             id: secondaryWindow            
             title: "Information"
-            minimumWidth: 800
-            minimumHeight: 480
+            minimumWidth: spanWindow ? Screen.desktopAvailableWidth : 800
+            minimumHeight: spanWindow ? Screen.desktopAvailableHeight : 480
             width: 1024
             height: 720
             modality: Qt.NonModal
             transientParent: null
+            color: bgBlack.checked ? "black" : bgGreen.checked ? "green" : "blue"
             
             property var startTime;
+
+            property bool spanWindow: false;
+
             property bool tickerVisible: menuTickerVisible.checked;
             
             property ListModel newsTickerModel: tickerModel
@@ -176,13 +114,7 @@ ApplicationWindow {
             onClosing: {
                 close.accepted=false;
             }
-            
-            Rectangle {
-                id: background
-                anchors.fill: parent
-                color: bgBlack.checked ? "black" : bgGreen.checked ? "green" : "blue"
-            }
-            
+                      
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
@@ -350,7 +282,7 @@ ApplicationWindow {
                     style: Text.Outline
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
-                    visible: showTime.checked
+                    visible: showTime.checked                    
                 }
                 Text {
                     id: timeCount
@@ -428,23 +360,29 @@ ApplicationWindow {
                         console.debug("Tick: "+currentIndex)
                         tickerMsg.text=tickerModel.get(currentIndex).msg
                         tickerMsg.opacity=1
+                        tickerMsgContainer.opacity=1
                     }
                 }
 
                 Rectangle {
+                    id: tickerDelayBar
                     height: 8
                     color: "red"
                     width: (parent.width/100)*tickerTimer.ct
+                    opacity: tickerMsg.opacity
                     Behavior on width { NumberAnimation { } }
+                    Behavior on opacity { NumberAnimation { } }
                 }
 
                 Rectangle {
+                    id: tickerMsgContainer
                     height: tickerMsg.height
                     Layout.fillWidth: true
-                    color: "white"
+                    color: "#ffffff"
+                    Behavior on opacity { NumberAnimation { duration: 500 } }
                     Text {
                         id: tickerMsg
-                        color: "#101010"
+                        color: "#292929"
                         padding: 8
                         maximumLineCount: secondaryWindow.width>1208 ? 1 : 2
                         width: parent.width
@@ -454,7 +392,7 @@ ApplicationWindow {
                         textFormat: Text.PlainText
                         wrapMode: Text.Wrap
                         text: ""
-                        Behavior on opacity { NumberAnimation { duration: 200 } }
+                        Behavior on opacity { NumberAnimation { duration: 250 } }
                     }
                 }
             }
@@ -473,19 +411,28 @@ ApplicationWindow {
             Timer {
                 id: tickerTimer
                 interval: 100
-                running: newsTicker.visible
+                running: newsTicker.visible && tickerList.count>1
                 repeat: true
 
                 property int ct: 100
+                property int delay: 10
 
                 onTriggered: {
+                    if (delay>0) {
+                        delay--;
+                        return;
+                    }
+
                     ct--
-                    if (ct<5)
-                        tickerMsg.opacity=0
+                    if (ct<5) {
+                        tickerMsg.opacity=0;
+                        tickerMsgContainer.opacity=1;
+                    }
                     if (ct>1)
                         return;
 
                     ct=100;
+                    delay=10;
 
                     if (tickerList.currentIndex<tickerList.count-1)
                         tickerList.currentIndex++
@@ -523,7 +470,7 @@ ApplicationWindow {
 
                     Text {
                         id: c
-                        color: "#292929"
+                        color: highlighted ? "red" : "#292929"
                         padding: 8
                         font.capitalization: Font.AllUppercase
                         font.weight: Font.Bold
@@ -829,12 +776,29 @@ ApplicationWindow {
                 spacing: 8
                 Button {
                     text: "Add"
+                    enabled: newsKeyword.length>0 && newsBody.length>0
                     onClicked: {
                         const item={ "topic": newsKeyword.text, "msg": newsBody.text }
                         l3window.addNewsItem(item)
                         newsKeyword.clear()
                         newsBody.clear()
-                        // newsDrawer.close()
+                    }
+                }
+                Button {
+                    text: "Update"
+                    enabled: newsKeyword.length>0 && newsBody.length>0 && newsEditorList.currentIndex>-1
+                    onClicked: {
+                        const item={ "topic": newsKeyword.text, "msg": newsBody.text }
+                        newsEditorList.model.set(newsEditorList.currentIndex, item)
+                        newsKeyword.clear()
+                        newsBody.clear()
+                    }
+                }
+                Button {
+                    text: "Remove"
+                    enabled: newsEditorList.currentIndex>-1
+                    onClicked: {
+                        newsEditorList.model.remove(newsEditorList.currentIndex)
                     }
                 }
                 Button {
@@ -863,6 +827,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 model: l3window.newsTickerModel
                 delegate: newsEditorDelegate
+                clip: true
             }
             Label {
                 text: "Items: "+newsEditorList.count
@@ -908,12 +873,14 @@ ApplicationWindow {
             ColumnLayout {
                 id: c
                 spacing: 2
-                Text { text: title;
+                Text {
+                    text: title;
                     font.bold: true;
                     maximumLineCount: 1;
                     elide: Text.ElideRight
                 }
-                Text { text: description;
+                Text {
+                    text: description;
                     wrapMode: Text.Wrap;
                     maximumLineCount: 2;
                     elide: Text.ElideRight
@@ -932,13 +899,28 @@ ApplicationWindow {
         ItemDelegate {
             width: ListView.view.width
             height: c.height
+            highlighted: ListView.isCurrentItem
             ColumnLayout {
                 id: c
-                Text { text: topic;  }
-                Text { text: msg; }
+                width: parent.width
+                Text {
+                    text: topic;
+                    font.bold: true;
+                    maximumLineCount: 1;
+                    elide: Text.ElideRight
+                }
+                Text {
+                    text: msg;
+                    wrapMode: Text.Wrap;
+                }
             }
             onClicked: {
-                newsEditorList.currentIndex=index;
+                console.debug(index)
+                ListView.view.currentIndex=index;
+            }
+            onDoubleClicked: {
+                newsKeyword.text=ListView.view.model.get(index).topic
+                newsBody.text=ListView.view.model.get(index).msg
             }
         }
     }
@@ -949,6 +931,10 @@ ApplicationWindow {
         onFileSelected: {
             rssModel.source=src
         }
+    }
+
+    ListModel {
+        id: l3ModelCustom
     }
 
     XmlListModel {
@@ -1162,8 +1148,8 @@ ApplicationWindow {
                 Layout.maximumHeight: gl.height/3
                 highlight: Rectangle { color: "lightblue" }
                 onCurrentIndexChanged: {
-                    main.primary=l3Model.get(currentIndex).primary
-                    main.secondary=l3Model.get(currentIndex).secondary
+                    main.primary=model.get(currentIndex).primary
+                    main.secondary=model.get(currentIndex).secondary
                 }
             }
 

@@ -9,5 +9,6 @@
         <file>ParticleAnimation.qml</file>
         <file>snowflake.png</file>
         <file>MessageListView.qml</file>
+        <file>windows/TelepromptWindow.qml</file>
     </qresource>
 </RCC>
