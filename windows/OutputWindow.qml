@@ -312,7 +312,7 @@ Window {
             delegate: tickerDelegate
             model: tickerModel
             highlightFollowsCurrentItem: true
-            // highlight: Rectangle { color: "lightblue" }
+            highlight: tickerHighlight
             onCurrentIndexChanged: {
                 console.debug("Tick: "+currentIndex)
                 tickerMsg.text=tickerModel.get(currentIndex).msg
@@ -366,7 +366,15 @@ Window {
     //            }
 
 
-
+    Component {
+        id: tickerHighlight
+        Rectangle {
+            color: "lightblue"
+            Behavior on x {
+                NumberAnimation { }
+            }
+        }
+    }
 
     Component {
         id: tickerDelegate
