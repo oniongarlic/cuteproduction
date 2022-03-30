@@ -401,6 +401,16 @@ ApplicationWindow {
                 anchors.margins: 32
                 spacing: 0
                 visible: tickerModel.count>0 && secondaryWindow.tickerVisible
+                
+                Component {
+                    id: tickerHighlight
+                    Rectangle {
+                        color: "lightblue"
+                        Behavior on x {
+                            NumberAnimation { }
+                        }
+                    }
+                }
 
                 ListView {
                     id: tickerList
@@ -413,7 +423,7 @@ ApplicationWindow {
                     delegate: tickerDelegate
                     model: tickerModel
                     highlightFollowsCurrentItem: true
-                    // highlight: Rectangle { color: "lightblue" }
+                    highlight: tickerHighlight
                     onCurrentIndexChanged: {
                         console.debug("Tick: "+currentIndex)
                         tickerMsg.text=tickerModel.get(currentIndex).msg
