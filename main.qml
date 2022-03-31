@@ -494,34 +494,34 @@ ApplicationWindow {
 
             RowLayout {
                 spacing: 8
-                ToolButton {
+                Button {
                     text: "Play"
                     enabled: mp.playbackState!=MediaPlayer.PlayingState && mp.status!=MediaPlayer.NoMedia
                     onClicked: {
                         mp.play();
                     }
                 }
-                ToolButton {
+                Button {
                     text: "Pause"
                     enabled: mp.playbackState==MediaPlayer.PlayingState
                     onClicked: {
                         mp.pause()
                     }
                 }
-                ToolButton {
+                Button {
                     text: "Stop"
                     enabled: mp.playbackState==MediaPlayer.PlayingState
                     onClicked: {
                         mp.stop();
                     }
                 }
-                ToolButton {
+                Button {
                     text: "Previous"
                     onClicked: {
                         previousMediaFile();
                     }
                 }
-                ToolButton {
+                Button {
                     text: "Next"
                     onClicked: {
                         nextMediaFile();
