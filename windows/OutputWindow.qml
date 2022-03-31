@@ -3,6 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.15
+import QtMultimedia 5.15
 import QtQuick.XmlListModel 2.15
 
 import ".."
@@ -29,6 +30,8 @@ Window {
 
     property ListModel newsTickerModel: tickerModel
 
+    property MediaPlayer mediaPlayer;
+
     Component.onCompleted: {
         startTime=new Date()
     }
@@ -45,6 +48,13 @@ Window {
         onClicked: {
             secondaryWindow.visibility=Window.Windowed
         }
+    }
+
+    VideoOutput {
+        id: vo
+        source: mediaPlayer
+        anchors.fill: parent
+        autoOrientation: true        
     }
 
     LowerThirdBase {

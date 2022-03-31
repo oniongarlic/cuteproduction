@@ -3,12 +3,14 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.15
+import QtMultimedia 5.15
 import QtQuick.XmlListModel 2.15
 //import QtQuick3D 1.15
 
 import org.tal 1.0
 
 import "windows"
+import "selectors"
 
 ApplicationWindow {
     id: main
@@ -91,6 +93,7 @@ ApplicationWindow {
         OutputWindow {
             id: secondaryWindow
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
+            mediaPlayer: mp
         }
     }
     
@@ -232,6 +235,53 @@ ApplicationWindow {
         }
 
         Menu {
+            title: "Media"
+
+            MenuItem {
+                text: "Manage"
+                onClicked: {
+                    mediaDrawer.open()
+                }
+            }
+
+            MenuItem {
+                text: "Add file..."
+                onClicked: {
+                    ms.startSelector()
+                }
+            }
+
+            MenuItem {
+                text: "Add URL"
+                enabled: false
+                onClicked: {
+                    // ms.startSelector()
+                }
+            }
+
+            MenuItem {
+                text: "Open playlist"
+                onClicked: {
+                    plist.load("file:///tmp/playlist.m3u8", "m3u8")
+                }
+            }
+
+            MenuItem {
+                text: "Save playlist"
+                onClicked: {
+                    plist.save("file:///tmp/playlist.m3u8", "m3u8")
+                }
+            }
+
+            MenuItem {
+                text: "Clear"
+                onClicked: {
+                    plist.clear()
+                }
+            }
+        }
+
+        Menu {
             title: "Background"
 
             MenuItem {
@@ -269,6 +319,188 @@ ApplicationWindow {
         filter: [ "*.xml" ]
         onFileSelected: {
             l3Model.source=src
+        }
+    }
+
+    function selectMediaFile() {
+        ms.startSelector()
+    }
+
+    function nextMediaFile() {
+        plist.playbackMode=Playlist.Sequential
+        plist.next();
+        mp.pause();
+        plist.playbackMode=Playlist.CurrentItemOnce
+    }
+
+    function previousMediaFile() {
+        plist.playbackMode=Playlist.Sequential
+        plist.previous();
+        mp.pause();
+        plist.playbackMode=Playlist.CurrentItemOnce
+    }
+
+    MediaSelector {
+        id: ms
+
+        onFileSelected: {
+            plist.addItem(src)
+            mp.pause();
+            //hs.setClips(plist.itemCount)
+        }
+
+        onFilesSelected: {
+            plist.addItems(src)
+            //hs.setClips(plist.itemCount)
+        }
+    }
+
+    MediaPlayer {
+        id: mp
+        playlist: plist
+        autoLoad: true
+        loops: checkLoop.checked ? MediaPlayer.Infinite : 1
+        muted: checkMuted.checked
+        onPlaying: {
+            //hs.setStatus("playing")
+        }
+        onStopped: {
+            //hs.setStatus("stopped")
+        }
+        onPaused: {
+            //hs.setStatus("stopped")
+        }
+        onPositionChanged: {
+            //hs.setTimecode(position);
+        }
+        onDurationChanged: {
+            //hs.setDuration(duration)
+        }
+
+        onStatusChanged: console.debug(status)
+    }
+
+    Playlist {
+        id: plist
+        playbackMode: Playlist.CurrentItemOnce
+        onLoaded: {
+            console.debug("Playlist loaded: "+itemCount)
+        }
+        onLoadFailed: {
+            console.debug(errorString)
+        }
+    }
+
+    Drawer {
+        id: mediaDrawer
+        dragMargin: 0
+        width: parent.width/2
+        height: parent.height
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
+            ListView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                model: plist
+                clip: true
+                delegate: playlistDelegate
+                highlight: Rectangle { color: "#f0f0f0"; }
+                ScrollIndicator.vertical: ScrollIndicator { }
+            }
+
+            RowLayout {
+                Label {
+                    id: conMsg
+                    text: mp.errorString
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignLeft
+                }
+                Label {
+                    id: bufMsg
+                    text: mp.bufferProgress
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignLeft
+                }
+                Label {
+                    id: itemsMsg
+                    text: 1+plist.currentIndex+" / "+plist.itemCount
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignLeft
+                }
+                Label {
+                    id: itemTime
+                    text: formatSeconds(mp.position/1000)+" / "+formatSeconds(mp.duration/1000)
+                }
+            }
+
+            RowLayout {
+                Dial {
+                    id: volumeDial
+                    from: 0
+                    to: 100
+                    value: 100
+                }
+                CheckBox {
+                    id: checkMuted
+                    text: "Mute"
+                    checked: mp.muted
+                }
+                CheckBox {
+                    id: checkLoop
+                    text: "Loop"
+                    checked: mp.loops!=1
+                }
+            }
+
+            RowLayout {
+                ToolButton {
+                    text: "Play"
+                    enabled: mp.playbackState!=MediaPlayer.PlayingState && mp.status!=MediaPlayer.NoMedia
+                    onClicked: {
+                        mp.play();
+                    }
+                }
+                ToolButton {
+                    text: "Pause"
+                    enabled: mp.playbackState==MediaPlayer.PlayingState
+                    onClicked: {
+                        mp.pause()
+                    }
+                }
+                ToolButton {
+                    text: "Stop"
+                    enabled: mp.playbackState==MediaPlayer.PlayingState
+                    onClicked: {
+                        mp.stop();
+                    }
+                }
+                ToolButton {
+                    text: "Previous"
+                    onClicked: {
+                        previousMediaFile();
+                    }
+                }
+                ToolButton {
+                    text: "Next"
+                    onClicked: {
+                        nextMediaFile();
+                    }
+                }
+            }
+        }
+    }
+
+    Component {
+        id: playlistDelegate
+        RowLayout {
+            spacing: 4
+            width: parent.width
+            Text {
+                Layout.fillWidth: true
+                text: source
+            }
         }
     }
 
@@ -331,7 +563,7 @@ ApplicationWindow {
             TextField {
                 id: newsKeyword
                 Layout.fillWidth: true
-                placeholderText: "Keyword"                
+                placeholderText: "Keyword"
                 selectByMouse: true
             }
             TextArea {
@@ -749,8 +981,6 @@ ApplicationWindow {
                 Label {
                     text: 1+l3selector.currentIndex+"/"+l3selector.count
                 }
-            }
-            RowLayout {
                 SpinBox {
                     id: delayTime
                     from: 1

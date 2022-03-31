@@ -13,5 +13,6 @@
         <file>windows/OutputWindow.qml</file>
         <file>animations/SnowAnimation.qml</file>
         <file>delegates/MessageDelegate.qml</file>
+        <file>selectors/MediaSelector.qml</file>
     </qresource>
 </RCC>
