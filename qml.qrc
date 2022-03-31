@@ -14,5 +14,6 @@
         <file>animations/SnowAnimation.qml</file>
         <file>delegates/MessageDelegate.qml</file>
         <file>selectors/MediaSelector.qml</file>
+        <file>selectors/URLSelector.qml</file>
     </qresource>
 </RCC>

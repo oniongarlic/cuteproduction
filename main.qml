@@ -253,9 +253,8 @@ ApplicationWindow {
 
             MenuItem {
                 text: "Add URL"
-                enabled: false
                 onClicked: {
-                    // ms.startSelector()
+                    usd.open()
                 }
             }
 
@@ -322,6 +321,13 @@ ApplicationWindow {
         }
     }
 
+    URLSelector {
+        id: usd
+        onAccepted: {
+            plist.addItem(url)
+        }
+    }
+
     function selectMediaFile() {
         ms.startSelector()
     }
@@ -336,6 +342,12 @@ ApplicationWindow {
     function previousMediaFile() {
         plist.playbackMode=Playlist.Sequential
         plist.previous();
+        mp.pause();
+        plist.playbackMode=Playlist.CurrentItemOnce
+    }
+
+    function setMediaFile(i) {
+        plist.currentIndex=i;
         mp.pause();
         plist.playbackMode=Playlist.CurrentItemOnce
     }
@@ -401,6 +413,7 @@ ApplicationWindow {
             anchors.margins: 16
             spacing: 8
             ListView {
+                id: mediaListView
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 model: plist
@@ -411,6 +424,30 @@ ApplicationWindow {
             }
 
             RowLayout {
+                spacing: 8
+                Button {
+                    text: "Remove"
+                    enabled: mediaListView.currentIndex>-1
+                    onClicked: {
+                        mediaListView.model.remove(mediaListView.currentIndex)
+                    }
+                }
+                Button {
+                    text: "Clear"
+                    onClicked: {
+                        plist.clear()
+                    }
+                }
+                Button {
+                    text: "Close"
+                    onClicked: {
+                        mediaDrawer.close()
+                    }
+                }
+            }
+
+            RowLayout {
+                spacing: 8
                 Label {
                     id: conMsg
                     text: mp.errorString
@@ -436,6 +473,7 @@ ApplicationWindow {
             }
 
             RowLayout {
+                spacing: 8
                 Dial {
                     id: volumeDial
                     from: 0
@@ -455,6 +493,7 @@ ApplicationWindow {
             }
 
             RowLayout {
+                spacing: 8
                 ToolButton {
                     text: "Play"
                     enabled: mp.playbackState!=MediaPlayer.PlayingState && mp.status!=MediaPlayer.NoMedia
@@ -494,12 +533,24 @@ ApplicationWindow {
 
     Component {
         id: playlistDelegate
-        RowLayout {
-            spacing: 4
-            width: parent.width
-            Text {
-                Layout.fillWidth: true
-                text: source
+        ItemDelegate {
+            width: ListView.view.width
+            height: c.height
+            highlighted: ListView.isCurrentItem
+            RowLayout {
+                id: c
+                spacing: 4
+                width: parent.width
+                Text {
+                    Layout.fillWidth: true
+                    text: source
+                }
+            }
+            onClicked: {
+                ListView.currentIndex=index;
+            }
+            onDoubleClicked: {
+                setMediaFile(index)
             }
         }
     }
