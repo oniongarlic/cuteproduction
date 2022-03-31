@@ -1,10 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickView>
 #include <QQuickStyle>
 #include <QScreen>
 
 #include "ticker.h"
+#include "html.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +30,8 @@ int main(int argc, char *argv[])
     QList<QScreen *> screens = app.screens();
     qDebug("Application sees %d screens", screens.count());
     qDebug() << screens;
+
+    html htmltool;
     
 #if 1
     QQmlApplicationEngine engine;
@@ -38,9 +42,12 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
+    qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");    
     
     QQmlContext* rootContext = engine.rootContext();
+
+    rootContext->setContextProperty("html", &htmltool);
+
     engine.load(url);
 #else
     QQuickView *view = new QQuickView;

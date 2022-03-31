@@ -701,7 +701,7 @@ ApplicationWindow {
                     onClicked: {
                         let i;
                         for (i=0;i<rssModel.count;i++) {
-                            const item={ "topic": rssModel.get(i).title, "msg": rssModel.get(i).description }
+                            const item={ "topic": rssModel.get(i).title, "msg": html.stripTags(rssModel.get(i).description) }
                             l3window.addNewsItem(item)
                         }
                     }
@@ -756,7 +756,7 @@ ApplicationWindow {
             onClicked: {
                 newsFeedList.currentIndex=index;
                 newsKeyword.text=rssModel.get(index).title
-                newsBody.text=rssModel.get(index).description
+                newsBody.text=html.stripTags(rssModel.get(index).description)
             }
         }
     }
