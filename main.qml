@@ -617,14 +617,24 @@ ApplicationWindow {
                 placeholderText: "Keyword"
                 selectByMouse: true
             }
-            TextArea {
-                id: newsBody
-                Layout.fillWidth: true
+            ScrollView {
                 Layout.fillHeight: true
-                Layout.maximumHeight: newsKeyword.height*4
-                placeholderText: "Body"
-                selectByKeyboard: true
-                selectByMouse: true
+                Layout.fillWidth: true
+                Layout.minimumHeight: newsDrawer.height/7
+                Layout.maximumHeight: newsDrawer.height/6
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
+                }
+                TextArea {
+                    id: newsBody
+                    Layout.maximumHeight: newsKeyword.height*4
+                    placeholderText: "Body"
+                    selectByKeyboard: true
+                    selectByMouse: true
+                    wrapMode: TextEdit.WordWrap
+                }
             }
             RowLayout {
                 spacing: 8
@@ -653,6 +663,12 @@ ApplicationWindow {
                     enabled: newsEditorList.currentIndex>-1
                     onClicked: {
                         newsEditorList.model.remove(newsEditorList.currentIndex)
+                    }
+                }
+                Button {
+                    text: "Remove all"
+                    onClicked: {
+                        newsEditorList.model.clear();
                     }
                 }
                 Button {
