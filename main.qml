@@ -33,19 +33,28 @@ ApplicationWindow {
     Component.onCompleted: {
         oflags=flags;
         console.debug("Screens: " + Qt.application.screens.length)
-        for(var i = 0;i < Qt.application.screens.length;i ++) {
+        let l3s=0;
+        let tps=0;
+
+        for(var i = 0;i < Qt.application.screens.length;i ++) {            
             console.debug(i)
+            console.debug(Qt.application.screens[i])
+        }        
+
+        if (Qt.application.screens.length>1) {
+            l3s=1;
+            tps=1;
         }
-
-        console.debug(Screen.desktopAvailableWidth)
-        console.debug(Screen.desktopAvailableHeight)
-
-        l3window=aws.createObject(main, { screen: Qt.application.screens[1], visible: true });
-        tpwindow=tpw.createObject(main, { screen: Qt.application.screens[2], visible: false });
-
         if (Qt.application.screens.length>2) {
-
+            tps=2;
         }
+
+        l3window=aws.createObject(null, { screen: Qt.application.screens[l3s], visible: true });
+        tpwindow=tpw.createObject(null, { screen: Qt.application.screens[tps], visible: false });
+    }
+
+    onClosing: {
+        Qt.quit();
     }
 
     property string primary: ""
