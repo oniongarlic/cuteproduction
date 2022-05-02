@@ -43,10 +43,7 @@ Window {
     MouseArea {
         anchors.fill: parent
         onDoubleClicked: {
-            secondaryWindow.visibility=Window.FullScreen
-        }
-        onClicked: {
-            secondaryWindow.visibility=Window.Windowed
+            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
         }
     }
 
