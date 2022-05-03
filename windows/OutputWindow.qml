@@ -352,7 +352,7 @@ Window {
                 id: tickerMsg                
                 color: "#292929"
                 padding: 8
-                maximumLineCount: 2
+                maximumLineCount: 2 // XXX Make adjustable
                 width: parent.width
                 height: secondaryWindow.height>720 ? 96 : 64
                 elide: Text.ElideRight
@@ -392,7 +392,7 @@ Window {
         ItemDelegate {
             width: tickerList.width/tickerItemsVisible
             highlighted: ListView.isCurrentItem
-            height: c.height
+            height: c.height+c.padding
             background: Rectangle {
                 color: highlighted ? "#ffffff" : "#a0a0a0"
                 radius: 0
@@ -413,7 +413,7 @@ Window {
                 verticalAlignment: Text.AlignVCenter
                 maximumLineCount: 1
                 elide: Text.ElideRight
-                font.pointSize: 18
+                font.pixelSize: 32 // XXX
                 textFormat: Text.PlainText
                 wrapMode: Text.NoWrap
                 width: parent.width
