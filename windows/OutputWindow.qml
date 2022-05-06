@@ -40,53 +40,6 @@ Window {
         close.accepted=false;
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onDoubleClicked: {
-            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
-        }
-    }
-
-    VideoOutput {
-        id: vo
-        source: mediaPlayer
-        anchors.fill: parent
-        autoOrientation: true        
-    }
-
-    LowerThirdBase {
-        id: l3
-        mainTitle: main.primary
-        secondaryTitle: main.secondary
-        displayTime: delayTime.value*1000
-    }
-
-    MessageListView {
-        id: msgLeftBottom
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        model: msgModelLeft
-        delegate: msgDelegate
-
-        visible: switchMessageListLeft.checked
-    }
-
-    MessageListView {
-        id: msgRightBottom
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        model: msgModelRight
-        delegate: msgDelegate
-
-        xpos: x+width+32
-
-        visible: switchMessageListRight.checked
-    }
-
     ListModel {
         id: msgModelLeft
     }
@@ -219,6 +172,53 @@ Window {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onDoubleClicked: {
+            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
+        }
+    }
+
+    VideoOutput {
+        id: vo
+        source: mediaPlayer
+        anchors.fill: parent
+        autoOrientation: true
+    }
+
+    LowerThirdBase {
+        id: l3
+        mainTitle: main.primary
+        secondaryTitle: main.secondary
+        displayTime: delayTime.value*1000
+    }
+
+    MessageListView {
+        id: msgLeftBottom
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+
+        model: msgModelLeft
+        delegate: msgDelegate
+
+        visible: switchMessageListLeft.checked
+    }
+
+    MessageListView {
+        id: msgRightBottom
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+
+        model: msgModelRight
+        delegate: msgDelegate
+
+        xpos: x+width+32
+
+        visible: switchMessageListRight.checked
+    }
+
     ColumnLayout {
         id: cl
         anchors.fill: parent
@@ -287,17 +287,6 @@ Window {
             font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
             visible: showCountdown.checked
         }
-    }
-
-    DropShadow {
-        visible: false
-        anchors.fill: cl
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: cl
     }
 
     ColumnLayout {
