@@ -323,8 +323,8 @@ Window {
 
         Rectangle {
             id: tickerDelayBar
-            height: 8
-            color: "red"
+            height: 12
+            color: "#00855f"
             width: (parent.width/100)*tickerTimer.ct
             opacity: tickerMsg.opacity
             Behavior on width { NumberAnimation { } }
@@ -339,7 +339,7 @@ Window {
             Behavior on opacity { NumberAnimation { duration: 500 } }
             Text {
                 id: tickerMsg                
-                color: "#292929"
+                color: "#0062ae"
                 padding: 8
                 maximumLineCount: 2
                 width: parent.width
@@ -369,7 +369,7 @@ Window {
     Component {
         id: tickerHighlight
         Rectangle {
-            color: "lightblue"
+            color: "#009bd8"
             Behavior on x {
                 NumberAnimation { }
             }
@@ -383,7 +383,7 @@ Window {
             highlighted: ListView.isCurrentItem
             height: c.height
             background: Rectangle {
-                color: highlighted ? "#ffffff" : "#a0a0a0"
+                color: highlighted ? "#ffffff" : "#b0b0b0"
                 radius: 0
             }
             onClicked: {
@@ -393,7 +393,7 @@ Window {
 
             Text {
                 id: c
-                color: highlighted ? "red" : "#292929"
+                color: highlighted ? "#0062ae" : "#0062ae"
                 padding: 8
                 font.capitalization: Font.AllUppercase
                 font.weight: Font.Bold
@@ -402,7 +402,7 @@ Window {
                 verticalAlignment: Text.AlignVCenter
                 maximumLineCount: 1
                 elide: Text.ElideRight
-                font.pointSize: 18
+                font.pixelSize: 32
                 textFormat: Text.PlainText
                 wrapMode: Text.NoWrap
                 width: parent.width
