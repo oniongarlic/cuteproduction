@@ -6,9 +6,9 @@ ItemDelegate {
     width: parent.width
     height: c.height+32
     background: Rectangle {
-        color: "#b5f1ff"
+        color: "#009bd8"
         radius: 8
-        border.color: "#2065c6"
+        border.color: "#0062ae"
     }
 
     ColumnLayout {
