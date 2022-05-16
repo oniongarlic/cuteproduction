@@ -261,7 +261,7 @@ ApplicationWindow {
             }
 
             MenuItem {
-                text: "Add URL"
+                text: "Add URL..."
                 onClicked: {
                     usd.open()
                 }
@@ -553,6 +553,7 @@ ApplicationWindow {
                 Text {
                     Layout.fillWidth: true
                     text: source
+                    font.pointSize: 14
                 }
             }
             onClicked: {
@@ -878,6 +879,10 @@ ApplicationWindow {
             }
             onClicked: {
                 l3selector.currentIndex=index;
+            }
+            onDoubleClicked: {
+                l3selector.currentIndex=index;
+                l3window.show();
             }
         }
     }
