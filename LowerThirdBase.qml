@@ -163,7 +163,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
                 color: "#0062ae"
-                text: "Kaj-Michael Lang"
+                text: ""
                 font.family: "Helvetica"
                 font.bold: true
                 font.pixelSize: 42
@@ -175,7 +175,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
                 color: "#0062ae"
-                text: "AV-Expert"
+                text: ""
                 font.family: "Helvetica"
                 font.pixelSize: 32
                 verticalAlignment: Text.AlignVCenter
