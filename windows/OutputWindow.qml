@@ -40,53 +40,6 @@ Window {
         close.accepted=false;
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onDoubleClicked: {
-            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
-        }
-    }
-
-    VideoOutput {
-        id: vo
-        source: mediaPlayer
-        anchors.fill: parent
-        autoOrientation: true        
-    }
-
-    LowerThirdBase {
-        id: l3
-        mainTitle: main.primary
-        secondaryTitle: main.secondary
-        displayTime: delayTime.value*1000
-    }
-
-    MessageListView {
-        id: msgLeftBottom
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        model: msgModelLeft
-        delegate: msgDelegate
-
-        visible: switchMessageListLeft.checked
-    }
-
-    MessageListView {
-        id: msgRightBottom
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        model: msgModelRight
-        delegate: msgDelegate
-
-        xpos: x+width+32
-
-        visible: switchMessageListRight.checked
-    }
-
     ListModel {
         id: msgModelLeft
     }
@@ -219,6 +172,53 @@ Window {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onDoubleClicked: {
+            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
+        }
+    }
+
+    VideoOutput {
+        id: vo
+        source: mediaPlayer
+        anchors.fill: parent
+        autoOrientation: true
+    }
+
+    LowerThirdBase {
+        id: l3
+        mainTitle: main.primary
+        secondaryTitle: main.secondary
+        displayTime: delayTime.value*1000
+    }
+
+    MessageListView {
+        id: msgLeftBottom
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+
+        model: msgModelLeft
+        delegate: msgDelegate
+
+        visible: switchMessageListLeft.checked
+    }
+
+    MessageListView {
+        id: msgRightBottom
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+
+        model: msgModelRight
+        delegate: msgDelegate
+
+        xpos: x+width+32
+
+        visible: switchMessageListRight.checked
+    }
+
     ColumnLayout {
         id: cl
         anchors.fill: parent
@@ -289,17 +289,6 @@ Window {
         }
     }
 
-    DropShadow {
-        visible: false
-        anchors.fill: cl
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: cl
-    }
-
     ColumnLayout {
         id: newsTicker
         anchors.bottom: parent.bottom
@@ -334,8 +323,8 @@ Window {
 
         Rectangle {
             id: tickerDelayBar
-            height: 8
-            color: "red"
+            height: 12
+            color: "#00855f"
             width: (parent.width/100)*tickerTimer.ct
             opacity: tickerMsg.opacity
             Behavior on width { NumberAnimation { } }
@@ -350,7 +339,7 @@ Window {
             Behavior on opacity { NumberAnimation { duration: 500 } }
             Text {
                 id: tickerMsg                
-                color: "#292929"
+                color: "#0062ae"
                 padding: 8
                 maximumLineCount: 2 // XXX Make adjustable
                 width: parent.width
@@ -380,7 +369,7 @@ Window {
     Component {
         id: tickerHighlight
         Rectangle {
-            color: "lightblue"
+            color: "#009bd8"
             Behavior on x {
                 NumberAnimation { }
             }
@@ -394,7 +383,7 @@ Window {
             highlighted: ListView.isCurrentItem
             height: c.height+c.padding
             background: Rectangle {
-                color: highlighted ? "#ffffff" : "#a0a0a0"
+                color: highlighted ? "#ffffff" : "#b0b0b0"
                 radius: 0
             }
             onClicked: {
@@ -404,7 +393,7 @@ Window {
 
             Text {
                 id: c
-                color: highlighted ? "red" : "#292929"
+                color: highlighted ? "#0062ae" : "#0062ae"
                 padding: 8
                 font.capitalization: Font.AllUppercase
                 font.weight: Font.Bold

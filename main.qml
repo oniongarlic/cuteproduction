@@ -261,7 +261,7 @@ ApplicationWindow {
             }
 
             MenuItem {
-                text: "Add URL"
+                text: "Add URL..."
                 onClicked: {
                     usd.open()
                 }
@@ -553,6 +553,7 @@ ApplicationWindow {
                 Text {
                     Layout.fillWidth: true
                     text: source
+                    font.pointSize: 14
                 }
             }
             onClicked: {
@@ -879,6 +880,10 @@ ApplicationWindow {
             onClicked: {
                 l3selector.currentIndex=index;
             }
+            onDoubleClicked: {
+                l3selector.currentIndex=index;
+                l3window.show();
+            }
         }
     }
 
@@ -952,6 +957,7 @@ ApplicationWindow {
                         id: bP
                         Layout.fillWidth: true
                         selectByMouse: true
+                        placeholderText: "Topic/Name/Keyword"
                     }
                     TextArea {
                         id: bS
@@ -959,6 +965,7 @@ ApplicationWindow {
                         Layout.fillHeight: true
                         selectByKeyboard: true
                         selectByMouse: true
+                        placeholderText: "Message"
                     }
                     RowLayout {
                         Switch {
@@ -1074,6 +1081,8 @@ ApplicationWindow {
         }
 
         ColumnLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             RowLayout {
                 Switch {
                     id: showTime
@@ -1086,7 +1095,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     text: "00:00:00"
                     horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: 48
+                    font.pixelSize: 24
                 }
             }
             RowLayout {
@@ -1101,7 +1110,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(ticker.seconds)
-                    font.pixelSize: 32
+                    font.pixelSize: 24
                 }
             }
             RowLayout {
@@ -1116,7 +1125,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(ticker.countdown)
-                    font.pixelSize: 32
+                    font.pixelSize: 24
                 }
             }
             RowLayout {
@@ -1141,15 +1150,19 @@ ApplicationWindow {
                     onClicked: ticker.stop()
                 }
                 Button {
-                    text: "+1min"
+                    text: "+10s"
+                    onClicked: ticker.addCountdownSeconds(10);
+                }
+                Button {
+                    text: "+1m"
                     onClicked: ticker.addCountdownSeconds(60);
                 }
                 Button {
-                    text: "+5min"
+                    text: "+5m"
                     onClicked: ticker.addCountdownSeconds(5*60);
                 }
                 Button {
-                    text: "+15min"
+                    text: "+15m"
                     onClicked: ticker.addCountdownSeconds(15*60);
                 }
                 Button {

@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.15
 Rectangle {
     id: l3
     color: "white"
-    border.color: "#1e7eec"
+    border.color: "#0062ae"
     border.width: 2    
     gradient: Gradient {
         orientation: Gradient.Horizontal
@@ -135,7 +135,7 @@ Rectangle {
                 text: ""
                 font.family: "Helvetica"
                 font.bold: false
-                font.pixelSize: 22
+                font.pixelSize: 24
                 minimumPixelSize: 18
                 fontSizeMode: Text.Fit
                 verticalAlignment: Text.AlignVCenter
@@ -162,8 +162,8 @@ Rectangle {
                 id: txtPrimary
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
-                color: "#1e7eec"
-                text: "Kaj-Michael Lang"
+                color: "#0062ae"
+                text: ""
                 font.family: "Helvetica"
                 font.bold: true
                 font.pixelSize: 42
@@ -174,8 +174,8 @@ Rectangle {
                 id: txtSecondary
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
-                color: "#1e7eec"
-                text: "AV-Expert"
+                color: "#0062ae"
+                text: ""
                 font.family: "Helvetica"
                 font.pixelSize: 32
                 verticalAlignment: Text.AlignVCenter
