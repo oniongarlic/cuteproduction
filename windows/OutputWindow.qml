@@ -199,6 +199,10 @@ Window {
         anchors.bottom: parent.bottom
         anchors.top: parent.top
 
+        anchors.leftMargin: 32
+
+        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
+
         model: msgModelLeft
         delegate: msgDelegate
 
@@ -210,6 +214,10 @@ Window {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.top: parent.top
+
+        anchors.rightMargin: 32
+
+        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
 
         model: msgModelRight
         delegate: msgDelegate
