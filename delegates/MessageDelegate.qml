@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.12
 
 ItemDelegate {
     width: parent.width
-    height: c.height+32
+    height: c.height
     background: Rectangle {
         color: "#009bd8"
         radius: 8
@@ -17,11 +17,12 @@ ItemDelegate {
         width: parent.width
         Text {
             text: primary;
+            font.bold: true
             maximumLineCount: 1
             Layout.fillWidth: true
             Layout.margins: 8
             elide: Text.ElideRight
-            font.pointSize: 14
+            font.pixelSize: 28
             textFormat: Text.PlainText
             wrapMode: Text.NoWrap
         }
@@ -30,7 +31,7 @@ ItemDelegate {
             Layout.margins: 8
             text: secondary;
             textFormat: Text.PlainText
-            font.pointSize: 12
+            font.pixelSize: 24
             elide: Text.ElideRight
             maximumLineCount: 6
             wrapMode: Text.Wrap
