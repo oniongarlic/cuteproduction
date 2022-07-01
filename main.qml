@@ -36,10 +36,10 @@ ApplicationWindow {
         let l3s=0;
         let tps=0;
 
-        for(var i = 0;i < Qt.application.screens.length;i ++) {            
+        for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
             console.debug(Qt.application.screens[i])
-        }        
+        }
 
         if (Qt.application.screens.length>1) {
             l3s=1;
@@ -617,6 +617,26 @@ ApplicationWindow {
         dragMargin: 0
         width: parent.width/2
         height: parent.height
+        DropArea {
+            id: dropArea
+            anchors.fill: parent
+            keys: ["text/plain"]
+            onDropped: {
+                console.debug(drop.hasText)
+                console.debug(drop.hasHtml)
+                console.debug(drop.hasUrls)
+                console.debug(drop.hasColor)
+
+                if (drop.hasUrls) {
+                    console.debug(drop.urls[0])
+                    rssModel.source=drop.urls[0]
+                    drop.acceptProposedAction()
+                } else if (drop.hasText) {
+                    console.debug(drop.text)
+                    drop.acceptProposedAction()
+                }
+            }
+        }
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 16
