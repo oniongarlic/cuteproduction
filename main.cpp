@@ -32,8 +32,9 @@ int main(int argc, char *argv[])
     qDebug() << screens;
 
     html htmltool;
-    
-#if 1
+
+    qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
+
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -42,19 +43,12 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");    
-    
-    QQmlContext* rootContext = engine.rootContext();
 
+    QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("html", &htmltool);
 
     engine.load(url);
-#else
-    QQuickView *view = new QQuickView;
-    view->setSource(QUrl("qrc:/main.qml"));
-    view->show();  
-    
-#endif
+
     
 #ifdef Q_OS_WIN32
   SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
