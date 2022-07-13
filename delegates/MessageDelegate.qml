@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 
 ItemDelegate {
-    width: parent.width
+    width: ListView.view.width
     height: c.height
     background: Rectangle {
         color: "#009bd8"
