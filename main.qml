@@ -96,7 +96,7 @@ ApplicationWindow {
             flip: telepromptFlip.checked
         }
     }
-    
+
     Component {
         id: aws
         OutputWindow {
@@ -105,12 +105,12 @@ ApplicationWindow {
             mediaPlayer: mp
         }
     }
-    
+
     menuBar: MenuBar {
         Menu {
             title: "File"
 
-            
+
             MenuItem {
                 text: "Quit"
                 onClicked: Qt.quit()
@@ -415,7 +415,7 @@ ApplicationWindow {
     Drawer {
         id: mediaDrawer
         dragMargin: 0
-        width: parent.width/2
+        width: parent.width/1.5
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
@@ -568,7 +568,7 @@ ApplicationWindow {
     Drawer {
         id: thirdsDrawer
         dragMargin: 0
-        width: parent.width/2
+        width: parent.width/1.5
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
@@ -615,7 +615,7 @@ ApplicationWindow {
     Drawer {
         id: newsDrawer
         dragMargin: 0
-        width: parent.width/2
+        width: parent.width/1.5
         height: parent.height
         DropArea {
             id: dropArea
@@ -714,12 +714,6 @@ ApplicationWindow {
                         newsDrawer.close()
                     }
                 }
-                Button {
-                    text: "RSS"
-                    onClicked: {
-                        rssFile.startSelector()
-                    }
-                }
             }
             ListView {
                 id: newsEditorList
@@ -741,6 +735,12 @@ ApplicationWindow {
                 clip: true
             }
             RowLayout {
+                Button {
+                    text: "RSS"
+                    onClicked: {
+                        rssFile.startSelector()
+                    }
+                }
                 Button {
                     text: "Add all"
                     enabled: rssModel.count>0
@@ -803,6 +803,11 @@ ApplicationWindow {
                 newsFeedList.currentIndex=index;
                 newsKeyword.text=rssModel.get(index).title
                 newsBody.text=html.stripTags(rssModel.get(index).description)
+            }
+            onDoubleClicked: {
+                const news=rssModel.get(index)
+                const item={ "topic": news.title, "msg": html.stripTags(news.description) }
+                l3window.addNewsItem(item)
             }
         }
     }
@@ -1115,7 +1120,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     text: "00:00:00"
                     horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: 24
+                    font.pixelSize: 18
                 }
             }
             RowLayout {
@@ -1130,7 +1135,13 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(ticker.seconds)
-                    font.pixelSize: 24
+                    font.pixelSize: 18
+                    MouseArea {
+                        anchors.fill: parent
+                        onDoubleClicked: {
+                            ticker.reset()
+                        }
+                    }
                 }
             }
             RowLayout {
@@ -1145,7 +1156,23 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(ticker.countdown)
-                    font.pixelSize: 24
+                    font.pixelSize: 18
+                    MouseArea {
+                        anchors.fill: parent
+                        onDoubleClicked: {
+                            ticker.start()
+                        }
+                        onWheel: {
+                            wheel.accepted=true
+                            if (wheel.modifiers & Qt.ControlModifier) {
+                                ticker.addCountdownSeconds(60);
+                            } else if (wheel.modifiers & Qt.AltModifier) {
+                                ticker.addCountdownSeconds(1);
+                            } else {
+                                ticker.addCountdownSeconds(10);
+                            }
+                        }
+                    }
                 }
                 Button {
                     text: "+10s"
