@@ -1147,6 +1147,26 @@ ApplicationWindow {
                     text: formatSeconds(ticker.countdown)
                     font.pixelSize: 24
                 }
+                Button {
+                    text: "+10s"
+                    onClicked: ticker.addCountdownSeconds(10);
+                }
+                Button {
+                    text: "+1m"
+                    onClicked: ticker.addCountdownSeconds(60);
+                }
+                Button {
+                    text: "+5m"
+                    onClicked: ticker.addCountdownSeconds(5*60);
+                }
+                Button {
+                    text: "+15m"
+                    onClicked: ticker.addCountdownSeconds(15*60);
+                }
+                Button {
+                    text: "0"
+                    onClicked: ticker.setCountdownSeconds(0);
+                }
             }
             RowLayout {
                 Switch {
@@ -1168,26 +1188,6 @@ ApplicationWindow {
                 Button {
                     text: "Stop"
                     onClicked: ticker.stop()
-                }
-                Button {
-                    text: "+10s"
-                    onClicked: ticker.addCountdownSeconds(10);
-                }
-                Button {
-                    text: "+1m"
-                    onClicked: ticker.addCountdownSeconds(60);
-                }
-                Button {
-                    text: "+5m"
-                    onClicked: ticker.addCountdownSeconds(5*60);
-                }
-                Button {
-                    text: "+15m"
-                    onClicked: ticker.addCountdownSeconds(15*60);
-                }
-                Button {
-                    text: "0"
-                    onClicked: ticker.setCountdownSeconds(0);
                 }
                 DelayButton {
                     text: "Reset"
