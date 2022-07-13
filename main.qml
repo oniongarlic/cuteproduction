@@ -714,12 +714,6 @@ ApplicationWindow {
                         newsDrawer.close()
                     }
                 }
-                Button {
-                    text: "RSS"
-                    onClicked: {
-                        rssFile.startSelector()
-                    }
-                }
             }
             ListView {
                 id: newsEditorList
@@ -741,6 +735,12 @@ ApplicationWindow {
                 clip: true
             }
             RowLayout {
+                Button {
+                    text: "RSS"
+                    onClicked: {
+                        rssFile.startSelector()
+                    }
+                }
                 Button {
                     text: "Add all"
                     enabled: rssModel.count>0
@@ -803,6 +803,11 @@ ApplicationWindow {
                 newsFeedList.currentIndex=index;
                 newsKeyword.text=rssModel.get(index).title
                 newsBody.text=html.stripTags(rssModel.get(index).description)
+            }
+            onDoubleClicked: {
+                const news=rssModel.get(index)
+                const item={ "topic": news.title, "msg": html.stripTags(news.description) }
+                l3window.addNewsItem(item)
             }
         }
     }
