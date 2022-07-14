@@ -182,12 +182,17 @@ ApplicationWindow {
         Menu {
             title: "Prompt"
             MenuItem {
-                text: "Open..."
+                text: "Manage..."
+                enabled: true
+                onClicked: telepromptDrawer.open()
+            }
+            MenuItem {
+                text: "Load text..."
                 enabled: true
                 onClicked: tsftp.startSelector();
             }
             MenuItem {
-                text: "Paste"
+                text: "Paste text"
                 enabled: textPrompter.canPaste
                 onClicked: {
                     textPrompter.paste()
@@ -198,7 +203,7 @@ ApplicationWindow {
 
             }
             MenuItem {
-                text: "Clear"
+                text: "Clear text"
                 onClicked: {
                     tpwindow.telepromptSetText("")
                 }
@@ -851,6 +856,123 @@ ApplicationWindow {
         }
     }
 
+    Drawer {
+        id: telepromptDrawer
+        dragMargin: 0
+        width: parent.width/1.5
+        height: parent.height
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
+
+            ScrollView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.minimumHeight: gl.height/7
+                Layout.maximumHeight: gl.height/4
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
+                }
+                TextArea {
+                    id: textPrompter
+                    placeholderText: "Teleprompt text here"
+                    selectByKeyboard: true
+                    selectByMouse: true
+                    textFormat: TextEdit.PlainText
+                    wrapMode: TextEdit.WordWrap
+                }
+            }
+
+            RowLayout {
+                spacing: 8
+                Switch {
+                    id: telepromptShow
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Teleprompt"
+                    checked: true
+                }
+                Switch {
+                    id: telepromptMirror
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Mirror"
+                    checked: false
+                }
+                Switch {
+                    id: telepromptFlip
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Flip"
+                    checked: false
+                }
+                SpinBox {
+                    id: lineSpeed
+                    from: 1
+                    to: 10
+                    stepSize: 1
+                    value: 8
+                    onValueChanged: {
+                        tpwindow.lineSpeed=value/10.0
+                    }
+                }
+            }
+
+            RowLayout {
+                spacing: 8
+                Button {
+                    text: "Update"
+                    onClicked: {
+                        tpwindow.telepromptSetText(textPrompter.text)
+                    }
+                }
+                Button {
+                    text: "Start"
+                    onClicked: {
+                        tpwindow.telepromptStart();
+                    }
+                }
+                Button {
+                    text: "Stop"
+                    onClicked: {
+                        tpwindow.telepromptStop();
+                    }
+                }
+                Button {
+                    text: "Pause"
+                    onClicked: {
+                        tpwindow.telepromptPause();
+                    }
+                }
+                Button {
+                    text: "Resume"
+                    onClicked: {
+                        tpwindow.telepromptResume();
+                    }
+                }
+                Button {
+                    text: "Reset"
+                    onClicked: {
+                        tpwindow.telepromptStop();
+                    }
+                }
+            }
+
+            Slider {
+                Layout.fillWidth: true
+                id: telePromptPos
+                from: 0
+                to: tpwindow.promptHeight
+                value: tpwindow.promptPos
+                onValueChanged: {
+                    if (pressed) {
+                        tpwindow.telepromptSetPosition(value)
+                    }
+                }
+            }
+        }
+    }
+
     ListModel {
         id: l3ModelCustom
     }
@@ -1164,12 +1286,13 @@ ApplicationWindow {
                         }
                         onWheel: {
                             wheel.accepted=true
+                            const d=wheel.angleDelta.y<0 ? -1 : 1;
                             if (wheel.modifiers & Qt.ControlModifier) {
-                                ticker.addCountdownSeconds(60);
+                                ticker.addCountdownSeconds(60*d);
                             } else if (wheel.modifiers & Qt.AltModifier) {
-                                ticker.addCountdownSeconds(1);
+                                ticker.addCountdownSeconds(1*d);
                             } else {
-                                ticker.addCountdownSeconds(10);
+                                ticker.addCountdownSeconds(10*d);
                             }
                         }
                     }
@@ -1222,115 +1345,6 @@ ApplicationWindow {
                     onActivated: {
                         ticker.reset()
                         checked=false;
-                    }
-                }
-            }
-        }
-
-        ColumnLayout {
-            id: cl2
-            ScrollView {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.minimumHeight: gl.height/7
-                Layout.maximumHeight: gl.height/6
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                background: Rectangle {
-                    border.color: "black"
-                    border.width: 1
-                }
-                TextArea {
-                    id: textPrompter
-                    placeholderText: "Teleprompt text here"
-                    selectByKeyboard: true
-                    selectByMouse: true
-                    textFormat: TextEdit.PlainText
-                    wrapMode: TextEdit.WordWrap
-                }
-            }
-
-            RowLayout {
-                Switch {
-                    id: telepromptShow
-                    Layout.alignment: Qt.AlignLeft
-                    text: "teleprompt"
-                    checked: true
-                }
-                Switch {
-                    id: telepromptMirror
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Mirror"
-                    checked: false
-                }
-
-                Switch {
-                    id: telepromptFlip
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Flip"
-                    checked: false
-                }
-                SpinBox {
-                    id: lineSpeed
-                    from: 1
-                    to: 10
-                    stepSize: 1
-                    value: 8
-                    onValueChanged: {
-                        tpwindow.lineSpeed=value/10.0
-                    }
-                }
-            }
-
-            RowLayout {
-                Button {
-                    text: "Update"
-                    onClicked: {
-                        tpwindow.telepromptSetText(textPrompter.text)
-                    }
-                }
-                Button {
-                    text: "Start"
-                    onClicked: {
-                        tpwindow.telepromptStart();
-                    }
-                }
-                Button {
-                    text: "Stop"
-                    onClicked: {
-                        tpwindow.telepromptStop();
-                    }
-                }
-            }
-            RowLayout {
-                Button {
-                    text: "Pause"
-                    onClicked: {
-                        tpwindow.telepromptPause();
-                    }
-                }
-                Button {
-                    text: "Resume"
-                    onClicked: {
-                        tpwindow.telepromptResume();
-                    }
-                }
-                Button {
-                    text: "Reset"
-                    onClicked: {
-                        tpwindow.telepromptStop();
-                    }
-                }
-            }
-
-            Slider {
-                Layout.fillWidth: true
-                id: telePromptPos
-                from: 0
-                to: tpwindow.promptHeight
-                value: tpwindow.promptPos
-                onValueChanged: {
-                    if (pressed) {
-                        tpwindow.telepromptSetPosition(value)
                     }
                 }
             }
