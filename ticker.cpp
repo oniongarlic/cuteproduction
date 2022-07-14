@@ -25,12 +25,16 @@ void Ticker::setAlarm(long seconds)
 void Ticker::setCountdownSeconds(long seconds)
 {
     m_counter=seconds;
+    if (m_counter<0)
+        m_counter=0;
     emit countdownChanged(m_counter);
 }
 
 void Ticker::addCountdownSeconds(long seconds)
 {
     m_counter+=seconds;
+    if (m_counter<0)
+        m_counter=0;
     emit countdownChanged(m_counter);
 }
 
