@@ -14,10 +14,14 @@ Dialog {
     RowLayout {
         anchors.fill: parent
         spacing: 8
-        TextInput {
+        Label {
+            text: "URL"
+        }
+        TextField {
             Layout.fillWidth: true
             id: urlInput
             focus: true
+            placeholderText: "https://"
         }
         Button {
             text: "Paste"
