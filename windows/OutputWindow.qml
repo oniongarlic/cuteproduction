@@ -250,7 +250,7 @@ Window {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: secondaryWindow.height/8
             visible: text!=""
-            wrapMode: Text.WordWrap
+            wrapMode: Text.Wrap
             maximumLineCount: 4
         }
         Text {
