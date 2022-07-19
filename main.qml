@@ -606,7 +606,7 @@ ApplicationWindow {
             TextField {
                 id: ircRealname
                 Layout.fillWidth: true
-                placeholderText: "Nick"
+                placeholderText: "Real name"
                 selectByMouse: true
             }
             TextField {
@@ -618,14 +618,48 @@ ApplicationWindow {
             RowLayout {
                 Button {
                     text: "Connect"
+                    enabled: !irc.connected
                     onClicked: {
                         irc.connect();
                     }
                 }
                 Button {
                     text: "Disconnect"
+                    enabled: irc.connected
                     onClicked: {
-
+                        irc.disconnect();
+                    }
+                }
+            }
+            Frame {
+                visible: true
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                ColumnLayout {
+                    anchors.fill: parent
+                    spacing: 4
+                    Label {
+                        text: "Topic"
+                    }
+                    SplitView {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        ListView {
+                            id: channel
+                            SplitView.fillWidth: true
+                            model: irc.channelModel
+                            delegate: Label {
+                                text: model.title
+                            }
+                        }
+                        ListView {
+                            id: users
+                            SplitView.fillWidth: true
+                            model: irc.userModel
+                            delegate: Label {
+                                text: model.title
+                            }
+                        }
                     }
                 }
             }
@@ -1063,6 +1097,7 @@ ApplicationWindow {
 
     IrcSource {
         id: irc
+        channel: "#turku"
     }
 
     Timer {

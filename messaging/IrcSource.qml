@@ -10,7 +10,12 @@ Item {
     property alias realName: ircConnection.realName
     property alias port: ircConnection.port
 
+    property alias connected: ircConnection.connected
+
     property string channel;
+
+    property IrcBufferModel channelModel: ircBuffer
+    property IrcUserModel userModel: ircUserModel
 
     function connect() {
         ircConnection.open()
@@ -28,6 +33,17 @@ Item {
         id: irc
     }
 
+    IrcUserModel {
+        id: ircUserModel
+        sortMethod: Irc.SortByTitle
+        channel: ircChannel
+        onChannelChanged: listView.currentIndex = -1
+    }
+
+    IrcChannel {
+        id: ircChannel
+    }
+
     IrcConnection {
         id: ircConnection
         host: "localhost"
@@ -39,8 +55,13 @@ Item {
 
         onConnected: {
             console.debug("IRC: Connected")
+            //connected=true;
             if (ircSource.channel.length>0)
                 sendCommand(cmd.createJoin(channel))
+        }
+
+        onDisconnected: {
+            //connected=false;
         }
 
         onMessageReceived: {
@@ -75,5 +96,14 @@ Item {
         persistent: true
         name: connection.displayName
         Component.onCompleted: ircBuffer.add(serverBuffer)
+    }
+
+    IrcCommandParser {
+        id: parser
+        channels: ircBuffer.channels
+        triggers: ircConnection.network.isChannel(target) ? ["!", ircConnection.nickName + ":"] : ["!", ""]
+        Component.onCompleted: {
+
+        }
     }
 }
