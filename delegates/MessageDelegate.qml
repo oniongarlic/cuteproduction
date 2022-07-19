@@ -17,24 +17,27 @@ ItemDelegate {
         width: parent.width
         Text {
             text: primary;
+            color: "white"
             font.bold: true
             maximumLineCount: 1
-            Layout.fillWidth: true
-            Layout.margins: 8
             elide: Text.ElideRight
             font.pixelSize: 28
             textFormat: Text.PlainText
             wrapMode: Text.NoWrap
-        }
-        Text {
+            visible: text.length>0
             Layout.fillWidth: true
             Layout.margins: 8
+        }
+        Text {
             text: secondary;
+            color: "white"
             textFormat: Text.PlainText
             font.pixelSize: 24
             elide: Text.ElideRight
             maximumLineCount: 6
             wrapMode: Text.Wrap
+            Layout.fillWidth: true
+            Layout.margins: 8
         }
     }
 }
