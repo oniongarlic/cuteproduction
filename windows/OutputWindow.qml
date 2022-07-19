@@ -276,7 +276,7 @@ Window {
             font.bold: true
             styleColor: "#202020"
             style: Text.Outline
-            text: formatSeconds(ticker.seconds)
+            text: formatSeconds(tickerUp.seconds)
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
             visible: showCounter.checked

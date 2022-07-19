@@ -1021,6 +1021,10 @@ ApplicationWindow {
         id: ticker
     }
 
+    Ticker {
+        id: tickerUp
+    }
+
     Component {
         id: l3delegate
         ItemDelegate {
@@ -1045,10 +1049,11 @@ ApplicationWindow {
         id: gl
         anchors.fill: parent
         columns: 2
-        rowSpacing: 8
-        columnSpacing: 8
-        anchors.margins: 8
+        rowSpacing: 4
+        columnSpacing: 4
+        anchors.margins: 4
 
+        // 1x1
         ColumnLayout {
             id: itemMessage
             Layout.alignment: Qt.AlignTop
@@ -1121,6 +1126,8 @@ ApplicationWindow {
                         selectByKeyboard: true
                         selectByMouse: true
                         placeholderText: "Message"
+                        textFormat: TextEdit.PlainText
+                        wrapMode: TextEdit.Wrap
                     }
                     RowLayout {
                         Switch {
@@ -1132,7 +1139,7 @@ ApplicationWindow {
                         }
                         Button {
                             text: "Send"
-                            enabled: bP.length>0
+                            enabled: bS.length>0
                             onClicked: {
                                 l3window.addMessageLeft(bP.text, bS.text);
                                 bP.text=''
@@ -1186,6 +1193,7 @@ ApplicationWindow {
             }
         }
 
+        // 2x1
         ColumnLayout {
             id: itemSelector
             Layout.fillWidth: true
@@ -1236,9 +1244,11 @@ ApplicationWindow {
             }
         }
 
+        // 1x2
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.maximumWidth: gl.width/2
             RowLayout {
                 Switch {
                     id: showTime
@@ -1265,12 +1275,15 @@ ApplicationWindow {
                     id: timeCount
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: formatSeconds(ticker.seconds)
+                    text: formatSeconds(tickerUp.seconds)
                     font.pixelSize: 18
                     MouseArea {
                         anchors.fill: parent
+                        onPressAndHold: {
+                            tickerUp.reset()
+                        }
                         onDoubleClicked: {
-                            ticker.reset()
+                            tickerUp.start()
                         }
                     }
                 }
@@ -1362,6 +1375,10 @@ ApplicationWindow {
                     }
                 }
             }
+        }
+        // 2x2
+        ColumnLayout {
+
         }
     }
 }
