@@ -227,7 +227,7 @@ Window {
         visible: switchMessageListRight.checked
     }
 
-    ColumnLayout {
+    Column {
         id: cl
         anchors.fill: parent
         anchors.leftMargin: 32
@@ -238,10 +238,24 @@ Window {
 
         property real fontSizeRatioTime: 5
 
+        move: Transition {
+            NumberAnimation {
+                easing.type: Easing.InOutQuad
+                properties: "x,y";
+                duration: 750
+            }
+        }
+        add: Transition {
+            NumberAnimation {
+                easing.type: Easing.InOutQuad
+                properties: "x,y";
+                duration: 750;
+            }
+        }
+
         Text {
             id: msgText
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
+            anchors.horizontalCenter: parent.horizontalCenter
             color: "#ffffff"
             text: ""
             styleColor: "#202020"
@@ -255,8 +269,7 @@ Window {
         }
         Text {
             id: timeCurrent
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             color: "#ffffff"
             text: ""
             font.family: "FreeSans"
@@ -269,8 +282,7 @@ Window {
         }
         Text {
             id: timeCount
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             color: "#ffffff"
             font.family: "FreeSans"
             font.bold: true
@@ -283,8 +295,7 @@ Window {
         }
         Text {
             id: timeCountdown
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             color: "#ffffff"
             font.family: "FreeSans"
             font.bold: true
