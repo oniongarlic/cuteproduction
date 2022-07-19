@@ -11,6 +11,7 @@ import org.tal 1.0
 
 import "windows"
 import "selectors"
+import "messaging"
 
 ApplicationWindow {
     id: main
@@ -155,6 +156,12 @@ ApplicationWindow {
             MenuItem {
                 text: "Clear all"
                 onClicked: textMsg.clear()
+            }
+            MenuItem {
+                text: "IRC Source"
+                onClicked: {
+
+                }
             }
         }
         Menu {
@@ -1047,6 +1054,7 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignTop
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.maximumWidth: gl.width/2
 
             ScrollView {
                 Layout.fillHeight: true
@@ -1064,7 +1072,7 @@ ApplicationWindow {
                     selectByKeyboard: true
                     selectByMouse: true
                     textFormat: TextEdit.PlainText
-                    wrapMode: TextEdit.WordWrap
+                    wrapMode: TextEdit.Wrap
                 }
             }
             RowLayout {
@@ -1182,6 +1190,7 @@ ApplicationWindow {
             id: itemSelector
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.maximumWidth: gl.width/2
             Layout.alignment: Qt.AlignTop
             ListView {
                 id: l3selector
@@ -1282,7 +1291,12 @@ ApplicationWindow {
                     MouseArea {
                         anchors.fill: parent
                         onDoubleClicked: {
+                            if (!showCountdown.checked)
+                                showCountdown.checked=true
                             ticker.start()
+                        }
+                        onPressAndHold: {
+                            ticker.setCountdownSeconds(0);
                         }
                         onWheel: {
                             wheel.accepted=true
