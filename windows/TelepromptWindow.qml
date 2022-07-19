@@ -56,6 +56,7 @@ Window {
         RowLayout {
             id: tpStatusBar
             Slider {
+                id: positionSlider
                 Layout.fillWidth: true
                 from: 0
                 to: tpwindow.promptHeight
