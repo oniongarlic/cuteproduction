@@ -157,13 +157,24 @@ ApplicationWindow {
                 text: "Clear all"
                 onClicked: textMsg.clear()
             }
+        }
+        Menu {
+            title: "Chat"
             MenuItem {
                 text: "IRC Source"
                 onClicked: {
+                    ircDrawer.open();
+                }
+            }
+            MenuItem {
+                text: "Route message"
+                checkable: true
+                onCheckedChanged: {
 
                 }
             }
         }
+
         Menu {
             title: "Thirds"
             MenuItem {
@@ -257,42 +268,36 @@ ApplicationWindow {
 
         Menu {
             title: "Media"
-
             MenuItem {
-                text: "Manage"
+                text: "Manage..."
                 onClicked: {
                     mediaDrawer.open()
                 }
             }
-
             MenuItem {
                 text: "Add file..."
                 onClicked: {
                     ms.startSelector()
                 }
             }
-
             MenuItem {
                 text: "Add URL..."
                 onClicked: {
                     usd.open()
                 }
             }
-
             MenuItem {
                 text: "Open playlist"
                 onClicked: {
                     plist.load("file:///tmp/playlist.m3u8", "m3u8")
                 }
             }
-
             MenuItem {
                 text: "Save playlist"
                 onClicked: {
                     plist.save("file:///tmp/playlist.m3u8", "m3u8")
                 }
             }
-
             MenuItem {
                 text: "Clear"
                 onClicked: {
@@ -573,6 +578,56 @@ ApplicationWindow {
             }
             onDoubleClicked: {
                 setMediaFile(index)
+            }
+        }
+    }
+
+    Drawer {
+        id: ircDrawer
+        dragMargin: 0
+        width: parent.width/1.5
+        height: parent.height
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
+            TextField {
+                id: ircHostname
+                Layout.fillWidth: true
+                placeholderText: "Hostname"
+                selectByMouse: true
+            }
+            TextField {
+                id: ircNick
+                Layout.fillWidth: true
+                placeholderText: "Nick"
+                selectByMouse: true
+            }
+            TextField {
+                id: ircRealname
+                Layout.fillWidth: true
+                placeholderText: "Nick"
+                selectByMouse: true
+            }
+            TextField {
+                id: ircChannel
+                Layout.fillWidth: true
+                placeholderText: "Channel"
+                selectByMouse: true
+            }
+            RowLayout {
+                Button {
+                    text: "Connect"
+                    onClicked: {
+                        irc.connect();
+                    }
+                }
+                Button {
+                    text: "Disconnect"
+                    onClicked: {
+
+                    }
+                }
             }
         }
     }
@@ -1004,6 +1059,10 @@ ApplicationWindow {
                 break;
             }
         }
+    }
+
+    IrcSource {
+        id: irc
     }
 
     Timer {

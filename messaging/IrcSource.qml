@@ -4,8 +4,24 @@ import Communi 3.0
 Item {
     id: ircSource
 
+    property alias host: ircConnection.host
+    property alias nickName: ircConnection.nickName
+    property alias userName: ircConnection.userName
+    property alias realName: ircConnection.realName
+    property alias port: ircConnection.port
+
+    property string channel;
+
     function connect() {
         ircConnection.open()
+    }
+
+    function disconnect() {
+        ircConnection.close();
+    }
+
+    function joinChannel(channel) {
+        ircConnection.sendCommand(cmd.createJoin(channel))
     }
 
     Irc {
@@ -22,8 +38,9 @@ Item {
         secure: false
 
         onConnected: {
-            console.debug("IRC: Connected, joining channel")
-            sendCommand(cmd.createJoin("#turku"))
+            console.debug("IRC: Connected")
+            if (ircSource.channel.length>0)
+                sendCommand(cmd.createJoin(channel))
         }
 
         onMessageReceived: {
