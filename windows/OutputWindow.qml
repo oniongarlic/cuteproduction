@@ -11,7 +11,7 @@ import "../animations"
 import "../delegates"
 
 Window {
-    id: secondaryWindow
+    id: outputWindow
     title: "Information"
     minimumWidth: spanWindow ? Screen.desktopAvailableWidth : 800
     minimumHeight: spanWindow ? Screen.desktopAvailableHeight : 480
@@ -175,7 +175,7 @@ Window {
     MouseArea {
         anchors.fill: parent
         onDoubleClicked: {
-            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
+            outputWindow.visibility=outputWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
         }
     }
 
@@ -262,7 +262,7 @@ Window {
             style: Text.Outline
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/8
+            font.pixelSize: outputWindow.height/8
             visible: text!=""
             wrapMode: Text.Wrap
             maximumLineCount: 4
@@ -277,7 +277,7 @@ Window {
             styleColor: "#202020"
             style: Text.Outline
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+            font.pixelSize: outputWindow.height/cl.fontSizeRatioTime
             visible: showTime.checked
         }
         Text {
@@ -290,7 +290,7 @@ Window {
             style: Text.Outline
             text: formatSeconds(tickerUp.seconds)
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+            font.pixelSize: outputWindow.height/cl.fontSizeRatioTime
             visible: showCounter.checked
         }
         Text {
@@ -303,7 +303,7 @@ Window {
             style: Text.Outline
             text: formatSeconds(ticker.countdown)
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+            font.pixelSize: outputWindow.height/cl.fontSizeRatioTime
             visible: showCountdown.checked
         }
     }
@@ -315,7 +315,7 @@ Window {
         anchors.right: parent.right
         anchors.margins: 32
         spacing: 0
-        visible: tickerModel.count>0 && secondaryWindow.tickerVisible
+        visible: tickerModel.count>0 && outputWindow.tickerVisible
 
         ListView {
             id: tickerList
@@ -362,9 +362,9 @@ Window {
                 padding: 8
                 maximumLineCount: 2 // XXX Make adjustable
                 width: parent.width
-                height: secondaryWindow.height>720 ? 96 : 64
+                height: outputWindow.height>720 ? 96 : 64
                 elide: Text.ElideRight
-                font.pixelSize: secondaryWindow.height>720 ? 28 : 24
+                font.pixelSize: outputWindow.height>720 ? 28 : 24
                 textFormat: Text.PlainText
                 wrapMode: Text.Wrap
                 text: ""

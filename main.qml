@@ -100,8 +100,7 @@ ApplicationWindow {
 
     Component {
         id: aws
-        OutputWindow {
-            id: secondaryWindow
+        OutputWindow {            
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             mediaPlayer: mp
         }
