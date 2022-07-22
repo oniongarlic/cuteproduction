@@ -289,7 +289,8 @@ ApplicationWindow {
             MenuItem {
                 text: "Open playlist"
                 onClicked: {
-                    plist.load("file:///tmp/playlist.m3u8", "m3u8")
+                    playListSelector.startSelector();
+                    // plist.load("file:///tmp/playlist.m3u8", "m3u8")
                 }
             }
             MenuItem {
@@ -344,6 +345,14 @@ ApplicationWindow {
         filter: [ "*.xml" ]
         onFileSelected: {
             l3Model.source=src
+        }
+    }
+    
+    TextSelector {
+        id: playListSelector
+        filter: [ "*.m3u8" ]
+        onFileSelected: {
+            plist.load(src, "m3u8")
         }
     }
 
@@ -451,6 +460,12 @@ ApplicationWindow {
 
             RowLayout {
                 spacing: 8
+                Button {
+                    text: "Add"
+                    onClicked: {
+                        ms.startSelector();
+                    }
+                }
                 Button {
                     text: "Remove"
                     enabled: mediaListView.currentIndex>-1
