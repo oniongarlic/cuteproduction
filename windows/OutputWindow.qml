@@ -10,6 +10,7 @@ import ".."
 import "../animations"
 import "../delegates"
 import "../models"
+import "../components"
 
 Window {
     id: secondaryWindow
@@ -277,75 +278,29 @@ Window {
             }
         }
 
-        Text {
+        TimeText {
             id: msgText
-            anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width
-            color: "#ffffff"
-            text: ""
-            styleColor: "#202020"
-            style: Text.Outline
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
             minimumPixelSize: 42
             font.pixelSize: 82
             visible: text!=""
             wrapMode: Text.Wrap
             maximumLineCount: 4
             height: parent.height/3
-            fontSizeMode: Text.Fit
-            textFormat: Text.PlainText
         }
-        Text {
+        TimeText {
             id: timeCurrent
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
-            color: "#ffffff"
-            text: ""
-            font.family: "FreeSans"
-            font.bold: true
-            styleColor: "#202020"
-            style: Text.Outline
-            horizontalAlignment: Text.AlignHCenter
-            minimumPixelSize: 24
-            font.pixelSize: 142
             visible: showTime.checked
-            fontSizeMode: Text.HorizontalFit
-            textFormat: Text.PlainText
         }
-        Text {
+        TimeText {
             id: timeCount
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
-            color: "#ffffff"
-            font.family: "FreeSans"
-            font.bold: true
-            styleColor: "#202020"
-            style: Text.Outline
-            text: formatSeconds(tickerUp.seconds)
-            horizontalAlignment: Text.AlignHCenter
-            minimumPixelSize: 32
-            font.pixelSize: 142
             visible: showCounter.checked
-            fontSizeMode: Text.HorizontalFit
-            textFormat: Text.PlainText
+            text: formatSeconds(tickerUp.seconds)
         }
-        Text {
+        TimeText {
             id: timeCountdown
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
-            color: "#ffffff"
-            font.family: "FreeSans"
-            font.bold: true
-            styleColor: "#202020"
-            style: Text.Outline
             text: formatSeconds(ticker.countdown)
-            horizontalAlignment: Text.AlignHCenter
-            minimumPixelSize: 32
-            font.pixelSize: 142
             visible: showCountdown.checked
-            fontSizeMode: Text.HorizontalFit
-            textFormat: Text.PlainText
         }
     }
 
