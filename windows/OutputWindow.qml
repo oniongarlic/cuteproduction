@@ -9,6 +9,7 @@ import QtQuick.XmlListModel 2.15
 import ".."
 import "../animations"
 import "../delegates"
+import "../models"
 
 Window {
     id: secondaryWindow
@@ -40,10 +41,10 @@ Window {
         close.accepted=false;
     }
 
-    ListModel {
+    MessageListModel {
         id: msgModelLeft
     }
-    ListModel {
+    MessageListModel {
         id: msgModelRight
     }
 
