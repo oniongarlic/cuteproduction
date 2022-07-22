@@ -9,10 +9,13 @@ Item {
     property alias userName: ircConnection.userName
     property alias realName: ircConnection.realName
     property alias port: ircConnection.port
+    property alias secure: ircConnection.secure
+    property alias password: ircConnection.password
 
     property alias connected: ircConnection.connected
 
     property string channel;
+    property string channelKey;
 
     property IrcBufferModel channelModel: ircBuffer
     property IrcUserModel userModel: ircUserModel
@@ -25,8 +28,8 @@ Item {
         ircConnection.close();
     }
 
-    function joinChannel(channel) {
-        ircConnection.sendCommand(cmd.createJoin(channel))
+    function joinChannel(channel, key) {
+        ircConnection.sendCommand(cmd.createJoin(channel, key))
     }
 
     Irc {
@@ -57,7 +60,7 @@ Item {
             console.debug("IRC: Connected")
             //connected=true;
             if (ircSource.channel.length>0)
-                sendCommand(cmd.createJoin(channel))
+                sendCommand(cmd.createJoin(channel, channelKey))
         }
 
         onDisconnected: {

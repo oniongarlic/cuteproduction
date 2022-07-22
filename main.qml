@@ -598,6 +598,17 @@ ApplicationWindow {
                 selectByMouse: true
             }
             TextField {
+                id: ircPassword
+                Layout.fillWidth: true
+                placeholderText: "Password"
+                selectByMouse: true
+            }
+            Switch {
+                id: ircSecure
+                text: "Secure connection"
+                checked: false
+            }
+            TextField {
                 id: ircNick
                 Layout.fillWidth: true
                 placeholderText: "Nick"
@@ -615,10 +626,16 @@ ApplicationWindow {
                 placeholderText: "Channel"
                 selectByMouse: true
             }
+            TextField {
+                id: ircChannelKey
+                Layout.fillWidth: true
+                placeholderText: "Channel key"
+                selectByMouse: true
+            }
             RowLayout {
                 Button {
                     text: "Connect"
-                    enabled: !irc.connected
+                    enabled: !irc.connected && ircHostname.length>1
                     onClicked: {
                         irc.connect();
                     }
@@ -1097,7 +1114,12 @@ ApplicationWindow {
 
     IrcSource {
         id: irc
-        channel: "#turku"
+        channel: ircChannel.text
+        channelKey: ircChannelKey.text
+        host: ircHostname.text
+        nickName: ircNick.text
+        password: ircPassword.text
+        secure: ircSecure.checked
     }
 
     Timer {
