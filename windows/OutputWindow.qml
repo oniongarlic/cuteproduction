@@ -179,6 +179,11 @@ Window {
             secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
         }
     }
+    
+    Image {
+        id: img
+        anchors.fill: parent
+    }
 
     VideoOutput {
         id: vo
@@ -186,55 +191,87 @@ Window {
         anchors.fill: parent
         autoOrientation: true
     }
+    
+    Grid {
+        id: mainGrid
+        anchors.fill: parent
+        anchors.bottomMargin: l3.visible ? l3.height+64 : 0;
+        columns: 3
+        spacing: 16
+        move: Transition {
+            NumberAnimation {
+                easing.type: Easing.InOutQuad
+                properties: "x,y";
+                duration: 750
+            }
+        }
+        add: Transition {
+            NumberAnimation {
+                easing.type: Easing.InOutQuad
+                properties: "x,y";
+                duration: 750;
+            }
+        }
+        
+        Rectangle {
+            id: leftSide
+            color: "transparent"
+            width: mainGrid.width/4
+            height: parent.height
+        }
+        Rectangle {
+            id: middleSide
+            color: "transparent"
+            width: mainGrid.width/2
+            height: parent.height
+        }
+        Rectangle {
+            id: rightSide
+            color: "transparent"
+            width: mainGrid.width/4
+            height: parent.height
+        }
+        
+    }
+
+    MessageListView {
+        parent: leftSide
+        id: msgLeftBottom
+        anchors.fill: parent
+        anchors.leftMargin: 32
+        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
+        model: msgModelLeft
+        delegate: msgDelegate
+        visible: switchMessageListLeft.checked
+    }
+
+    MessageListView {
+        id: msgRightBottom
+        parent: rightSide
+        anchors.fill: parent
+        anchors.rightMargin: 32
+        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
+        model: msgModelRight
+        delegate: msgDelegate
+        xpos: x+width+32
+        visible: switchMessageListRight.checked
+    }
 
     LowerThirdBase {
         id: l3
         mainTitle: main.primary
         secondaryTitle: main.secondary
         displayTime: delayTime.value*1000
-    }
-
-    MessageListView {
-        id: msgLeftBottom
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        anchors.leftMargin: 32
-
-        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
-
-        model: msgModelLeft
-        delegate: msgDelegate
-
-        visible: switchMessageListLeft.checked
-    }
-
-    MessageListView {
-        id: msgRightBottom
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        anchors.rightMargin: 32
-
-        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
-
-        model: msgModelRight
-        delegate: msgDelegate
-
-        xpos: x+width+32
-
-        visible: switchMessageListRight.checked
-    }
-
+    }    
+    
     Column {
         id: cl
+        parent: middleSide
         anchors.fill: parent
         anchors.leftMargin: 32
         anchors.rightMargin: 32
-        anchors.topMargin: 128
-        anchors.bottomMargin: 128
+        anchors.topMargin: 32
+        anchors.bottomMargin: 32
         spacing: 16
 
         property real fontSizeRatioTime: 5
@@ -257,20 +294,26 @@ Window {
         Text {
             id: msgText
             anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
             color: "#ffffff"
             text: ""
             styleColor: "#202020"
             style: Text.Outline
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/8
+            minimumPixelSize: 42
+            font.pixelSize: 82
             visible: text!=""
             wrapMode: Text.Wrap
             maximumLineCount: 4
+            height: parent.height/3
+            fontSizeMode: Text.Fit
+            textFormat: Text.PlainText
         }
         Text {
             id: timeCurrent
             anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
             color: "#ffffff"
             text: ""
             font.family: "FreeSans"
@@ -278,12 +321,16 @@ Window {
             styleColor: "#202020"
             style: Text.Outline
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+            minimumPixelSize: 24
+            font.pixelSize: 142
             visible: showTime.checked
+            fontSizeMode: Text.HorizontalFit
+            textFormat: Text.PlainText
         }
         Text {
             id: timeCount
             anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
             color: "#ffffff"
             font.family: "FreeSans"
             font.bold: true
@@ -291,12 +338,16 @@ Window {
             style: Text.Outline
             text: formatSeconds(tickerUp.seconds)
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+            minimumPixelSize: 32
+            font.pixelSize: 142
             visible: showCounter.checked
+            fontSizeMode: Text.HorizontalFit
+            textFormat: Text.PlainText
         }
         Text {
             id: timeCountdown
             anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
             color: "#ffffff"
             font.family: "FreeSans"
             font.bold: true
@@ -304,8 +355,11 @@ Window {
             style: Text.Outline
             text: formatSeconds(ticker.countdown)
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: secondaryWindow.height/cl.fontSizeRatioTime
+            minimumPixelSize: 32
+            font.pixelSize: 142
             visible: showCountdown.checked
+            fontSizeMode: Text.HorizontalFit
+            textFormat: Text.PlainText
         }
     }
 

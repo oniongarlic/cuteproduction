@@ -23,6 +23,7 @@ Rectangle {
             color: "#ffffff";
         }
     }
+    visible: x>-width
     //radius: 8
     width: Math.max(cl.width+box.width+32, parent.width/2)
     height: cl.height+8
