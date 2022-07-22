@@ -52,20 +52,6 @@ Window {
         id: tickerModel
     }
 
-    // Testing timer
-    Timer {
-        running: false
-        repeat: true
-        interval: 1800
-        onTriggered: {
-            var item={'primary': "Dynamic item: "+ new Date().toDateString(), 'secondary': new Date().toLocaleTimeString() }
-            //msgModel.append(item)
-            msgModel.insert(0, item)
-            if (msgModel.count>5)
-                msgModel.remove(5, 1)
-        }
-    }
-
     Timer {
         id: timerGeneric
         interval: 1000
