@@ -182,9 +182,17 @@ Window {
     Grid {
         id: mainGrid
         anchors.fill: parent
-        anchors.bottomMargin: l3.visible ? l3.height+64 : 0;
+        anchors.bottomMargin: bm(l3.visible, newsTicker.visible);
         columns: 3
         spacing: 16
+        
+        function bm(ltv, nt) {
+            bm=0;
+            if (ltv) bm+=l3.height+32
+            if (nt) bm+=newsTicker.height+32
+            return bm;
+        }
+        
         move: Transition {
             NumberAnimation {
                 easing.type: Easing.InOutQuad
@@ -198,6 +206,9 @@ Window {
                 properties: "x,y";
                 duration: 750;
             }
+        }
+        Behavior on anchors.bottomMargin {
+            NumberAnimation { duration: 500 }
         }
         
         Rectangle {
@@ -226,7 +237,6 @@ Window {
         id: msgLeftBottom
         anchors.fill: parent
         anchors.leftMargin: 32
-        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
         model: msgModelLeft
         delegate: msgDelegate
         visible: switchMessageListLeft.checked
@@ -237,7 +247,6 @@ Window {
         parent: rightSide
         anchors.fill: parent
         anchors.rightMargin: 32
-        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
         model: msgModelRight
         delegate: msgDelegate
         xpos: x+width+32
@@ -311,7 +320,7 @@ Window {
         anchors.right: parent.right
         anchors.margins: 32
         spacing: 0
-        visible: tickerModel.count>0 && secondaryWindow.tickerVisible
+        visible: tickerModel.count>0 && secondaryWindow.tickerVisible && !l3.visible
 
         ListView {
             id: tickerList

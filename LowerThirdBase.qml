@@ -107,6 +107,9 @@ Rectangle {
 //                duration: 800
 //            }
         }
+        ScriptAction {
+            script: resetLocation();
+        }
     }
     
     RowLayout {
