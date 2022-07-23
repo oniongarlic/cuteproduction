@@ -267,12 +267,14 @@ Window {
     Column {
         id: cl
         parent: middleSide
-        anchors.fill: parent
+        anchors.centerIn: parent
         anchors.leftMargin: 32
         anchors.rightMargin: 32
         anchors.topMargin: 32
         anchors.bottomMargin: 32
         spacing: 16
+        height: Math.min(childrenRect.height, parent.height)
+        width: parent.width
 
         property real fontSizeRatioTime: 5
 
@@ -292,14 +294,14 @@ Window {
         }
 
         TimeText {
-            id: msgText
-            width: parent.width
+            id: msgText            
             minimumPixelSize: 42
             font.pixelSize: 82
             visible: text!=""
             wrapMode: Text.Wrap
             maximumLineCount: 4
-            height: parent.height/3
+            horizontalAlignment: lineCount<2 ? Text.AlignHCenter : Text.AlignLeft
+            height: cl.parent.height/4
         }
         TimeText {
             id: timeCurrent
