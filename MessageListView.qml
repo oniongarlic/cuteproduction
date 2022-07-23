@@ -2,7 +2,6 @@ import QtQuick 2.12
 
 ListView {
     id: msgList
-    width: parent.width/3
     anchors.margins: 16
     spacing: 8
     interactive: false

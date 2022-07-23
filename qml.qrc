@@ -16,5 +16,7 @@
         <file>selectors/MediaSelector.qml</file>
         <file>selectors/URLSelector.qml</file>
         <file>messaging/IrcSource.qml</file>
+        <file>models/MessageListModel.qml</file>
+        <file>components/TimeText.qml</file>
     </qresource>
 </RCC>

@@ -9,6 +9,8 @@ import QtQuick.XmlListModel 2.15
 import ".."
 import "../animations"
 import "../delegates"
+import "../models"
+import "../components"
 
 Window {
     id: outputWindow
@@ -44,29 +46,15 @@ Window {
         close.accepted=false;
     }
 
-    ListModel {
+    MessageListModel {
         id: msgModelLeft
     }
-    ListModel {
+    MessageListModel {
         id: msgModelRight
     }
 
     ListModel {
         id: tickerModel
-    }
-
-    // Testing timer
-    Timer {
-        running: false
-        repeat: true
-        interval: 1800
-        onTriggered: {
-            var item={'primary': "Dynamic item: "+ new Date().toDateString(), 'secondary': new Date().toLocaleTimeString() }
-            //msgModel.append(item)
-            msgModel.insert(0, item)
-            if (msgModel.count>5)
-                msgModel.remove(5, 1)
-        }
     }
 
     Timer {
@@ -182,6 +170,11 @@ Window {
             outputWindow.visibility=outputWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
         }
     }
+    
+    Image {
+        id: img
+        anchors.fill: parent
+    }
 
     VideoOutput {
         id: vo
@@ -189,55 +182,96 @@ Window {
         anchors.fill: parent
         autoOrientation: true
     }
+    
+    Grid {
+        id: mainGrid
+        anchors.fill: parent
+        anchors.bottomMargin: bm(l3.visible, newsTicker.visible);
+        columns: 3
+        spacing: 16
+        
+        function bm(ltv, nt) {
+            bm=0;
+            if (ltv) bm+=l3.height+32
+            if (nt) bm+=newsTicker.height+32
+            return bm;
+        }
+        
+        move: Transition {
+            NumberAnimation {
+                easing.type: Easing.InOutQuad
+                properties: "x,y";
+                duration: 750
+            }
+        }
+        add: Transition {
+            NumberAnimation {
+                easing.type: Easing.InOutQuad
+                properties: "x,y";
+                duration: 750;
+            }
+        }
+        Behavior on anchors.bottomMargin {
+            NumberAnimation { duration: 500 }
+        }
+        
+        Rectangle {
+            id: leftSide
+            color: "transparent"
+            width: mainGrid.width/4
+            height: parent.height
+        }
+        Rectangle {
+            id: middleSide
+            color: "transparent"
+            width: mainGrid.width/2
+            height: parent.height
+        }
+        Rectangle {
+            id: rightSide
+            color: "transparent"
+            width: mainGrid.width/4
+            height: parent.height
+        }
+        
+    }
+
+    MessageListView {
+        parent: leftSide
+        id: msgLeftBottom
+        anchors.fill: parent
+        anchors.leftMargin: 32
+        model: msgModelLeft
+        delegate: msgDelegate
+        visible: switchMessageListLeft.checked
+    }
+
+    MessageListView {
+        id: msgRightBottom
+        parent: rightSide
+        anchors.fill: parent
+        anchors.rightMargin: 32
+        model: msgModelRight
+        delegate: msgDelegate
+        xpos: x+width+32
+        visible: switchMessageListRight.checked
+    }
 
     LowerThirdBase {
         id: l3
         mainTitle: main.primary
         secondaryTitle: main.secondary
         displayTime: delayTime.value*1000
-    }
-
-    MessageListView {
-        id: msgLeftBottom
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        anchors.leftMargin: 32
-
-        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
-
-        model: msgModelLeft
-        delegate: msgDelegate
-
-        visible: switchMessageListLeft.checked
-    }
-
-    MessageListView {
-        id: msgRightBottom
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-
-        anchors.rightMargin: 32
-
-        anchors.bottomMargin: newsTicker.visible ? newsTicker.height+32*2 : 32
-
-        model: msgModelRight
-        delegate: msgDelegate
-
-        xpos: x+width+32
-
-        visible: switchMessageListRight.checked
-    }
-
+    }    
+    
     Column {
         id: cl
+        parent: middleSide
         anchors.fill: parent
         anchors.leftMargin: 32
         anchors.rightMargin: 32
-        anchors.topMargin: 128
-        anchors.bottomMargin: 128
+        anchors.topMargin: 32
+        anchors.bottomMargin: 32
         spacing: 16
 
         property real fontSizeRatioTime: 5
@@ -257,57 +291,28 @@ Window {
             }
         }
 
-        Text {
+        TimeText {
             id: msgText
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#ffffff"
-            text: ""
-            styleColor: "#202020"
-            style: Text.Outline
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: outputWindow.height/8
+            width: parent.width
+            minimumPixelSize: 42
+            font.pixelSize: 82
             visible: text!=""
             wrapMode: Text.Wrap
             maximumLineCount: 4
+            height: parent.height/3
         }
-        Text {
+        TimeText {
             id: timeCurrent
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#ffffff"
-            text: ""
-            font.family: "FreeSans"
-            font.bold: true
-            styleColor: "#202020"
-            style: Text.Outline
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: outputWindow.height/cl.fontSizeRatioTime
             visible: showTime.checked
         }
-        Text {
+        TimeText {
             id: timeCount
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#ffffff"
-            font.family: "FreeSans"
-            font.bold: true
-            styleColor: "#202020"
-            style: Text.Outline
-            text: formatSeconds(tickerUp.seconds)
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: outputWindow.height/cl.fontSizeRatioTime
             visible: showCounter.checked
+            text: formatSeconds(tickerUp.seconds)
         }
-        Text {
+        TimeText {
             id: timeCountdown
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#ffffff"
-            font.family: "FreeSans"
-            font.bold: true
-            styleColor: "#202020"
-            style: Text.Outline
             text: formatSeconds(ticker.countdown)
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: outputWindow.height/cl.fontSizeRatioTime
             visible: showCountdown.checked
         }
     }
@@ -319,7 +324,7 @@ Window {
         anchors.right: parent.right
         anchors.margins: 32
         spacing: 0
-        visible: tickerModel.count>0 && outputWindow.tickerVisible
+        visible: tickerModel.count>0 && secondaryWindow.tickerVisible && !l3.visible
 
         ListView {
             id: tickerList
