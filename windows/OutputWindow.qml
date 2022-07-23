@@ -28,6 +28,10 @@ Window {
     property int tickerItemsVisible: 4
     property bool tickerVisible: menuTickerVisible.checked;
 
+    property alias newsTickerVisible: newsTicker.visible
+    property alias lowerThirdsVisible: l3.visible
+    property alias timersVisible: cl.visible
+
     property ListModel newsTickerModel: tickerModel
 
     property MediaPlayer mediaPlayer;
