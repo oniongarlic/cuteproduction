@@ -27,7 +27,7 @@ ApplicationWindow {
     //color: "#00000040"
     color: "white"
     
-    property Window l3window;
+    property OutputWindow l3window;
     property Window alphawindow;
     property Window tpwindow;
 
@@ -100,7 +100,7 @@ ApplicationWindow {
 
     Component {
         id: aws
-        OutputWindow {            
+        OutputWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             mediaPlayer: mp
         }
@@ -302,6 +302,32 @@ ApplicationWindow {
                 onClicked: {
                     plist.clear()
                 }
+            }
+            Menu {
+                title: "Source"
+                MenuItem {
+                    text: "Media Player"
+                    checkable: true
+                    autoExclusive: true
+                    onCheckedChanged: {
+                        if (checked) {
+                            l3window.stopCamera();
+                            l3window.setVideoOutputSource(1)
+                        }
+                    }
+                }
+                MenuItem {
+                    text: "Video input"
+                    checkable: true
+                    autoExclusive: true
+                    onCheckedChanged: {
+                        if (checked) {
+                            l3window.setVideoOutputSource(1)
+                            l3window.startCamera();
+                        }
+                    }
+                }
+
             }
         }
 

@@ -179,8 +179,92 @@ Window {
     VideoOutput {
         id: vo
         source: mediaPlayer
-        anchors.fill: parent
+        x: 0
+        y: 0
+        width: parent.width
+        height: parent.height
         autoOrientation: true
+    }
+
+    VideoOutput {
+        id: vovi
+        source: videoInput
+        x: 0
+        y: 0
+        width: parent.width
+        height: parent.height
+        autoOrientation: true
+    }
+
+    function startCamera() {
+        videoInput.start();
+    }
+
+    function stopCamera() {
+        videoInput.stop();
+    }
+
+    function setVideoOutputSource(src) {
+        switch (src) {
+        case 0:
+            vo.source=mediaPlayer;
+            break;
+        case 1:
+            vo.source=videoInput;
+            break;
+        }
+    }
+
+    Camera {
+        id: videoInput
+        deviceId: "/dev/video0"
+        captureMode: Camera.CaptureViewfinder
+        cameraState: Camera.LoadedState
+        onErrorStringChanged: console.debug("CameraError: "+errorString)
+        onCameraStateChanged: {
+            console.debug("Camera State: "+cameraState)
+            switch (cameraState) {
+            case Camera.ActiveState:
+                console.debug("DigitalZoom: "+maximumDigitalZoom)
+                console.debug("OpticalZoom: "+maximumOpticalZoom)
+                console.debug(imageCapture.resolution)
+                break;
+            }
+        }
+        onCameraStatusChanged: console.debug("CameraStatus: "+cameraStatus)
+
+        onDigitalZoomChanged: console.debug(digitalZoom)
+
+        focus {
+            focusMode: Camera.FocusContinuous
+            focusPointMode: Camera.FocusPointCenter
+        }
+
+        imageCapture {
+            onImageCaptured: {
+                console.debug("Image captured!")
+                console.debug(camera.imageCapture.capturedImagePath)
+                //                previewImage.source=preview;
+            }
+            onCaptureFailed: {
+                console.debug("Capture failed")
+            }
+            onImageSaved: {
+                console.debug("Image saved: "+path)
+                //                cameraItem.imageCaptured(path)
+            }
+        }
+
+        onError: {
+            console.log("Camera reports error: "+errorString)
+            console.log("Camera Error code: "+errorCode)
+        }
+
+        Component.onCompleted: {
+            console.debug("Camera is: "+deviceId)
+            console.debug("Camera orientation is: "+orientation)
+            videoInput.exposure.exposureMode=Camera.ExposureAuto
+        }
     }
     
     Grid {
@@ -262,7 +346,7 @@ Window {
         mainTitle: main.primary
         secondaryTitle: main.secondary
         displayTime: delayTime.value*1000
-    }    
+    }
     
     Column {
         id: cl
@@ -294,7 +378,7 @@ Window {
         }
 
         TimeText {
-            id: msgText            
+            id: msgText
             minimumPixelSize: 42
             font.pixelSize: 82
             visible: text!=""
@@ -368,7 +452,7 @@ Window {
             color: "#ffffff"
             Behavior on opacity { NumberAnimation { duration: 500 } }
             Text {
-                id: tickerMsg                
+                id: tickerMsg
                 color: "#0062ae"
                 padding: 8
                 maximumLineCount: 2 // XXX Make adjustable
