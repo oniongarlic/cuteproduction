@@ -450,6 +450,8 @@ ApplicationWindow {
         autoLoad: true
         loops: checkLoop.checked ? MediaPlayer.Infinite : 1
         muted: checkMuted.checked
+        volume: volumeDial.value/100
+        audioRole: MediaPlayer.VideoRole
         onPlaying: {
             //hs.setStatus("playing")
         }
