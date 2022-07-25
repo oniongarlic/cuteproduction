@@ -42,6 +42,8 @@ Window {
 
     property bool useMask: false
 
+    property bool useDropShadows: true
+
     Component.onCompleted: {
         startTime=new Date()
     }
@@ -337,7 +339,17 @@ Window {
             width: mainGrid.width/4
             height: parent.height
         }
-        
+    }
+
+    DropShadow {
+        visible: useMask && useDropShadows
+        anchors.fill: mainGrid
+        horizontalOffset: 4
+        verticalOffset: 4
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: mainGrid
     }
 
     MessageListView {
@@ -489,16 +501,15 @@ Window {
     }
 
     DropShadow {
-        visible: useMask && newsTicker.visible
+        visible: useMask && newsTicker.visible && useDropShadows
         anchors.fill: newsTicker
-        horizontalOffset: 3
-        verticalOffset: 3
+        horizontalOffset: 4
+        verticalOffset: 4
         radius: 8.0
         samples: 17
         color: "#80000000"
         source: newsTicker
     }
-
 
     Component {
         id: tickerHighlight
