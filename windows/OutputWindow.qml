@@ -50,7 +50,7 @@ Window {
         if (!maskWindow || !useMask)
             return;
 
-        mainGrid.grabToImage(function(result) {
+        contentItem.grabToImage(function(result) {
             maskWindow.mask = String(result.url);
         });
     }
@@ -430,7 +430,7 @@ Window {
         anchors.right: parent.right
         anchors.margins: 32
         spacing: 0
-        visible: tickerModel.count>0 && secondaryWindow.tickerVisible && !l3.visible
+        visible: tickerModel.count>0 && tickerVisible && !l3.visible
 
         ListView {
             id: tickerList
@@ -488,16 +488,16 @@ Window {
         }
     }
 
-    //            DropShadow {
-    //                enabled: false
-    //                anchors.fill: newsTicker
-    //                horizontalOffset: 3
-    //                verticalOffset: 3
-    //                radius: 8.0
-    //                samples: 17
-    //                color: "#80000000"
-    //                source: newsTicker
-    //            }
+    DropShadow {
+        visible: useMask && newsTicker.visible
+        anchors.fill: newsTicker
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: newsTicker
+    }
 
 
     Component {
