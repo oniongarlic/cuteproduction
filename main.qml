@@ -145,6 +145,12 @@ ApplicationWindow {
                 onCheckedChanged: l3window.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
             MenuItem {
+                text: "Use mask"
+                checkable: true
+                checked: false
+                onCheckedChanged: l3window.useMask=checked
+            }
+            MenuItem {
                 text: "Full screen (Mask)"
                 checkable: true
                 checked: maskwindow.visibility==Window.FullScreen ? true : false

@@ -40,7 +40,7 @@ Window {
 
     property MaskWindow maskWindow;
 
-    property bool useMask: true
+    property bool useMask: false
 
     Component.onCompleted: {
         startTime=new Date()
