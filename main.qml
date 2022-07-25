@@ -28,7 +28,7 @@ ApplicationWindow {
     color: "white"
     
     property OutputWindow l3window;
-    property Window alphawindow;
+    property MaskWindow maskwindow;
     property Window tpwindow;
 
     Component.onCompleted: {
@@ -36,6 +36,7 @@ ApplicationWindow {
         console.debug("Screens: " + Qt.application.screens.length)
         let l3s=0;
         let tps=0;
+        let mps=0;
 
         for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
@@ -49,9 +50,15 @@ ApplicationWindow {
         if (Qt.application.screens.length>2) {
             tps=2;
         }
+        if (Qt.application.screens.length>3) {
+            mps=3;
+        }
 
         l3window=aws.createObject(null, { screen: Qt.application.screens[l3s], visible: true });
         tpwindow=tpw.createObject(null, { screen: Qt.application.screens[tps], visible: false });
+        maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
+
+        l3window.maskWindow=maskwindow;
     }
 
     onClosing: {
@@ -99,6 +106,13 @@ ApplicationWindow {
     }
 
     Component {
+        id: maskw
+        MaskWindow {
+            id: maskWindow
+        }
+    }
+
+    Component {
         id: aws
         OutputWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
@@ -129,6 +143,12 @@ ApplicationWindow {
                 checkable: true
                 checked: l3window.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: l3window.visibility=!checked ? Window.Windowed : Window.FullScreen
+            }
+            MenuItem {
+                text: "Full screen (Mask)"
+                checkable: true
+                checked: maskwindow.visibility==Window.FullScreen ? true : false
+                onCheckedChanged: maskwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
             MenuItem {
                 text: "Full screen (Teleprompt)"
@@ -1518,8 +1538,7 @@ ApplicationWindow {
             }
         }
         // 2x2
-        ColumnLayout {
-
+        ColumnLayout {            
         }
     }
 }

@@ -18,5 +18,6 @@
         <file>messaging/IrcSource.qml</file>
         <file>models/MessageListModel.qml</file>
         <file>components/TimeText.qml</file>
+        <file>windows/MaskWindow.qml</file>
     </qresource>
 </RCC>

@@ -38,8 +38,21 @@ Window {
 
     property MediaPlayer mediaPlayer;
 
+    property MaskWindow maskWindow;
+
+    property bool useMask: true
+
     Component.onCompleted: {
         startTime=new Date()
+    }
+
+    onFrameSwapped: {
+        if (!maskWindow || !useMask)
+            return;
+
+        mainGrid.grabToImage(function(result) {
+            maskWindow.mask = String(result.url);
+        });
     }
 
     onClosing: {
@@ -183,7 +196,7 @@ Window {
         y: 0
         width: parent.width
         height: parent.height
-        autoOrientation: true
+        autoOrientation: true;
     }
 
     VideoOutput {
