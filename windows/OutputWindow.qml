@@ -189,6 +189,13 @@ Window {
         anchors.fill: parent
     }
 
+    function setMediaPosition(x,y,w,h) {
+        vo.x=x*vo.parent.width;
+        vo.y=y*vo.parent.height;
+        vo.width=w*vo.parent.width;
+        vo.height=h*vo.parent.height;
+    }
+
     VideoOutput {
         id: vo
         source: mediaPlayer

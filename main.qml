@@ -1538,7 +1538,43 @@ ApplicationWindow {
             }
         }
         // 2x2
-        ColumnLayout {            
+        ColumnLayout {
+            Slider {
+                id: mpx
+                Layout.fillWidth: true
+                from: -1
+                value: 0
+                to: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
+            Slider {
+                id: mpy
+                Layout.fillWidth: true
+                from: -1
+                value: 0
+                to: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
+            Slider {
+                id: mph
+                Layout.fillWidth: true
+                value: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
+            Slider {
+                id: mpw
+                Layout.fillWidth: true
+                value: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
         }
     }
 }
