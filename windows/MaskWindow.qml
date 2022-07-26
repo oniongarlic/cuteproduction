@@ -10,6 +10,10 @@ Window {
     title: qsTr("MaskWindow")
 
     property alias mask: mask.source
+    
+    onClosing: {
+        close.accepted=false;
+    }
 
     Image {
         id: mask

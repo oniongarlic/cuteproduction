@@ -148,7 +148,12 @@ ApplicationWindow {
                 text: "Use mask"
                 checkable: true
                 checked: false
-                onCheckedChanged: l3window.useMask=checked
+                onCheckedChanged: {                    
+                    l3window.useMask=checked;
+                    if (checked && !maskwindow.visible) {
+                        maskwindow.visible=true;
+                    }
+                }
             }
             MenuItem {
                 text: "Full screen (Mask)"
