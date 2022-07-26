@@ -330,30 +330,21 @@ ApplicationWindow {
                 }
             }
             Menu {
-                title: "Source"
+                title: "Video input"
                 MenuItem {
-                    text: "Media Player"
-                    checkable: true
-                    autoExclusive: true
-                    onCheckedChanged: {
-                        if (checked) {
-                            l3window.stopCamera();
-                            l3window.setVideoOutputSource(1)
-                        }
+                    text: "Start"
+                    enabled: l3window.hasVideoInput
+                    onClicked: {
+                        l3window.startCamera();
                     }
                 }
                 MenuItem {
-                    text: "Video input"
-                    checkable: true
-                    autoExclusive: true
-                    onCheckedChanged: {
-                        if (checked) {
-                            l3window.setVideoOutputSource(1)
-                            l3window.startCamera();
-                        }
+                    text: "Stop"
+                    enabled: l3window.videoInputActive
+                    onClicked: {
+                        l3window.stopCamera();
                     }
                 }
-
             }
         }
 
@@ -1547,6 +1538,16 @@ ApplicationWindow {
         }
         // 2x2
         ColumnLayout {
+            RowLayout {
+                RadioButton {
+                    text: "Fill"
+                    checked: true
+                }
+                RadioButton {
+                    text: "Crop"
+                }
+            }
+
             Slider {
                 id: mpx
                 Layout.fillWidth: true
