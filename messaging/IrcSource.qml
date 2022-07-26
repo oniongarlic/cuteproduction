@@ -40,7 +40,7 @@ Item {
         id: ircUserModel
         sortMethod: Irc.SortByTitle
         channel: ircChannel
-        onChannelChanged: listView.currentIndex = -1
+        // onChannelChanged: listView.currentIndex = -1
     }
 
     IrcChannel {

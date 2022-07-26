@@ -27,8 +27,8 @@ ApplicationWindow {
     //color: "#00000040"
     color: "white"
     
-    property Window l3window;
-    property Window alphawindow;
+    property OutputWindow l3window;
+    property MaskWindow maskwindow;
     property Window tpwindow;
 
     Component.onCompleted: {
@@ -36,6 +36,7 @@ ApplicationWindow {
         console.debug("Screens: " + Qt.application.screens.length)
         let l3s=0;
         let tps=0;
+        let mps=0;
 
         for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
@@ -49,9 +50,15 @@ ApplicationWindow {
         if (Qt.application.screens.length>2) {
             tps=2;
         }
+        if (Qt.application.screens.length>3) {
+            mps=3;
+        }
 
         l3window=aws.createObject(null, { screen: Qt.application.screens[l3s], visible: true });
         tpwindow=tpw.createObject(null, { screen: Qt.application.screens[tps], visible: false });
+        maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
+
+        l3window.maskWindow=maskwindow;
     }
 
     onClosing: {
@@ -99,9 +106,15 @@ ApplicationWindow {
     }
 
     Component {
+        id: maskw
+        MaskWindow {
+            id: maskWindow
+        }
+    }
+
+    Component {
         id: aws
         OutputWindow {
-            id: secondaryWindow
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             mediaPlayer: mp
         }
@@ -130,6 +143,18 @@ ApplicationWindow {
                 checkable: true
                 checked: l3window.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: l3window.visibility=!checked ? Window.Windowed : Window.FullScreen
+            }
+            MenuItem {
+                text: "Use mask"
+                checkable: true
+                checked: false
+                onCheckedChanged: l3window.useMask=checked
+            }
+            MenuItem {
+                text: "Full screen (Mask)"
+                checkable: true
+                checked: maskwindow.visibility==Window.FullScreen ? true : false
+                onCheckedChanged: maskwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
             MenuItem {
                 text: "Full screen (Teleprompt)"
@@ -305,6 +330,32 @@ ApplicationWindow {
                     plist.clear()
                 }
             }
+            Menu {
+                title: "Source"
+                MenuItem {
+                    text: "Media Player"
+                    checkable: true
+                    autoExclusive: true
+                    onCheckedChanged: {
+                        if (checked) {
+                            l3window.stopCamera();
+                            l3window.setVideoOutputSource(1)
+                        }
+                    }
+                }
+                MenuItem {
+                    text: "Video input"
+                    checkable: true
+                    autoExclusive: true
+                    onCheckedChanged: {
+                        if (checked) {
+                            l3window.setVideoOutputSource(1)
+                            l3window.startCamera();
+                        }
+                    }
+                }
+
+            }
         }
 
         Menu {
@@ -408,6 +459,8 @@ ApplicationWindow {
         autoLoad: true
         loops: checkLoop.checked ? MediaPlayer.Infinite : 1
         muted: checkMuted.checked
+        volume: volumeDial.value/100
+        audioRole: MediaPlayer.VideoRole
         onPlaying: {
             //hs.setStatus("playing")
         }
@@ -1509,7 +1562,42 @@ ApplicationWindow {
         }
         // 2x2
         ColumnLayout {
-
+            Slider {
+                id: mpx
+                Layout.fillWidth: true
+                from: -1
+                value: 0
+                to: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
+            Slider {
+                id: mpy
+                Layout.fillWidth: true
+                from: -1
+                value: 0
+                to: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
+            Slider {
+                id: mph
+                Layout.fillWidth: true
+                value: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
+            Slider {
+                id: mpw
+                Layout.fillWidth: true
+                value: 1
+                stepSize: 0.02
+                wheelEnabled: true
+                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+            }
         }
     }
 }

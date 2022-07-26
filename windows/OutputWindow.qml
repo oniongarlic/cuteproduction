@@ -13,7 +13,7 @@ import "../models"
 import "../components"
 
 Window {
-    id: secondaryWindow
+    id: outputWindow
     title: "Information"
     minimumWidth: spanWindow ? Screen.desktopAvailableWidth : 800
     minimumHeight: spanWindow ? Screen.desktopAvailableHeight : 480
@@ -30,12 +30,31 @@ Window {
     property int tickerItemsVisible: 4
     property bool tickerVisible: menuTickerVisible.checked;
 
+    property alias newsTickerVisible: newsTicker.visible
+    property alias lowerThirdsVisible: l3.visible
+    property alias timersVisible: cl.visible
+
     property ListModel newsTickerModel: tickerModel
 
     property MediaPlayer mediaPlayer;
 
+    property MaskWindow maskWindow;
+
+    property bool useMask: false
+
+    property bool useDropShadows: true
+
     Component.onCompleted: {
         startTime=new Date()
+    }
+
+    onFrameSwapped: {
+        if (!maskWindow || !useMask)
+            return;
+
+        contentItem.grabToImage(function(result) {
+            maskWindow.mask = String(result.url);
+        });
     }
 
     onClosing: {
@@ -163,7 +182,7 @@ Window {
     MouseArea {
         anchors.fill: parent
         onDoubleClicked: {
-            secondaryWindow.visibility=secondaryWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
+            outputWindow.visibility=outputWindow.visibility==Window.FullScreen ? Window.Windowed : Window.FullScreen
         }
     }
     
@@ -172,11 +191,102 @@ Window {
         anchors.fill: parent
     }
 
+    function setMediaPosition(x,y,w,h) {
+        vo.x=x*vo.parent.width;
+        vo.y=y*vo.parent.height;
+        vo.width=w*vo.parent.width;
+        vo.height=h*vo.parent.height;
+    }
+
     VideoOutput {
         id: vo
         source: mediaPlayer
-        anchors.fill: parent
+        x: 0
+        y: 0
+        width: parent.width
+        height: parent.height
+        autoOrientation: true;
+    }
+
+    VideoOutput {
+        id: vovi
+        source: videoInput
+        x: 0
+        y: 0
+        width: parent.width
+        height: parent.height
         autoOrientation: true
+    }
+
+    function startCamera() {
+        videoInput.start();
+    }
+
+    function stopCamera() {
+        videoInput.stop();
+    }
+
+    function setVideoOutputSource(src) {
+        switch (src) {
+        case 0:
+            vo.source=mediaPlayer;
+            break;
+        case 1:
+            vo.source=videoInput;
+            break;
+        }
+    }
+
+    Camera {
+        id: videoInput
+        deviceId: "/dev/video0"
+        captureMode: Camera.CaptureViewfinder
+        cameraState: Camera.LoadedState
+        onErrorStringChanged: console.debug("CameraError: "+errorString)
+        onCameraStateChanged: {
+            console.debug("Camera State: "+cameraState)
+            switch (cameraState) {
+            case Camera.ActiveState:
+                console.debug("DigitalZoom: "+maximumDigitalZoom)
+                console.debug("OpticalZoom: "+maximumOpticalZoom)
+                console.debug(imageCapture.resolution)
+                break;
+            }
+        }
+        onCameraStatusChanged: console.debug("CameraStatus: "+cameraStatus)
+
+        onDigitalZoomChanged: console.debug(digitalZoom)
+
+        focus {
+            focusMode: Camera.FocusContinuous
+            focusPointMode: Camera.FocusPointCenter
+        }
+
+        imageCapture {
+            onImageCaptured: {
+                console.debug("Image captured!")
+                console.debug(camera.imageCapture.capturedImagePath)
+                //                previewImage.source=preview;
+            }
+            onCaptureFailed: {
+                console.debug("Capture failed")
+            }
+            onImageSaved: {
+                console.debug("Image saved: "+path)
+                //                cameraItem.imageCaptured(path)
+            }
+        }
+
+        onError: {
+            console.log("Camera reports error: "+errorString)
+            console.log("Camera Error code: "+errorCode)
+        }
+
+        Component.onCompleted: {
+            console.debug("Camera is: "+deviceId)
+            console.debug("Camera orientation is: "+orientation)
+            videoInput.exposure.exposureMode=Camera.ExposureAuto
+        }
     }
     
     Grid {
@@ -229,7 +339,17 @@ Window {
             width: mainGrid.width/4
             height: parent.height
         }
-        
+    }
+
+    DropShadow {
+        visible: useMask && useDropShadows
+        anchors.fill: mainGrid
+        horizontalOffset: 4
+        verticalOffset: 4
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: mainGrid
     }
 
     MessageListView {
@@ -258,17 +378,19 @@ Window {
         mainTitle: main.primary
         secondaryTitle: main.secondary
         displayTime: delayTime.value*1000
-    }    
+    }
     
     Column {
         id: cl
         parent: middleSide
-        anchors.fill: parent
+        anchors.centerIn: parent
         anchors.leftMargin: 32
         anchors.rightMargin: 32
         anchors.topMargin: 32
         anchors.bottomMargin: 32
         spacing: 16
+        height: Math.min(childrenRect.height, parent.height)
+        width: parent.width
 
         property real fontSizeRatioTime: 5
 
@@ -289,13 +411,13 @@ Window {
 
         TimeText {
             id: msgText
-            width: parent.width
             minimumPixelSize: 42
             font.pixelSize: 82
             visible: text!=""
             wrapMode: Text.Wrap
             maximumLineCount: 4
-            height: parent.height/3
+            horizontalAlignment: lineCount<2 ? Text.AlignHCenter : Text.AlignLeft
+            height: cl.parent.height/4
         }
         TimeText {
             id: timeCurrent
@@ -320,7 +442,7 @@ Window {
         anchors.right: parent.right
         anchors.margins: 32
         spacing: 0
-        visible: tickerModel.count>0 && secondaryWindow.tickerVisible && !l3.visible
+        visible: tickerModel.count>0 && tickerVisible && !l3.visible
 
         ListView {
             id: tickerList
@@ -362,14 +484,14 @@ Window {
             color: "#ffffff"
             Behavior on opacity { NumberAnimation { duration: 500 } }
             Text {
-                id: tickerMsg                
+                id: tickerMsg
                 color: "#0062ae"
                 padding: 8
                 maximumLineCount: 2 // XXX Make adjustable
                 width: parent.width
-                height: secondaryWindow.height>720 ? 96 : 64
+                height: outputWindow.height>720 ? 96 : 64
                 elide: Text.ElideRight
-                font.pixelSize: secondaryWindow.height>720 ? 28 : 24
+                font.pixelSize: outputWindow.height>720 ? 28 : 24
                 textFormat: Text.PlainText
                 wrapMode: Text.Wrap
                 text: ""
@@ -378,17 +500,16 @@ Window {
         }
     }
 
-    //            DropShadow {
-    //                enabled: false
-    //                anchors.fill: newsTicker
-    //                horizontalOffset: 3
-    //                verticalOffset: 3
-    //                radius: 8.0
-    //                samples: 17
-    //                color: "#80000000"
-    //                source: newsTicker
-    //            }
-
+    DropShadow {
+        visible: useMask && newsTicker.visible && useDropShadows
+        anchors.fill: newsTicker
+        horizontalOffset: 4
+        verticalOffset: 4
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: newsTicker
+    }
 
     Component {
         id: tickerHighlight
