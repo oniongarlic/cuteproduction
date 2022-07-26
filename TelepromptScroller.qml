@@ -17,6 +17,7 @@ Flickable {
     property alias running: timerScroll.running
 
     property alias text: txt.text
+    property alias fontSize: txt.font.pixelSize
 
     property real scrollSpeed: 1
     property real lineSpeed: 0.6
@@ -102,7 +103,7 @@ Flickable {
         width: sv.width
         color: "white"
         text: ""
-        font.pointSize: 72
+        font.pixelSize: 72
         wrapMode: Text.WordWrap
         topPadding: 32
         leftPadding: 32

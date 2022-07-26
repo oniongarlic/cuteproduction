@@ -24,6 +24,8 @@ Window {
 
     property bool mirror: false
     property bool flip: false
+    
+    property alias fontSize: teleprompt.fontSize
 
     onClosing: {
         close.accepted=false;

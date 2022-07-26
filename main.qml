@@ -29,7 +29,7 @@ ApplicationWindow {
     
     property OutputWindow l3window;
     property MaskWindow maskwindow;
-    property Window tpwindow;
+    property TelepromptWindow tpwindow;
     
     Component.onCompleted: {
         oflags=flags;
@@ -1139,6 +1139,14 @@ ApplicationWindow {
                     value: 8
                     onValueChanged: {
                         tpwindow.lineSpeed=value/10.0
+                    }
+                }
+                SpinBox {
+                    from: 18
+                    to: 128
+                    value: 72
+                    onValueChanged: {
+                        tpwindow.fontSize=value;
                     }
                 }
             }
