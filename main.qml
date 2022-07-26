@@ -1094,8 +1094,8 @@ ApplicationWindow {
             ScrollView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.minimumHeight: gl.height/7
-                Layout.maximumHeight: gl.height/4
+                Layout.minimumHeight: gl.height/3
+                Layout.maximumHeight: gl.height/2
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 background: Rectangle {
                     border.color: "black"
@@ -1113,12 +1113,6 @@ ApplicationWindow {
             
             RowLayout {
                 spacing: 8
-                Switch {
-                    id: telepromptShow
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Teleprompt"
-                    checked: true
-                }
                 Switch {
                     id: telepromptMirror
                     Layout.alignment: Qt.AlignLeft
@@ -1140,6 +1134,7 @@ ApplicationWindow {
                     onValueChanged: {
                         tpwindow.lineSpeed=value/10.0
                     }
+                    wheelEnabled: true
                 }
                 SpinBox {
                     from: 18
@@ -1148,6 +1143,7 @@ ApplicationWindow {
                     onValueChanged: {
                         tpwindow.fontSize=value;
                     }
+                    wheelEnabled: true
                 }
             }
             

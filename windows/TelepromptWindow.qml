@@ -50,7 +50,6 @@ Window {
             id: teleprompt
             Layout.fillWidth: true
             Layout.fillHeight: true
-            visible: telepromptShow.checked
             mirror: teleWindow.mirror
             flip: teleWindow.flip
         }
