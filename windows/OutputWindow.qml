@@ -44,6 +44,9 @@ Window {
 
     property bool useDropShadows: true
 
+    property bool hasVideoInput: videoInput.availability==Camera.Available
+    property bool videoInputActive: videoInput.cameraState==Camera.ActiveState && hasVideoInput
+
     Component.onCompleted: {
         startTime=new Date()
     }
