@@ -26,6 +26,7 @@ Window {
     }
     ShaderEffect {
         anchors.fill: parent
+        blending: false
         property variant src: mask
         vertexShader: "
             uniform highp mat4 qt_Matrix;
