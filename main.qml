@@ -29,20 +29,20 @@ ApplicationWindow {
     
     property OutputWindow l3window;
     property MaskWindow maskwindow;
-    property Window tpwindow;
-
+    property TelepromptWindow tpwindow;
+    
     Component.onCompleted: {
         oflags=flags;
         console.debug("Screens: " + Qt.application.screens.length)
         let l3s=0;
         let tps=0;
         let mps=0;
-
+        
         for(var i = 0;i < Qt.application.screens.length;i ++) {
             console.debug(i)
             console.debug(Qt.application.screens[i])
         }
-
+        
         if (Qt.application.screens.length>1) {
             l3s=1;
             tps=1;
@@ -53,23 +53,23 @@ ApplicationWindow {
         if (Qt.application.screens.length>3) {
             mps=3;
         }
-
+        
         l3window=aws.createObject(null, { screen: Qt.application.screens[l3s], visible: true });
         tpwindow=tpw.createObject(null, { screen: Qt.application.screens[tps], visible: false });
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
-
+        
         l3window.maskWindow=maskwindow;
     }
-
+    
     onClosing: {
         Qt.quit();
     }
-
+    
     property string primary: ""
     property string secondary: ""
-
+    
     property int counter: 0
-
+    
     function formatSeconds(s) {
         var h = Math.floor(s / 3600);
         s %= 3600;
@@ -77,9 +77,9 @@ ApplicationWindow {
         var ss = s % 60;
         return [h,m,ss].map(v => v < 10 ? "0" + v : v).join(":")
     }
-
+    
     signal textFileResponse(string text)
-
+    
     function readLocalTextFile(uri) {
         var xhr = new XMLHttpRequest;
         console.debug(uri)
@@ -91,11 +91,11 @@ ApplicationWindow {
         };
         xhr.send();
     }
-
+    
     onTextFileResponse: {
         textPrompter.text=text
     }
-
+    
     Component {
         id: tpw
         TelepromptWindow {
@@ -104,14 +104,14 @@ ApplicationWindow {
             flip: telepromptFlip.checked
         }
     }
-
+    
     Component {
         id: maskw
         MaskWindow {
             id: maskWindow
         }
     }
-
+    
     Component {
         id: aws
         OutputWindow {
@@ -119,12 +119,12 @@ ApplicationWindow {
             mediaPlayer: mp
         }
     }
-
+    
     menuBar: MenuBar {
         Menu {
             title: "File"
-
-
+            
+            
             MenuItem {
                 text: "Quit"
                 onClicked: Qt.quit()
@@ -148,7 +148,12 @@ ApplicationWindow {
                 text: "Use mask"
                 checkable: true
                 checked: false
-                onCheckedChanged: l3window.useMask=checked
+                onCheckedChanged: {                    
+                    l3window.useMask=checked;
+                    if (checked && !maskwindow.visible) {
+                        maskwindow.visible=true;
+                    }
+                }
             }
             MenuItem {
                 text: "Full screen (Mask)"
@@ -163,7 +168,7 @@ ApplicationWindow {
                 onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
         }
-
+        
         Menu {
             title: "Message"
             MenuItem {
@@ -176,7 +181,7 @@ ApplicationWindow {
                 onClicked: textMsg.selectAll()
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "Clear all"
@@ -195,11 +200,11 @@ ApplicationWindow {
                 text: "Route message"
                 checkable: true
                 onCheckedChanged: {
-
+                    
                 }
             }
         }
-
+        
         Menu {
             title: "Thirds"
             MenuItem {
@@ -213,7 +218,7 @@ ApplicationWindow {
                 }
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "Clear"
@@ -243,7 +248,7 @@ ApplicationWindow {
                 }
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "Clear text"
@@ -252,7 +257,7 @@ ApplicationWindow {
                 }
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "Show window"
@@ -262,7 +267,7 @@ ApplicationWindow {
                 }
             }
         }
-
+        
         Menu {
             title: "News"
             MenuItem {
@@ -290,7 +295,7 @@ ApplicationWindow {
                 }
             }
         }
-
+        
         Menu {
             title: "Media"
             MenuItem {
@@ -314,7 +319,8 @@ ApplicationWindow {
             MenuItem {
                 text: "Open playlist"
                 onClicked: {
-                    plist.load("file:///tmp/playlist.m3u8", "m3u8")
+                    playListSelector.startSelector();
+                    // plist.load("file:///tmp/playlist.m3u8", "m3u8")
                 }
             }
             MenuItem {
@@ -347,10 +353,10 @@ ApplicationWindow {
                 }
             }
         }
-
+        
         Menu {
             title: "Background"
-
+            
             MenuItem {
                 id: bgBlack
                 text: "Black"
@@ -372,7 +378,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     TextSelector {
         id: tsftp
         filter: [ "*.txt" ]
@@ -380,7 +386,7 @@ ApplicationWindow {
             readLocalTextFile(src)
         }
     }
-
+    
     TextSelector {
         id: tsf
         filter: [ "*.xml" ]
@@ -388,53 +394,61 @@ ApplicationWindow {
             l3Model.source=src
         }
     }
-
+    
+    TextSelector {
+        id: playListSelector
+        filter: [ "*.m3u8" ]
+        onFileSelected: {
+            plist.load(src, "m3u8")
+        }
+    }
+    
     URLSelector {
         id: usd
         onAccepted: {
             plist.addItem(url)
         }
     }
-
+    
     function selectMediaFile() {
         ms.startSelector()
     }
-
+    
     function nextMediaFile() {
         plist.playbackMode=Playlist.Sequential
         plist.next();
         mp.pause();
         plist.playbackMode=Playlist.CurrentItemOnce
     }
-
+    
     function previousMediaFile() {
         plist.playbackMode=Playlist.Sequential
         plist.previous();
         mp.pause();
         plist.playbackMode=Playlist.CurrentItemOnce
     }
-
+    
     function setMediaFile(i) {
         plist.currentIndex=i;
         mp.pause();
         plist.playbackMode=Playlist.CurrentItemOnce
     }
-
+    
     MediaSelector {
         id: ms
-
+        
         onFileSelected: {
             plist.addItem(src)
             mp.pause();
             //hs.setClips(plist.itemCount)
         }
-
+        
         onFilesSelected: {
             plist.addItems(src)
             //hs.setClips(plist.itemCount)
         }
     }
-
+    
     MediaPlayer {
         id: mp
         playlist: plist
@@ -458,10 +472,10 @@ ApplicationWindow {
         onDurationChanged: {
             //hs.setDuration(duration)
         }
-
+        
         onStatusChanged: console.debug(status)
     }
-
+    
     Playlist {
         id: plist
         playbackMode: Playlist.CurrentItemOnce
@@ -472,7 +486,7 @@ ApplicationWindow {
             console.debug(errorString)
         }
     }
-
+    
     Drawer {
         id: mediaDrawer
         dragMargin: 0
@@ -492,9 +506,21 @@ ApplicationWindow {
                 highlight: Rectangle { color: "#f0f0f0"; }
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
-
+            
             RowLayout {
                 spacing: 8
+                Button {
+                    text: "Add"
+                    onClicked: {
+                        ms.startSelector();
+                    }
+                }                
+                Button {
+                    text: "Add URL"
+                    onClicked: {
+                        usd.open()
+                    }
+                }
                 Button {
                     text: "Remove"
                     enabled: mediaListView.currentIndex>-1
@@ -515,7 +541,7 @@ ApplicationWindow {
                     }
                 }
             }
-
+            
             RowLayout {
                 spacing: 8
                 Label {
@@ -541,19 +567,52 @@ ApplicationWindow {
                     text: formatSeconds(mp.position/1000)+" / "+formatSeconds(mp.duration/1000)
                 }
             }
-
+            
             RowLayout {
                 spacing: 8
-                Dial {
+                Slider {
                     id: volumeDial
                     from: 0
                     to: 100
                     value: 100
+                    stepSize: 1
+                    wheelEnabled: true
+                    
+                    NumberAnimation {
+                        id: volumeFadeIn
+                        //from: 0
+                        to: 100
+                        target: volumeDial
+                        property: "value"
+                        duration: 500
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
+                        id: volumeFadeOut
+                        //from: 100
+                        to: 0
+                        target: volumeDial
+                        property: "value"
+                        duration: 500
+                        easing.type: Easing.InOutQuad
+                    }
                 }
+                
                 CheckBox {
                     id: checkMuted
                     text: "Mute"
                     checked: mp.muted
+                }
+                
+                Button {
+                    text: "Fade In"
+                    enabled: !volumeFadeIn.running
+                    onClicked: volumeFadeIn.start()
+                }
+                Button {
+                    text: "Fade Out"
+                    enabled: !volumeFadeOut.running
+                    onClicked: volumeFadeOut.start()
                 }
                 CheckBox {
                     id: checkLoop
@@ -561,7 +620,7 @@ ApplicationWindow {
                     checked: mp.loops!=1
                 }
             }
-
+            
             RowLayout {
                 spacing: 8
                 Button {
@@ -600,7 +659,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Component {
         id: playlistDelegate
         ItemDelegate {
@@ -625,7 +684,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Drawer {
         id: ircDrawer
         dragMargin: 0
@@ -726,7 +785,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Drawer {
         id: thirdsDrawer
         dragMargin: 0
@@ -773,7 +832,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Drawer {
         id: newsDrawer
         dragMargin: 0
@@ -788,7 +847,7 @@ ApplicationWindow {
                 console.debug(drop.hasHtml)
                 console.debug(drop.hasUrls)
                 console.debug(drop.hasColor)
-
+                
                 if (drop.hasUrls) {
                     console.debug(drop.urls[0])
                     rssModel.source=drop.urls[0]
@@ -920,18 +979,18 @@ ApplicationWindow {
             }
         }
     }
-
+    
     XmlListModel {
         id: rssModel
         query: "/rss/channel/item"
-
+        
         XmlRole { name: "title"; query: "title/string()"; }
         XmlRole { name: "description"; query: "description/string()"; }
-
+        
         onStatusChanged: {
             switch (status) {
             case XmlListModel.Ready:
-
+                
                 break;
             case XmlListModel.Error:
                 console.debug(errorString())
@@ -939,7 +998,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Component {
         id: rssItemModel
         ItemDelegate {
@@ -973,7 +1032,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Component {
         id: newsEditorDelegate
         ItemDelegate {
@@ -1004,7 +1063,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     TextSelector {
         id: rssFile
         filter: [ "*.xml" ]
@@ -1012,7 +1071,7 @@ ApplicationWindow {
             rssModel.source=src
         }
     }
-
+    
     Drawer {
         id: telepromptDrawer
         dragMargin: 0
@@ -1022,12 +1081,12 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.margins: 16
             spacing: 8
-
+            
             ScrollView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.minimumHeight: gl.height/7
-                Layout.maximumHeight: gl.height/4
+                Layout.minimumHeight: gl.height/3
+                Layout.maximumHeight: gl.height/2
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 background: Rectangle {
                     border.color: "black"
@@ -1042,15 +1101,9 @@ ApplicationWindow {
                     wrapMode: TextEdit.WordWrap
                 }
             }
-
+            
             RowLayout {
                 spacing: 8
-                Switch {
-                    id: telepromptShow
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Teleprompt"
-                    checked: true
-                }
                 Switch {
                     id: telepromptMirror
                     Layout.alignment: Qt.AlignLeft
@@ -1072,9 +1125,19 @@ ApplicationWindow {
                     onValueChanged: {
                         tpwindow.lineSpeed=value/10.0
                     }
+                    wheelEnabled: true
+                }
+                SpinBox {
+                    from: 18
+                    to: 128
+                    value: 72
+                    onValueChanged: {
+                        tpwindow.fontSize=value;
+                    }
+                    wheelEnabled: true
                 }
             }
-
+            
             RowLayout {
                 spacing: 8
                 Button {
@@ -1114,7 +1177,7 @@ ApplicationWindow {
                     }
                 }
             }
-
+            
             Slider {
                 Layout.fillWidth: true
                 id: telePromptPos
@@ -1129,21 +1192,21 @@ ApplicationWindow {
             }
         }
     }
-
+    
     ListModel {
         id: l3ModelCustom
     }
-
+    
     XmlListModel {
         id: l3Model
         query: "/thirds/item"
         source: "persons.xml"
-
+        
         XmlRole { name: "primary"; query: "primary/string()"; }
         XmlRole { name: "secondary"; query: "secondary/string()"; }
         XmlRole { name: "topic"; query: "topic/string()"; }
         XmlRole { name: "image"; query: "image/string()"; }
-
+        
         onStatusChanged: {
             switch (status) {
             case XmlListModel.Ready:
@@ -1155,7 +1218,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     IrcSource {
         id: irc
         channel: ircChannel.text
@@ -1165,7 +1228,7 @@ ApplicationWindow {
         password: ircPassword.text
         secure: ircSecure.checked
     }
-
+    
     Timer {
         id: timerGeneric
         interval: 1000
@@ -1176,15 +1239,15 @@ ApplicationWindow {
             timeCurrent.text=Qt.formatTime(date, "hh:mm:ss");
         }
     }
-
+    
     Ticker {
         id: ticker
     }
-
+    
     Ticker {
         id: tickerUp
     }
-
+    
     Component {
         id: l3delegate
         ItemDelegate {
@@ -1204,7 +1267,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     GridLayout {
         id: gl
         anchors.fill: parent
@@ -1212,7 +1275,7 @@ ApplicationWindow {
         rowSpacing: 4
         columnSpacing: 4
         anchors.margins: 4
-
+        
         // 1x1
         ColumnLayout {
             id: itemMessage
@@ -1220,7 +1283,7 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.maximumWidth: gl.width/2
-
+            
             ScrollView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -1352,7 +1415,7 @@ ApplicationWindow {
                 }
             }
         }
-
+        
         // 2x1
         ColumnLayout {
             id: itemSelector
@@ -1375,7 +1438,7 @@ ApplicationWindow {
                     main.secondary=model.get(currentIndex).secondary
                 }
             }
-
+            
             RowLayout {
                 Button {
                     text: "Previous"
@@ -1403,7 +1466,7 @@ ApplicationWindow {
                 }
             }
         }
-
+        
         // 1x2
         ColumnLayout {
             Layout.fillWidth: true

@@ -10,6 +10,10 @@ Window {
     title: qsTr("MaskWindow")
 
     property alias mask: mask.source
+    
+    onClosing: {
+        close.accepted=false;
+    }
 
     Image {
         id: mask
@@ -22,6 +26,7 @@ Window {
     }
     ShaderEffect {
         anchors.fill: parent
+        blending: false
         property variant src: mask
         vertexShader: "
             uniform highp mat4 qt_Matrix;

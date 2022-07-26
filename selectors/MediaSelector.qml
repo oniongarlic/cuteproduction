@@ -16,7 +16,7 @@ Item {
     FileDialog {
         id: filesDialog
         folder: shortcuts.pictures
-        nameFilters: [ "*.mp4", "*.mov", "*.mp3", "*.avi" ]
+        nameFilters: [ "*.mp4", "*.mov", "*.mp3", "*.avi", "*.jpg" ]
         title: qsTr("Select media file(s)")
         selectExisting: true
         selectFolder: false
