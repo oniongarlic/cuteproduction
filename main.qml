@@ -1605,10 +1605,27 @@ ApplicationWindow {
             RowLayout {
                 RadioButton {
                     text: "Fill"
+                    readonly property int fill: VideoOutput.PreserveAspectFit
                     checked: true
+                    ButtonGroup.group: fillModeGroup
                 }
                 RadioButton {
                     text: "Crop"
+                    readonly property int fill: VideoOutput.PreserveAspectCrop
+                    ButtonGroup.group: fillModeGroup
+                }
+                Button {
+                    text: "Reset Size"
+                    onClicked: {
+                        l3window.mediaPlayerOutput.resetSize();
+                    }
+                }
+            }
+
+            ButtonGroup {
+                id: fillModeGroup
+                onClicked: {
+                    l3window.mediaPlayerOutput.fillMode=button.fill;
                 }
             }
 

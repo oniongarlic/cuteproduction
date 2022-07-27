@@ -8,22 +8,29 @@ VideoOutput {
     width: parent.width
     height: parent.height
     fillMode: VideoOutput.PreserveAspectFit
-    autoOrientation: true;
+    autoOrientation: true;        
 
     property Rectangle borderRect: mediaBorder
 
+    property rect pos: Qt.rect(0, 0, 1, 1)
+
+    onPosChanged: updatePosition();
+    onWidthChanged: updatePosition();
+    onHeightChanged: updatePosition();
+
+    function updatePosition() {
+        x=pos.x*vo.parent.width;
+        y=pos.y*vo.parent.height;
+        width=pos.width*vo.parent.width;
+        height=pos.height*vo.parent.height;
+    }
+
     function setMediaPosition(r) {
-        x=r.x*vo.parent.width;
-        y=r.y*vo.parent.height;
-        width=r.width*vo.parent.width;
-        height=r.height*vo.parent.height;
+        pos=r;
     }
 
     function resetSize() {
-        x=0;
-        y=0;
-        width=parent.width
-        height=parent.height
+        pos=Qt.rect(0, 0, 1, 1);
     }
 
     Rectangle {
