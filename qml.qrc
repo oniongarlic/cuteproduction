@@ -19,5 +19,6 @@
         <file>models/MessageListModel.qml</file>
         <file>components/TimeText.qml</file>
         <file>windows/MaskWindow.qml</file>
+        <file>components/CustomVideoOutput.qml</file>
     </qresource>
 </RCC>

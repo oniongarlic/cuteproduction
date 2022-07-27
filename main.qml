@@ -1601,6 +1601,7 @@ ApplicationWindow {
         }
         // 2x2
         ColumnLayout {
+            id: mediaSizing
             RowLayout {
                 RadioButton {
                     text: "Fill"
@@ -1611,15 +1612,22 @@ ApplicationWindow {
                 }
             }
 
+            property rect size;
+
+            onSizeChanged: {
+                console.debug(size)
+                l3window.mediaPlayerOutput.setMediaPosition(size)
+            }
+
             Slider {
                 id: mpx
                 Layout.fillWidth: true
                 from: -1
                 value: 0
                 to: 1
-                stepSize: 0.02
+                stepSize: 0.001
                 wheelEnabled: true
-                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+                onValueChanged: mediaSizing.size.x=value;
             }
             Slider {
                 id: mpy
@@ -1627,25 +1635,25 @@ ApplicationWindow {
                 from: -1
                 value: 0
                 to: 1
-                stepSize: 0.02
+                stepSize: 0.001
                 wheelEnabled: true
-                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+                onValueChanged: mediaSizing.size.y=value
             }
             Slider {
                 id: mph
                 Layout.fillWidth: true
                 value: 1
-                stepSize: 0.02
+                stepSize: 0.001
                 wheelEnabled: true
-                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+                onValueChanged: mediaSizing.size.height=value
             }
             Slider {
                 id: mpw
                 Layout.fillWidth: true
                 value: 1
-                stepSize: 0.02
+                stepSize: 0.001
                 wheelEnabled: true
-                onValueChanged: l3window.setMediaPosition(mpx.value, mpy.value, mph.value, mpw.value)
+                onValueChanged: mediaSizing.size.width=value
             }
         }
     }

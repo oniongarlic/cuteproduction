@@ -47,6 +47,9 @@ Window {
     property bool hasVideoInput: videoInput.availability==Camera.Available
     property bool videoInputActive: videoInput.cameraState==Camera.ActiveState && hasVideoInput
 
+    property CustomVideoOutput mediaPlayerOutput: vo
+    property CustomVideoOutput videoInputOutput: vovi
+
     Component.onCompleted: {
         startTime=new Date()
     }
@@ -191,6 +194,7 @@ Window {
     
     Image {
         id: img
+        fillMode: Image.PreserveAspectCrop
         anchors.fill: parent
     }
 
@@ -201,24 +205,14 @@ Window {
         vo.height=h*vo.parent.height;
     }
 
-    VideoOutput {
+    CustomVideoOutput {
         id: vo
         source: mediaPlayer
-        x: 0
-        y: 0
-        width: parent.width
-        height: parent.height
-        autoOrientation: true;
     }
 
-    VideoOutput {
+    CustomVideoOutput {
         id: vovi
         source: videoInput
-        x: 0
-        y: 0
-        width: parent.width
-        height: parent.height
-        autoOrientation: true
     }
 
     function startCamera() {
