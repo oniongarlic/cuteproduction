@@ -149,7 +149,7 @@ ApplicationWindow {
                 text: "Use mask"
                 checkable: true
                 checked: false
-                onCheckedChanged: {                    
+                onCheckedChanged: {
                     l3window.useMask=checked;
                     if (checked && !maskwindow.visible) {
                         maskwindow.visible=true;
@@ -515,7 +515,7 @@ ApplicationWindow {
                     onClicked: {
                         ms.startSelector();
                     }
-                }                
+                }
                 Button {
                     text: "Add URL"
                     onClicked: {
@@ -1602,8 +1602,28 @@ ApplicationWindow {
         }
         // 2x2
         ColumnLayout {
-            MediaController {
-                vo: l3window.mediaPlayerOutput
+            TabBar {
+                id: mediaBar
+                TabButton {
+                    text: "Media"
+                }
+                TabButton {
+                    text: "Input"
+                }
+            }
+            Pane {
+                Layout.fillWidth: true
+                SwipeView {
+                    clip: true
+                    currentIndex: mediaBar.currentIndex
+                    anchors.fill: parent
+                    MediaController {
+                        vo: l3window.mediaPlayerOutput
+                    }
+                    MediaController {
+                        vo: l3window.videoInputOutput
+                    }
+                }
             }
         }
     }
