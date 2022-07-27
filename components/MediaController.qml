@@ -1,0 +1,80 @@
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.12
+import QtMultimedia 5.15
+
+ColumnLayout {
+    id: mediaSizing
+
+    property CustomVideoOutput vo;
+
+    RowLayout {
+        Layout.fillWidth: true
+        RadioButton {
+            text: "Fill"
+            readonly property int fill: VideoOutput.PreserveAspectFit
+            checked: true
+            ButtonGroup.group: fillModeGroup
+        }
+        RadioButton {
+            text: "Crop"
+            readonly property int fill: VideoOutput.PreserveAspectCrop
+            ButtonGroup.group: fillModeGroup
+        }
+        Button {
+            text: "Reset Size"
+            onClicked: {
+                vo.resetSize();
+            }
+        }
+    }
+
+    ButtonGroup {
+        id: fillModeGroup
+        onClicked: {
+            vo.fillMode=button.fill;
+        }
+    }
+
+    property rect size;
+
+    onSizeChanged: vo.setMediaPosition(size);
+
+    Slider {
+        id: mpx
+        Layout.fillWidth: true
+        from: -1
+        value: 0
+        to: 1
+        stepSize: 0.001
+        wheelEnabled: true
+        onValueChanged: mediaSizing.size.x=value;
+    }
+    Slider {
+        id: mpy
+        Layout.fillWidth: true
+        from: -1
+        value: 0
+        to: 1
+        stepSize: 0.001
+        wheelEnabled: true
+        onValueChanged: mediaSizing.size.y=value
+    }
+    Slider {
+        id: mph
+        Layout.fillWidth: true
+        value: 1
+        stepSize: 0.001
+        wheelEnabled: true
+        onValueChanged: mediaSizing.size.height=value
+    }
+    Slider {
+        id: mpw
+        Layout.fillWidth: true
+        value: 1
+        stepSize: 0.001
+        wheelEnabled: true
+        onValueChanged: mediaSizing.size.width=value
+    }
+}

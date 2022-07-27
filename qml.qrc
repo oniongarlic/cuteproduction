@@ -20,5 +20,6 @@
         <file>components/TimeText.qml</file>
         <file>windows/MaskWindow.qml</file>
         <file>components/CustomVideoOutput.qml</file>
+        <file>components/MediaController.qml</file>
     </qresource>
 </RCC>
