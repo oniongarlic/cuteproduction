@@ -7,6 +7,7 @@
 
 #include "ticker.h"
 #include "html.h"
+#include "filereader.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,9 +15,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     
-    qputenv("QSG_INFO", "1");
-
-    qputenv("QML_XHR_ALLOW_FILE_READ", "1");
+    qputenv("QSG_INFO", "1");    
     
     QGuiApplication app(argc, argv);
 
@@ -34,6 +33,7 @@ int main(int argc, char *argv[])
     html htmltool;
 
     qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
+    qmlRegisterType<FileReader>("org.tal", 1,0, "FileReader");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
