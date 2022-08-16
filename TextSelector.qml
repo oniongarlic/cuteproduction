@@ -14,6 +14,10 @@ Item {
     }
 
     property alias filter: filesDialog.nameFilters
+    property alias selectExisting: filesDialog.selectExisting
+    property alias selectFolder: filesDialog.selectFolder
+    property alias selectMultiple: filesDialog.selectMultiple
+    property alias shortcuts: filesDialog.shortcuts
 
     FileDialog {
         id: filesDialog

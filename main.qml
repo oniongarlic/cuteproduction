@@ -309,16 +309,15 @@ ApplicationWindow {
                 }
             }
             MenuItem {
-                text: "Open playlist"
+                text: "Open playlist..."
                 onClicked: {
-                    playListSelector.startSelector();
-                    // plist.load("file:///tmp/playlist.m3u8", "m3u8")
+                    playListSelector.startSelector();                    
                 }
             }
             MenuItem {
-                text: "Save playlist"
+                text: "Save playlist as..."
                 onClicked: {
-                    plist.save("file:///tmp/playlist.m3u8", "m3u8")
+                    playListSaveSelector.startSelector();
                 }
             }
             MenuItem {
@@ -393,6 +392,15 @@ ApplicationWindow {
         filter: [ "*.m3u8" ]
         onFileSelected: {
             plist.load(src, "m3u8")
+        }
+    }
+
+    TextSelector {
+        id: playListSaveSelector
+        filter: [ "*.m3u8" ]
+        selectExisting: false
+        onFileSelected: {
+            plist.save(src, "m3u8");
         }
     }
     
