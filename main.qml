@@ -263,6 +263,12 @@ ApplicationWindow {
         Menu {
             title: "News"
             MenuItem {
+                text: "Manage.."
+                onClicked: {
+                    newsDrawer.open()
+                }
+            }
+            MenuItem {
                 id: menuTickerVisible
                 text: "Ticker visible"
                 checkable: true
@@ -278,12 +284,6 @@ ApplicationWindow {
                 text: "Clear"
                 onClicked: {
                     l3window.clearNews()
-                }
-            }
-            MenuItem {
-                text: "Add.."
-                onClicked: {
-                    newsDrawer.open()
                 }
             }
         }
