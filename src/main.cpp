@@ -8,6 +8,7 @@
 #include "ticker.h"
 #include "html.h"
 #include "filereader.h"
+#include "settings.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
     qmlRegisterType<FileReader>("org.tal", 1,0, "FileReader");
+    qmlRegisterType<Settings>("org.tal", 1,0, "Settings");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

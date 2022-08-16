@@ -31,6 +31,10 @@ ApplicationWindow {
     property OutputWindow l3window;
     property MaskWindow maskwindow;
     property TelepromptWindow tpwindow;
+
+    Settings {
+        id: s
+    }
     
     Component.onCompleted: {
         oflags=flags;
