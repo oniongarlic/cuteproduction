@@ -43,7 +43,8 @@ ColumnLayout {
     property rect size: Qt.rect(0, 0, 1, 1);
 
     onSizeChanged: {        
-        vo.setMediaPosition(size);
+        if (vo)
+            vo.setMediaPosition(size);
     }
 
     Slider {

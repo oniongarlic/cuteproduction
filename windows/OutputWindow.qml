@@ -198,14 +198,6 @@ Window {
         anchors.fill: parent
     }
 
-    onWidthChanged: {
-        vo.updatePosition();
-    }
-
-    onHeightChanged: {
-        vo.updatePosition();
-    }
-
     CustomVideoOutput {
         id: vo        
         source: mediaPlayer
