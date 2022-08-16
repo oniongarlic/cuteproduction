@@ -27,6 +27,9 @@ Window {
 
     property bool spanWindow: false;
 
+    property alias lowerThirdsFullWidth: l3.fullWidth
+    property alias lowerThirdsMargin: l3.margin
+
     property int tickerItemsVisible: 4
     property bool tickerVisible: menuTickerVisible.checked;
 
@@ -368,6 +371,7 @@ Window {
         mainTitle: main.primary
         secondaryTitle: main.secondary
         displayTime: delayTime.value*1000
+        fullWidth: menuThirdsFullWidth.checked
     }
     
     Column {

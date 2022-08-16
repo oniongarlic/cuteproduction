@@ -23,11 +23,15 @@ Rectangle {
             color: "#ffffff";
         }
     }
+
+    property bool fullWidth: true
+    property int margin: 32
+
     visible: x>-width
     //radius: 8
-    width: Math.max(cl.width+box.width+32, parent.width/2)
+    width: fullWidth ? parent.width-margin*2 : Math.max(cl.width+box.width+32, parent.width/2)
     height: cl.height+8
-    x: -width-32
+    x: -width-margin
     y: ypos
 
     layer.enabled: false
@@ -42,7 +46,7 @@ Rectangle {
 
     readonly property int ypos: parent.height-height-l3BottomMargin
     
-    property int l3BottomMargin: 40
+    property int l3BottomMargin: margin+8
     
     readonly property bool isActive: l3animation.running
     
@@ -58,7 +62,7 @@ Rectangle {
     onL3BottomMarginChanged: resetLocation()
 
     function resetLocation() {
-        x=-width-32;
+        x=-width-margin;
         y=ypos;
     }
     
@@ -73,8 +77,8 @@ Rectangle {
                 property: "x"
                 easing.type: Easing.InOutCubic;
                 duration: 1200
-                from: -l3.width-32
-                to: 32
+                from: -l3.width-margin
+                to: margin
             }
 //            NumberAnimation {
 //                target: l3
@@ -158,7 +162,7 @@ Rectangle {
 
             Layout.minimumWidth: wc+32
             Layout.preferredWidth: wc+64
-            Layout.maximumWidth: Math.max(l3.parent.width/2, wc+128)
+            Layout.maximumWidth: rl.width
 
             readonly property int wc: Math.max(txtPrimary.contentWidth, txtSecondary.contentWidth)
 

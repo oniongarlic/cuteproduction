@@ -209,6 +209,12 @@ ApplicationWindow {
                     thirdsDrawer.open()
                 }
             }
+            MenuItem {
+                id: menuThirdsFullWidth
+                text: "Full width"
+                checkable: true
+                checked: false
+            }
             MenuSeparator {
                 
             }
