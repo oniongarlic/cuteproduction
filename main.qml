@@ -13,6 +13,7 @@ import "windows"
 import "selectors"
 import "messaging"
 import "components"
+import "models"
 
 ApplicationWindow {
     id: main
@@ -1188,27 +1189,10 @@ ApplicationWindow {
     ListModel {
         id: l3ModelCustom
     }
-    
-    XmlListModel {
+
+    LowerThirdModel {
         id: l3Model
-        query: "/thirds/item"
         source: "persons.xml"
-        
-        XmlRole { name: "primary"; query: "primary/string()"; }
-        XmlRole { name: "secondary"; query: "secondary/string()"; }
-        XmlRole { name: "topic"; query: "topic/string()"; }
-        XmlRole { name: "image"; query: "image/string()"; }
-        
-        onStatusChanged: {
-            switch (status) {
-            case XmlListModel.Ready:
-                //msg.text="T"
-                break;
-            case XmlListModel.Error:
-                console.debug(errorString())
-                break;
-            }
-        }
     }
     
     IrcSource {

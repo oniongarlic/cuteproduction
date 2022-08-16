@@ -21,5 +21,6 @@
         <file>windows/MaskWindow.qml</file>
         <file>components/CustomVideoOutput.qml</file>
         <file>components/MediaController.qml</file>
+        <file>models/LowerThirdModel.qml</file>
     </qresource>
 </RCC>

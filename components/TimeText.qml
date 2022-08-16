@@ -6,7 +6,7 @@ Text {
     width: parent.width
     color: "#ffffff"
     text: ""
-    font.family: "FreeMono"
+    font.family: "Oxygen Mono"
     font.bold: true
     styleColor: "#202020"
     style: Text.Outline
