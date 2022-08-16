@@ -25,7 +25,10 @@ ColumnLayout {
         Button {
             text: "Reset Size"
             onClicked: {
-                vo.resetSize();
+                mpx.value=0;
+                mpy.value=0;
+                mpw.value=1;
+                mph.value=1;                
             }
         }
     }
@@ -37,9 +40,11 @@ ColumnLayout {
         }
     }
 
-    property rect size;
+    property rect size: Qt.rect(0, 0, 1, 1);
 
-    onSizeChanged: vo.setMediaPosition(size);
+    onSizeChanged: {        
+        vo.setMediaPosition(size);
+    }
 
     Slider {
         id: mpx

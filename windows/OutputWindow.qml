@@ -51,7 +51,7 @@ Window {
     property CustomVideoOutput videoInputOutput: vovi
 
     Component.onCompleted: {
-        startTime=new Date()
+        startTime=new Date()        
     }
 
     onFrameSwapped: {
@@ -198,15 +198,16 @@ Window {
         anchors.fill: parent
     }
 
-    function setMediaPosition(x,y,w,h) {
-        vo.x=x*vo.parent.width;
-        vo.y=y*vo.parent.height;
-        vo.width=w*vo.parent.width;
-        vo.height=h*vo.parent.height;
+    onWidthChanged: {
+        vo.updatePosition();
+    }
+
+    onHeightChanged: {
+        vo.updatePosition();
     }
 
     CustomVideoOutput {
-        id: vo
+        id: vo        
         source: mediaPlayer
     }
 
