@@ -183,6 +183,15 @@ ApplicationWindow {
         Menu {
             title: "Chat"
             MenuItem {
+                text: "Manage..."
+                onClicked: {
+                    chatDrawer.open()
+                }
+            }
+            MenuSeparator {
+
+            }
+            MenuItem {
                 text: "IRC Source"
                 onClicked: {
                     ircDrawer.open();
@@ -688,6 +697,101 @@ ApplicationWindow {
             }
             onDoubleClicked: {
                 setMediaFile(index)
+            }
+        }
+    }
+
+    Drawer {
+        id: chatDrawer
+        dragMargin: 0
+        width: parent.width/1.5
+        height: parent.height
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
+            Frame {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                ColumnLayout {
+                    anchors.fill: parent
+                    TextField {
+                        id: bP
+                        Layout.fillWidth: true
+                        selectByMouse: true
+                        placeholderText: "Topic/Name/Keyword"
+                    }
+                    TextArea {
+                        id: bS
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        selectByKeyboard: true
+                        selectByMouse: true
+                        placeholderText: "Message"
+                        textFormat: TextEdit.PlainText
+                        wrapMode: TextEdit.Wrap
+                    }
+                    RowLayout {
+                        Switch {
+                            id: switchMessageListLeft
+                            Layout.alignment: Qt.AlignLeft
+                            text: "Left"
+                            onCheckedChanged: {
+                            }
+                        }
+                        Button {
+                            text: "Send"
+                            enabled: bS.length>0
+                            onClicked: {
+                                l3window.addMessageLeft(bP.text, bS.text);
+                                bP.text=''
+                                bS.text=''
+                            }
+                        }
+                        Button {
+                            text: "Remove"
+                            onClicked: {
+                                l3window.removeMessageLeft();
+                            }
+                        }
+                        Button {
+                            text: "Clear"
+                            onClicked: {
+                                l3window.clearMessagesLeft();
+                            }
+                        }
+                    }
+                    RowLayout {
+                        Switch {
+                            id: switchMessageListRight
+                            Layout.alignment: Qt.AlignLeft
+                            text: "Right"
+                            onCheckedChanged: {
+                            }
+                        }
+                        Button {
+                            text: "Send"
+                            enabled: bP.length>0
+                            onClicked: {
+                                l3window.addMessageRight(bP.text, bS.text);
+                                bP.text=''
+                                bS.text=''
+                            }
+                        }
+                        Button {
+                            text: "Remove"
+                            onClicked: {
+                                l3window.removeMessageRight();
+                            }
+                        }
+                        Button {
+                            text: "Clear"
+                            onClicked: {
+                                l3window.clearMessagesRight();
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -1320,90 +1424,7 @@ ApplicationWindow {
                         textMsg.text=""
                     }
                 }
-            }
-            Frame {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                ColumnLayout {
-                    anchors.fill: parent
-                    TextField {
-                        id: bP
-                        Layout.fillWidth: true
-                        selectByMouse: true
-                        placeholderText: "Topic/Name/Keyword"
-                    }
-                    TextArea {
-                        id: bS
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        selectByKeyboard: true
-                        selectByMouse: true
-                        placeholderText: "Message"
-                        textFormat: TextEdit.PlainText
-                        wrapMode: TextEdit.Wrap
-                    }
-                    RowLayout {
-                        Switch {
-                            id: switchMessageListLeft
-                            Layout.alignment: Qt.AlignLeft
-                            text: "Left"
-                            onCheckedChanged: {
-                            }
-                        }
-                        Button {
-                            text: "Send"
-                            enabled: bS.length>0
-                            onClicked: {
-                                l3window.addMessageLeft(bP.text, bS.text);
-                                bP.text=''
-                                bS.text=''
-                            }
-                        }
-                        Button {
-                            text: "Remove"
-                            onClicked: {
-                                l3window.removeMessageLeft();
-                            }
-                        }
-                        Button {
-                            text: "Clear"
-                            onClicked: {
-                                l3window.clearMessagesLeft();
-                            }
-                        }
-                    }
-                    RowLayout {
-                        Switch {
-                            id: switchMessageListRight
-                            Layout.alignment: Qt.AlignLeft
-                            text: "Right"
-                            onCheckedChanged: {
-                            }
-                        }
-                        Button {
-                            text: "Send"
-                            enabled: bP.length>0
-                            onClicked: {
-                                l3window.addMessageRight(bP.text, bS.text);
-                                bP.text=''
-                                bS.text=''
-                            }
-                        }
-                        Button {
-                            text: "Remove"
-                            onClicked: {
-                                l3window.removeMessageRight();
-                            }
-                        }
-                        Button {
-                            text: "Clear"
-                            onClicked: {
-                                l3window.clearMessagesRight();
-                            }
-                        }
-                    }
-                }
-            }
+            }            
         }
         
         // 2x1
