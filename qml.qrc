@@ -22,5 +22,6 @@
         <file>components/CustomVideoOutput.qml</file>
         <file>components/MediaController.qml</file>
         <file>models/LowerThirdModel.qml</file>
+        <file>components/ItemTemplate.qml</file>
     </qresource>
 </RCC>

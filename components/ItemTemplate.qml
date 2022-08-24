@@ -1,24 +1,15 @@
 import QtQuick 2.15
 
-Text {
+Item {
     id: txtTemplate
-    color: "#ffffff"
-    text: ""
-    font.family: "Oxygen Mono"
-    font.bold: true
-    styleColor: "#202020"
-    style: Text.Outline
-    horizontalAlignment: Text.AlignHCenter
-    minimumPixelSize: 24
-    font.pixelSize: 142
-    fontSizeMode: Text.HorizontalFit
-    textFormat: Text.PlainText
-    
     width: contentWidth
     height: contentHeight
     
     property int alignX: Qt.AlignCenter
     property int alignY: Qt.AlignCenter
+    
+    property int customX: 0
+    property int customY: 0
     
     Behavior on x { NumberAnimation { easing.type: Easing.InOutQuad} }
     Behavior on y { NumberAnimation { easing.type: Easing.InOutQuad} }
@@ -33,9 +24,6 @@ Text {
         }
     }
     
-    onAlignXChanged: updatePosition()
-    onAlignYChanged: updatePosition()
-    
     function setPosition(ax, ay) {
         alignX=ax;
         alignY=ay;
@@ -46,6 +34,9 @@ Text {
         var p=parent;
         // X
         switch (alignX) {
+        case 0:
+            x=customX;
+            break;
         case Qt.AlignLeft:
             x=m;
             break;
@@ -59,6 +50,9 @@ Text {
         
         // Y
         switch (alignY) {
+        case 0:
+            y=customY;
+            break;
         case Qt.AlignTop:
             y=m;
             break;

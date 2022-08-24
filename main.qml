@@ -1476,6 +1476,24 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 18
                 }
+                Button {
+                    text: "LT"
+                    onClicked: {
+                        l3window.setPosition(l3window.txtTime, Qt.AlignLeft, Qt.AlignTop)
+                    }
+                }
+                Button {
+                    text: "MT"
+                    onClicked: {
+                        l3window.setPosition(l3window.txtTime, Qt.AlignCenter, Qt.AlignTop)
+                    }
+                }
+                Button {
+                    text: "RT"
+                    onClicked: {
+                        l3window.setPosition(l3window.txtTime, Qt.AlignRight, Qt.AlignTop)
+                    }
+                }
             }
             RowLayout {
                 Switch {

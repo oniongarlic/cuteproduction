@@ -52,6 +52,10 @@ Window {
 
     property CustomVideoOutput mediaPlayerOutput: vo
     property CustomVideoOutput videoInputOutput: vovi
+    
+    property alias txtTime: timeCurrent
+    property alias txtCountdown: timeCountdown
+    property alias txtUp: timeCount
 
     Component.onCompleted: {
         startTime=new Date()        
@@ -374,17 +378,47 @@ Window {
         fullWidth: menuThirdsFullWidth.checked
     }
     
+    function setPosition(item, ax, ay) {
+        item.setPosition(ax, ay);
+    }
+    
+    TimeText {
+        id: timeCurrent
+        //parent: middleSide
+        visible: showTime.checked
+        Component.onCompleted: {
+            setPosition(Qt.AlignCenter, Qt.AlignCenter)
+        }
+    }
+    
+    TimeText {
+        id: timeCount
+        //parent: middleSide
+        visible: showCounter.checked
+        text: formatSeconds(tickerUp.seconds)
+        Component.onCompleted: {
+            setPosition(Qt.AlignLeft, Qt.AlignBottom)
+        }
+    }
+    TimeText {
+        id: timeCountdown
+        //parent: middleSide
+        text: formatSeconds(ticker.countdown)
+        visible: showCountdown.checked
+        Component.onCompleted: {
+            setPosition(Qt.AlignRight, Qt.AlignBottom)
+        }
+    }
+    
     Column {
         id: cl
         parent: middleSide
-        anchors.centerIn: parent
+        anchors.fill: parent
         anchors.leftMargin: 32
         anchors.rightMargin: 32
-        anchors.topMargin: 32
+        anchors.topMargin: 256
         anchors.bottomMargin: 32
         spacing: 16
-        height: Math.min(childrenRect.height, parent.height)
-        width: parent.width
 
         property real fontSizeRatioTime: 5
 
@@ -413,20 +447,8 @@ Window {
             horizontalAlignment: lineCount<2 ? Text.AlignHCenter : Text.AlignLeft
             height: cl.parent.height/4
         }
-        TimeText {
-            id: timeCurrent
-            visible: showTime.checked
-        }
-        TimeText {
-            id: timeCount
-            visible: showCounter.checked
-            text: formatSeconds(tickerUp.seconds)
-        }
-        TimeText {
-            id: timeCountdown
-            text: formatSeconds(ticker.countdown)
-            visible: showCountdown.checked
-        }
+        
+        
     }
 
     ColumnLayout {
