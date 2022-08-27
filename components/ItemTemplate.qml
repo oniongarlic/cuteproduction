@@ -1,21 +1,28 @@
 import QtQuick 2.15
 
 Item {
-    id: txtTemplate
-    width: contentWidth
-    height: contentHeight
+    id: template
+    width: parent.contentWidth
+    height: parent.contentHeight
     
     property int alignX: Qt.AlignCenter
     property int alignY: Qt.AlignCenter
     
     property int customX: 0
     property int customY: 0
+
+    property int margin: 32
+
+    property Item positionParent;
+
+    onAlignXChanged: updatePositionX()
+    onAlignYChanged: updatePositionY()
     
     Behavior on x { NumberAnimation { easing.type: Easing.InOutQuad} }
     Behavior on y { NumberAnimation { easing.type: Easing.InOutQuad} }
     
     Connections {
-        target: txtTemplate.parent
+        target: positionParent
         function onWidthChanged() {
             updatePosition();
         }
@@ -28,40 +35,45 @@ Item {
         alignX=ax;
         alignY=ay;
     }
-    
-    function updatePosition() {
-        var m=32; // margin
-        var p=parent;
-        // X
+
+    function updatePositionX() {
+        var p=positionParent;
         switch (alignX) {
         case 0:
             x=customX;
             break;
         case Qt.AlignLeft:
-            x=m;
+            x=margin;
             break;
         case Qt.AlignCenter:
             x=p.width/2-width/2
             break;
         case Qt.AlignRight:
-            x=p.width-32-width
+            x=p.width-margin-width
             break;
         }
-        
-        // Y
+    }
+    
+    function updatePositionY() {
+        var p=positionParent;
         switch (alignY) {
         case 0:
             y=customY;
             break;
         case Qt.AlignTop:
-            y=m;
+            y=margin;
             break;
         case Qt.AlignCenter:
-            y=height/2+p.height/2
+            y=p.height/2-height/2
             break;
         case Qt.AlignBottom:
-            y=p.height-m-height
+            y=p.height-margin-height
             break;
         }
+    }
+
+    function updatePosition() {
+        updatePositionX();
+        updatePositionY();
     }
 }

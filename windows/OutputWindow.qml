@@ -379,7 +379,7 @@ Window {
     }
     
     function setPosition(item, ax, ay) {
-        item.setPosition(ax, ay);
+        item.position.setPosition(ax, ay);
     }
     
     TimeText {
@@ -387,7 +387,7 @@ Window {
         //parent: middleSide
         visible: showTime.checked
         Component.onCompleted: {
-            setPosition(Qt.AlignCenter, Qt.AlignCenter)
+            position.setPosition(Qt.AlignCenter, Qt.AlignCenter)
         }
     }
     
@@ -397,7 +397,7 @@ Window {
         visible: showCounter.checked
         text: formatSeconds(tickerUp.seconds)
         Component.onCompleted: {
-            setPosition(Qt.AlignLeft, Qt.AlignBottom)
+            position.setPosition(Qt.AlignLeft, Qt.AlignBottom)
         }
     }
     TimeText {
@@ -406,7 +406,7 @@ Window {
         text: formatSeconds(ticker.countdown)
         visible: showCountdown.checked
         Component.onCompleted: {
-            setPosition(Qt.AlignRight, Qt.AlignBottom)
+            position.setPosition(Qt.AlignRight, Qt.AlignBottom)
         }
     }
     

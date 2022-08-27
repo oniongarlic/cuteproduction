@@ -1496,25 +1496,53 @@ ApplicationWindow {
                     text: "00:00:00"
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 18
-                }
+                }                
                 Button {
-                    text: "LT"
+                    text: "Align"
                     onClicked: {
-                        l3window.setPosition(l3window.txtTime, Qt.AlignLeft, Qt.AlignTop)
+                        alignMenu.open()
+                    }
+                    Menu {
+                        id: alignMenu
+                        MenuItem {
+                            text: "Left - Top"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignLeft, Qt.AlignTop)
+                        }
+                        MenuItem {
+                            text: "Middle - Top"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignCenter, Qt.AlignTop)
+                        }
+                        MenuItem {
+                            text: "Right - Top"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignRight, Qt.AlignTop)
+                        }
+                        MenuItem {
+                            text: "Left - Middle"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignLeft, Qt.AlignCenter)
+                        }
+                        MenuItem {
+                            text: "Middle - Middle"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignCenter, Qt.AlignCenter)
+                        }
+                        MenuItem {
+                            text: "Right - Middle"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignRight, Qt.AlignCenter)
+                        }
+                        MenuItem {
+                            text: "Left - Bottom"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignLeft, Qt.AlignBottom)
+                        }
+                        MenuItem {
+                            text: "Middle - Bottom"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignCenter, Qt.AlignBottom)
+                        }
+                        MenuItem {
+                            text: "Right - Bottom"
+                            onClicked: l3window.setPosition(l3window.txtTime, Qt.AlignRight, Qt.AlignBottom)
+                        }
                     }
                 }
-                Button {
-                    text: "MT"
-                    onClicked: {
-                        l3window.setPosition(l3window.txtTime, Qt.AlignCenter, Qt.AlignTop)
-                    }
-                }
-                Button {
-                    text: "RT"
-                    onClicked: {
-                        l3window.setPosition(l3window.txtTime, Qt.AlignRight, Qt.AlignTop)
-                    }
-                }
+
             }
             RowLayout {
                 Switch {
