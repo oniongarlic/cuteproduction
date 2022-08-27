@@ -23,5 +23,6 @@
         <file>components/MediaController.qml</file>
         <file>models/LowerThirdModel.qml</file>
         <file>components/ItemTemplate.qml</file>
+        <file>selectors/MenuAlignment.qml</file>
     </qresource>
 </RCC>
