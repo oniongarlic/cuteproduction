@@ -12,6 +12,11 @@ Item {
     property int customY: 0
 
     property int margin: 32
+    property int marginTop: 32
+    property int marginBottom: 32
+
+    property int marginLeft: 32
+    property int marginRight: 32
 
     property Item positionParent;
 
@@ -43,13 +48,13 @@ Item {
             x=customX;
             break;
         case Qt.AlignLeft:
-            x=margin;
+            x=marginLeft;
             break;
         case Qt.AlignCenter:
             x=p.width/2-width/2
             break;
         case Qt.AlignRight:
-            x=p.width-margin-width
+            x=p.width-marginRight-width
             break;
         }
     }
@@ -61,13 +66,13 @@ Item {
             y=customY;
             break;
         case Qt.AlignTop:
-            y=margin;
+            y=marginTop;
             break;
         case Qt.AlignCenter:
             y=p.height/2-height/2
             break;
         case Qt.AlignBottom:
-            y=p.height-margin-height
+            y=p.height-marginBottom-height
             break;
         }
     }
