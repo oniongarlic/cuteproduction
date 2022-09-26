@@ -238,7 +238,7 @@ Window {
         id: videoInput
         deviceId: "/dev/video0"
         captureMode: Camera.CaptureViewfinder
-        cameraState: Camera.LoadedState
+        cameraState: Camera.UnloadedState
         onErrorStringChanged: console.debug("CameraError: "+errorString)
         onCameraStateChanged: {
             console.debug("Camera State: "+cameraState)
