@@ -108,6 +108,7 @@ ApplicationWindow {
         id: aws
         OutputWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
+            tickerVisible: menuTickerVisible.checked
             mediaPlayer: mp
         }
     }
@@ -294,6 +295,17 @@ ApplicationWindow {
                 text: "Full width title"
                 checkable: true
                 checked: false
+            }
+            MenuItem {
+                text: "Align Top"
+                onClicked: l3window.setTickerPosition(Qt.AlignTop)
+            }
+            MenuItem {
+                text: "Align Bottom"
+                onClicked: l3window.setTickerPosition(Qt.AlignBottom)
+            }
+            MenuSeparator {
+
             }
             MenuItem {
                 text: "Clear"

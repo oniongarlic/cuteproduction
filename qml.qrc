@@ -24,5 +24,6 @@
         <file>models/LowerThirdModel.qml</file>
         <file>components/ItemTemplate.qml</file>
         <file>selectors/MenuAlignment.qml</file>
+        <file>components/NewsTicker.qml</file>
     </qresource>
 </RCC>
