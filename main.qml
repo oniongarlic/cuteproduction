@@ -1348,6 +1348,11 @@ ApplicationWindow {
     
     Ticker {
         id: ticker
+        onZero: {            
+            stop();
+            // xxx: add option to hide when zero
+            // xxx: add option to play a sound when zero
+        }
     }
     
     Ticker {
@@ -1556,6 +1561,7 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(ticker.countdown)
                     font.pixelSize: 18
+                    color: ticker.active ? "red" : "green"
                     MouseArea {
                         anchors.fill: parent
                         onDoubleClicked: {
