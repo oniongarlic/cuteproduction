@@ -42,16 +42,19 @@ void Ticker::start()
 {
     reset();
     QTimer::start();
+    emit activeChanged();
 }
 
 void Ticker::resume()
 {
     QTimer::start();
+    emit activeChanged();
 }
 
 void Ticker::stop()
 {
     QTimer::stop();
+    emit activeChanged();
 }
 
 void Ticker::ticker()
@@ -72,4 +75,9 @@ void Ticker::ticker()
     if (m_alarm>0 && m_seconds==m_alarm) {
         emit alarm();
     }
+}
+
+bool Ticker::isActive() const
+{
+    return QTimer::isActive();
 }

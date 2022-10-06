@@ -22,13 +22,19 @@ public:
     Q_INVOKABLE void start();
     Q_INVOKABLE void resume();
     Q_INVOKABLE void stop();
-
+    
+    Q_PROPERTY(bool active READ isActive NOTIFY activeChanged)
+    
+    bool isActive() const;
+    
 signals:
     void secondsChanged(long seconds);
     void countdownChanged(long seconds);
     void alarm();
     void zero();
-
+    
+    void activeChanged();
+    
 protected:
     void ticker();
 
