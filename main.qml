@@ -8,6 +8,7 @@ import QtQuick.XmlListModel 2.15
 //import QtQuick3D 1.15
 
 import org.tal 1.0
+import org.tal.cutehyper 1.0
 
 import "windows"
 import "selectors"
@@ -512,6 +513,29 @@ ApplicationWindow {
         }
         onLoadFailed: {
             console.debug(errorString)
+        }
+    }
+    
+    HyperServer {
+        id: hs
+        onPlay: {
+            console.debug("HyperPLAY")
+            mp.play();
+        }
+        onRecord: {
+            console.debug("HyperRECORD")
+            hs.setStatus("stopped")
+        }
+        onStop: {
+            console.debug("HyperSTOP")
+            mp.stop();
+        }
+        onLoopChanged: {
+            if (loop>1) {
+                plist.playbackMode=Playlist.CurrentItemInLoop
+            } else {
+                plist.playbackMode=Playlist.CurrentItemOnce
+            }
         }
     }
     

@@ -1,4 +1,4 @@
-QT += quick quickcontrols2
+QT += quick quickcontrols2 multimedia
 
 CONFIG += c++11
 
@@ -11,13 +11,15 @@ SOURCES += \
         src/filereader.cpp \
         src/html.cpp \
         src/settings.cpp \
-        src/ticker.cpp
+        src/ticker.cpp \
+        src/hyper.cpp
 
 HEADERS += \
     src/filereader.h \
     src/html.h \
     src/settings.h \
-    src/ticker.h
+    src/ticker.h \
+    src/hyper.h
 
 RESOURCES += qml.qrc
 

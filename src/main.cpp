@@ -9,6 +9,7 @@
 #include "html.h"
 #include "filereader.h"
 #include "settings.h"
+#include "hyper.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
 
     html htmltool;
 
+    qmlRegisterType<CuteHyper>("org.tal.cutehyper", 1, 0, "HyperServer");
     qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
     qmlRegisterType<FileReader>("org.tal", 1,0, "FileReader");
     qmlRegisterType<Settings>("org.tal", 1,0, "Settings");
