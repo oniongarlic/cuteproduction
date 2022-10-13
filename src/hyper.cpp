@@ -39,28 +39,27 @@ void CuteHyper::setClips(int clips)
     m_clips=clips;
 }
 
+void CuteHyper::writeResponse(QTcpSocket *con, QByteArray key, QByteArray val)
+{
+    con->write(key);
+    con->write(": ");
+    con->write(val);
+    con->write("\r\n");
+}
+
 void CuteHyper::writeResponse(QTcpSocket *con, QString key, QString val)
 {
-    con->write(key.toLocal8Bit());
-    con->write(": ");
-    con->write(val.toLocal8Bit());
-    con->write("\r\n");
+    writeResponse(con, key.toLocal8Bit(), val.toLocal8Bit());
 }
 
 void CuteHyper::writeResponse(QTcpSocket *con, QString key, bool val)
 {
-    con->write(key.toLocal8Bit());
-    con->write(": ");
-    con->write(val ? "true" : "false");
-    con->write("\r\n");
+    writeResponse(con, key, val ? "true" : "false");
 }
 
 void CuteHyper::writeResponse(QTcpSocket *con, QString key, int val)
 {
-    con->write(key.toLocal8Bit());
-    con->write(": ");
-    con->write(QByteArray::number(val));
-    con->write("\r\n");
+    writeResponse(con, key.toLocal8Bit(), QByteArray::number(val));
 }
 
 void CuteHyper::onReadyRead()
