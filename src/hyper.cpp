@@ -62,6 +62,14 @@ void CuteHyper::writeResponse(QTcpSocket *con, QString key, int val)
     writeResponse(con, key.toLocal8Bit(), QByteArray::number(val));
 }
 
+void CuteHyper::writeAck(QTcpSocket *con, QByteArray code, QByteArray val)
+{
+    con->write(code);
+    con->write(" ");
+    con->write(val);
+    con->write("\r\n");
+}
+
 void CuteHyper::onReadyRead()
 {
     QTcpSocket *con = qobject_cast<QTcpSocket*>(sender());
@@ -75,37 +83,37 @@ void CuteHyper::onReadyRead()
         qDebug() << cmd << cmdp;
 
         if (cmd.startsWith("quit")) {
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
             disconnectRemoteAccess();
             m_server->close();
             return;
         } else if (cmd.startsWith("ping")) {
             qDebug() << "ping";
 
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
         } else if (cmd.startsWith("play")) {
             qDebug() << "play";
 
             emit play();
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
         } else if (cmd.startsWith("record")) {
             qDebug() << "record";
 
             emit record();
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
         } else if (cmd.startsWith("stop")) {
             qDebug() << "stop";
 
             emit stop();
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
         } else if (cmd.startsWith("notify:")) {
             qDebug() << "notify response";
 
-            con->write("209 notify:\r\n");
-            con->write("transport: true\r\n");
-            con->write("slot: true\r\n");
-            con->write("remote: true\r\n");
-            con->write("configuration: false\r\n");
+            writeAck(con, "209", "notify:");
+            writeResponse(con, "transport", true);
+            writeResponse(con, "slot", true);
+            writeResponse(con, "remote", true);
+            writeResponse(con, "configuration", false);
             con->write("\r\n");
 
         } else if (cmd.startsWith("transport info")) {
@@ -117,7 +125,7 @@ void CuteHyper::onReadyRead()
 
             qDebug() << "tc" << stc << m_status;
 
-            con->write("208 transport info:\r\n");
+            writeAck(con, "208", "transport info:");
             writeResponse(con, "status", m_status);
             writeResponse(con, "speed", m_speed);
 
@@ -128,15 +136,16 @@ void CuteHyper::onReadyRead()
                 writeResponse(con, "clip id", 1);
             else
                 writeResponse(con, "clip id", "none");
-            con->write("single clip: true\r\n");
+            writeResponse(con, "single clip", true);
+            writeResponse(con, "slot", true);
             con->write("video format: 1080p30\r\n");
-            con->write("loop: false\r\n");
+            writeResponse(con, "loop", false);
             con->write("\r\n");
 
         } else if (cmd.startsWith("clips count")) {
             qDebug() << "clips count response";
             con->write("214 clips count:\r\n");            
-            writeResponse(con, "clip count", m_clips);
+            writeResponse(con, "clip count", m_playlist->mediaCount());
             con->write("\r\n");
 
         } else if (cmd.startsWith("clips get")) {
@@ -146,9 +155,9 @@ void CuteHyper::onReadyRead()
 
             qDebug() << "clips get response" << m_clip_len << stc;
 
-            con->write("205 clips info:\r\n");
-            writeResponse(con, "clip count", m_clips);
-            if (m_clips>0) {                
+            writeAck(con, "205", "clips info:");
+            writeResponse(con, "clip count", m_playlist->mediaCount());
+            if (m_playlist->mediaCount()>0) {
                 con->write("1: media.mov H.264High 1080p30 00:00:00:00 ");
                 con->write(stc.toLocal8Bit());
                 con->write("\r\n");
@@ -162,7 +171,7 @@ void CuteHyper::onReadyRead()
             tc=tc.addSecs(m_clip_len);
             QString stc=tc.toString("00:hh:mm:ss");
 
-            con->write("206 disk list:\r\n");
+            writeAck(con, "206", "disk list:");
             con->write("slot id: 1\r\n");
             con->write("1: media.mov H.264High 1080p30 00:00:00:00 ");
             con->write(stc.toLocal8Bit());
@@ -200,26 +209,26 @@ void CuteHyper::onReadyRead()
             con->write("\r\n");
 
         } else if (cmd.startsWith("goto")) {
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
 
         } else if (cmd.startsWith("help")) {
-            con->write("200 ok\r\n");
+            writeAck(con, "200", "ok");
 
         } else if (cmd.startsWith("remote")) {
             qDebug() << "remote response";
 
-            con->write("210 remote info:\r\n");
-            con->write("enabled: true\r\n");
-            con->write("override: false\r\n");
+            writeAck(con, "210", "remote info:");
+            writeResponse(con, "enabled", true);
+            writeResponse(con, "override", false);
             con->write("\r\n");
 
         } else if (cmd.startsWith("configuration")) {
-            con->write("211 configuration:\r\n");
+            writeAck(con, "211", "configuration:");
             con->write("audio input: embedded\r\n");
             con->write("video input: HDMI\r\n");
             con->write("\r\n");
-        } else {
-            con->write("103 unsupported\r\n");
+        } else {            
+            writeAck(con, "103", "unsupported");
         }
     }
 }

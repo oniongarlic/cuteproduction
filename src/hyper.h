@@ -62,6 +62,7 @@ private:
     void writeResponse(QTcpSocket *con, QString key, bool val);
     void writeResponse(QTcpSocket *con, QString key, int val);
     void writeResponse(QTcpSocket *con, QByteArray key, QByteArray val);
+    void writeAck(QTcpSocket *con, QByteArray code, QByteArray val);
 };
 
 #endif // HYPER_H
