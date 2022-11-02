@@ -1568,7 +1568,10 @@ ApplicationWindow {
                             tickerUp.reset()
                         }
                         onDoubleClicked: {
-                            tickerUp.start()
+                            if (!tickerUp.active)
+                                tickerUp.start()
+                            else
+                                tickerUp.stop()
                         }
                     }
                 }
@@ -1596,7 +1599,10 @@ ApplicationWindow {
                         onDoubleClicked: {
                             if (!showCountdown.checked)
                                 showCountdown.checked=true
-                            ticker.start()
+                            if (!ticker.active)
+                                ticker.start()
+                            else
+                                ticker.stop()
                         }
                         onPressAndHold: {
                             ticker.setCountdownSeconds(0);
