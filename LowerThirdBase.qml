@@ -24,12 +24,12 @@ Rectangle {
         }
     }
 
-    property bool fullWidth: true
+    property bool fullWidth: true    
     property int margin: 32
 
     visible: x>-width
     //radius: 8
-    width: fullWidth ? parent.width-margin*2 : Math.max(cl.width+box.width+32, parent.width/2)
+    width: fullWidth ? parent.width-margin*2 : parent.width/2
     height: cl.height+8
     x: -width-margin
     y: ypos
