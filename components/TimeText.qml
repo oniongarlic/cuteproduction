@@ -9,11 +9,12 @@ Text {
     styleColor: "#202020"
     style: Text.Outline
     horizontalAlignment: Text.AlignHCenter
-    minimumPixelSize: 24
-    font.pixelSize: 128
+    verticalAlignment: Text.AlignTop
+    font.pixelSize: 96
+    minimumPixelSize: 32
     fontSizeMode: Text.HorizontalFit
     textFormat: Text.PlainText
-    width: contentWidth
+    width: parent.width/4
     height: contentHeight
 
     property ItemTemplate position: pos
@@ -25,7 +26,8 @@ Text {
         id: pos
         alignX: Qt.AlignCenter
         alignY: Qt.AlignCenter
-        positionParent: txtTemplate.parent
+        width: parent.width
+        positionParent: txtTemplate.parent                
     }
 }
 

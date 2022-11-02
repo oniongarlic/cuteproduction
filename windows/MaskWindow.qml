@@ -15,6 +15,10 @@ Window {
         close.accepted=false;
     }
 
+    onScreenChanged: {
+        console.debug("MaskWindowScreen is now: "+screen)
+    }
+
     Image {
         id: mask
         visible: false

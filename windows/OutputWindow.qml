@@ -35,7 +35,6 @@ Window {
 
     property alias newsTickerVisible: newsTicker.visible
     property alias lowerThirdsVisible: l3.visible
-    property alias timersVisible: cl.visible
 
     property ListModel newsTickerModel: tickerModel
 
@@ -56,9 +55,14 @@ Window {
     property alias txtTime: timeCurrent
     property alias txtCountdown: timeCountdown
     property alias txtUp: timeCount
+    property alias txtMessage: msgText
 
     Component.onCompleted: {
-        startTime=new Date()        
+        startTime=new Date()
+    }
+
+    onScreenChanged: {
+        console.debug("OutputWindowScreen is now: "+screen.name)
     }
 
     onFrameSwapped: {
@@ -176,7 +180,7 @@ Window {
     }
 
     CustomVideoOutput {
-        id: vo        
+        id: vo
         source: mediaPlayer
     }
 
@@ -354,16 +358,13 @@ Window {
     
     TimeText {
         id: timeCurrent
-        //parent: middleSide
         visible: showTime.checked
         Component.onCompleted: {
             position.setPosition(Qt.AlignCenter, Qt.AlignCenter)
         }
     }
-    
     TimeText {
         id: timeCount
-        //parent: middleSide
         visible: showCounter.checked
         text: formatSeconds(tickerUp.seconds)
         Component.onCompleted: {
@@ -372,53 +373,19 @@ Window {
     }
     TimeText {
         id: timeCountdown
-        //parent: middleSide
         text: formatSeconds(ticker.countdown)
         visible: showCountdown.checked
         Component.onCompleted: {
             position.setPosition(Qt.AlignRight, Qt.AlignBottom)
         }
     }
-    
-    Column {
-        id: cl
-        parent: middleSide
-        anchors.fill: parent
-        anchors.leftMargin: 32
-        anchors.rightMargin: 32
-        anchors.topMargin: 256
-        anchors.bottomMargin: 32
-        spacing: 16
 
-        property real fontSizeRatioTime: 5
-
-        move: Transition {
-            NumberAnimation {
-                easing.type: Easing.InOutQuad
-                properties: "x,y";
-                duration: 750
-            }
+    MessageText {
+        id: msgText
+        visible: text!=""
+        Component.onCompleted: {
+            position.setPosition(Qt.AlignCenter, Qt.AlignTop)
         }
-        add: Transition {
-            NumberAnimation {
-                easing.type: Easing.InOutQuad
-                properties: "x,y";
-                duration: 750;
-            }
-        }
-
-        TimeText {
-            id: msgText
-            minimumPixelSize: 42
-            font.pixelSize: 82
-            visible: text!=""
-            wrapMode: Text.Wrap
-            maximumLineCount: 4
-            horizontalAlignment: lineCount<2 ? Text.AlignHCenter : Text.AlignLeft
-            height: cl.parent.height/4
-        }
-        
-        
     }
 
     NewsTicker {

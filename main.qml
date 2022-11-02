@@ -1465,6 +1465,10 @@ ApplicationWindow {
                         textMsg.text=""
                     }
                 }
+                MenuAlignment {
+                    window: l3window;
+                    item: l3window.txtMessage
+                }
             }            
         }
         

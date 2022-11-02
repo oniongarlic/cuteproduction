@@ -13,7 +13,7 @@ Text {
     font.pixelSize: 72
     wrapMode: Text.Wrap
     maximumLineCount: 6
-    horizontalAlignment: Text.AlignJustify
+    horizontalAlignment: lineCount<2 ? Text.AlignHCenter : Text.AlignJustify
     verticalAlignment: Text.AlignTop
     width: parent.width/1.5
 
