@@ -1561,6 +1561,7 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignHCenter
                     text: formatSeconds(tickerUp.seconds)
                     font.pixelSize: 18
+                    color: tickerUp.active ? "red" : "green"
                     MouseArea {
                         anchors.fill: parent
                         onPressAndHold: {
