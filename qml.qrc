@@ -25,5 +25,6 @@
         <file>components/ItemTemplate.qml</file>
         <file>selectors/MenuAlignment.qml</file>
         <file>components/NewsTicker.qml</file>
+        <file>components/MessageText.qml</file>
     </qresource>
 </RCC>
