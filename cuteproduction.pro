@@ -1,4 +1,4 @@
-QT += quick quickcontrols2 multimedia
+QT += quick quickcontrols2 multimedia mqtt
 
 CONFIG += c++11
 
@@ -12,14 +12,16 @@ SOURCES += \
         src/html.cpp \
         src/settings.cpp \
         src/ticker.cpp \
-        src/hyper.cpp
+        src/hyper.cpp \
+        src/cutemqttclient.cpp
 
 HEADERS += \
     src/filereader.h \
     src/html.h \
     src/settings.h \
     src/ticker.h \
-    src/hyper.h
+    src/hyper.h \
+    src/cutemqttclient.h
 
 RESOURCES += qml.qrc
 
