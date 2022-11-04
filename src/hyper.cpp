@@ -232,11 +232,12 @@ void CuteHyper::onReadyRead()
         }
     }
 }
+
 void CuteHyper::disconnectRemoteAccess() {
-    QTcpSocket *con = qobject_cast<QTcpSocket*>(sender());
+    QTcpSocket *con = qobject_cast<QTcpSocket*>(sender());    
 
     qDebug() << "Remote disconnected" << con->peerAddress();
-
+    m_clients.removeOne(con);
     con->deleteLater();
 
     m_connections--;
@@ -256,6 +257,8 @@ void CuteHyper::newConnection() {
 
         connect(tmp, SIGNAL(disconnected()), this, SLOT(disconnectRemoteAccess()));
         connect(tmp, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+
+        m_clients.append(tmp);
 
         m_connections++;
     } else {

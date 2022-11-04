@@ -45,6 +45,8 @@ private:
 
     uint m_connections;
 
+    QList<QTcpSocket *> m_clients;
+
     QString m_status;
     int m_tc;
     int m_speed;
