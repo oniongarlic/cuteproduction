@@ -10,6 +10,7 @@
 #include "filereader.h"
 #include "settings.h"
 #include "hyper.h"
+#include "cutemqttclient.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,10 +35,12 @@ int main(int argc, char *argv[])
 
     html htmltool;
 
-    qmlRegisterType<CuteHyper>("org.tal.cutehyper", 1, 0, "HyperServer");
     qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
     qmlRegisterType<FileReader>("org.tal", 1,0, "FileReader");
     qmlRegisterType<Settings>("org.tal", 1,0, "Settings");
+
+    qmlRegisterType<CuteHyper>("org.tal.cutehyper", 1, 0, "HyperServer");
+    qmlRegisterType<CuteMqttClient>("org.tal.mqtt", 1, 0, "MqttClient");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -52,7 +55,6 @@ int main(int argc, char *argv[])
     rootContext->setContextProperty("html", &htmltool);
 
     engine.load(url);
-
     
 #ifdef Q_OS_WIN32
   SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
