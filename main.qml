@@ -32,11 +32,7 @@ ApplicationWindow {
     
     property OutputWindow l3window;
     property MaskWindow maskwindow;
-    property TelepromptWindow tpwindow;
-
-    Settings {
-        id: s
-    }
+    property TelepromptWindow tpwindow;    
     
     Component.onCompleted: {
         oflags=flags;
@@ -117,8 +113,6 @@ ApplicationWindow {
     menuBar: MenuBar {
         Menu {
             title: "File"
-            
-            
             MenuItem {
                 text: "Quit"
                 onClicked: Qt.quit()
@@ -455,6 +449,9 @@ ApplicationWindow {
             l3window.setBackground(button.value)
             currentValue=button.value
         }
+        onCurrentValueChanged: {
+            settings.setSettingsStr("background/color", currentValue)
+        }
     }
 
     ColorDialog {
@@ -465,6 +462,12 @@ ApplicationWindow {
         }
         onRejected: {
 
+        }
+        Component.onCompleted: {
+            color=settings.getSettingsStr("background/customColor", "yellow")
+        }
+        onColorChanged: {
+            settings.setSettingsStr("background/customColor", color)
         }
     }
 

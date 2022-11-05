@@ -34,10 +34,10 @@ int main(int argc, char *argv[])
     qDebug() << screens;
 
     html htmltool;
+    Settings settings;
 
     qmlRegisterType<Ticker>("org.tal", 1,0, "Ticker");
     qmlRegisterType<FileReader>("org.tal", 1,0, "FileReader");
-    qmlRegisterType<Settings>("org.tal", 1,0, "Settings");
 
     qmlRegisterType<CuteHyper>("org.tal.cutehyper", 1, 0, "HyperServer");
     qmlRegisterType<CuteMqttClient>("org.tal.mqtt", 1, 0, "MqttClient");
@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("html", &htmltool);
+    rootContext->setContextProperty("settings", &settings);
 
     engine.load(url);
     
