@@ -146,6 +146,8 @@ ApplicationWindow {
                     l3window.useMask=checked;
                     if (checked && !maskwindow.visible) {
                         maskwindow.visible=true;
+                    } else {
+                        maskwindow.visible=false;
                     }
                 }
             }
