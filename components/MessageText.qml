@@ -30,4 +30,8 @@ Text {
         height: parent.height
         positionParent: txtTemplate.parent
     }
+
+    onTextChanged: {
+        pos.updatePosition();
+    }
 }
