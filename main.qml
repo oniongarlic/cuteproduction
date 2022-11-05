@@ -168,9 +168,19 @@ ApplicationWindow {
         Menu {
             title: "Message"
             MenuItem {
+                text: "Copy"
+                enabled: textMsg.selectionEnd!=textMsg.selectionStart
+                onClicked: textMsg.copy()
+            }
+            MenuItem {
                 text: "Paste"
                 enabled: textMsg.canPaste
                 onClicked: textMsg.paste()
+            }
+            MenuItem {
+                text: "Undo"
+                enabled: textMsg.canUndo
+                onClicked: textMsg.undo()
             }
             MenuItem {
                 text: "Select all"
