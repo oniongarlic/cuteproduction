@@ -21,7 +21,7 @@ Window {
     height: 720
     modality: Qt.NonModal
     transientParent: null
-    color: bgBlack.checked ? "black" : bgGreen.checked ? "green" : "blue"
+    color: "black"
 
     property var startTime;
 
@@ -97,6 +97,27 @@ Window {
         onTriggered: {
             updateCurrentTime();
             updateCounter();
+        }
+    }
+
+    function setBackground(bg, src='') {
+        switch (bg) {
+        case 'black':
+        case 'green':
+        case 'blue':
+            color=bg
+            img.source='';
+            break;
+        case 'image':
+            color='black'
+            img.source=src;
+            break;
+        case 'custom':
+            color=src
+            img.source='';
+            break;
+        default:
+            color='black'
         }
     }
 
@@ -176,7 +197,9 @@ Window {
     Image {
         id: img
         fillMode: Image.PreserveAspectCrop
+        asynchronous: true
         anchors.fill: parent
+        visible: src!==''
     }
 
     CustomVideoOutput {
@@ -195,6 +218,10 @@ Window {
 
     function stopCamera() {
         videoInput.stop();
+    }
+
+    function videoOutputVisible(v) {
+        vovi.visible=v;
     }
 
     function setVideoOutputSource(src) {

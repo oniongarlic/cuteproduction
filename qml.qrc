@@ -26,5 +26,7 @@
         <file>selectors/MenuAlignment.qml</file>
         <file>components/NewsTicker.qml</file>
         <file>components/MessageText.qml</file>
+        <file>components/ColorMenuItem.qml</file>
+        <file>components/ValueMenuItem.qml</file>
     </qresource>
 </RCC>

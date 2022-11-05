@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.15
 import QtMultimedia 5.15
 import QtQuick.XmlListModel 2.15
-//import QtQuick3D 1.15
+import QtQuick.Dialogs 1.3
 
 import org.tal 1.0
 import org.tal.cutehyper 1.0
@@ -354,11 +354,11 @@ ApplicationWindow {
                     plist.clear()
                 }
             }
-            Menu {
+            Menu {                
                 title: "Video input"
+                enabled: l3window.hasVideoInput
                 MenuItem {
-                    text: "Start"
-                    enabled: l3window.hasVideoInput
+                    text: "Start"                    
                     onClicked: {
                         l3window.startCamera();
                     }
@@ -370,31 +370,97 @@ ApplicationWindow {
                         l3window.stopCamera();
                     }
                 }
+                MenuItem {
+                    checkable: true
+                    checked: true
+                    onClicked: {
+                        l3window.videoOutputVisible(checked)
+                    }
+                }
             }
         }
         
         Menu {
-            title: "Background"
+            title: "Background"                       
             
-            MenuItem {
+            ColorMenuItem {
                 id: bgBlack
                 text: "Black"
+                value: "black"
                 checkable: true
                 checked: true
-                autoExclusive: true
+                ButtonGroup.group: backgroundGroup
             }
-            MenuItem {
+            ColorMenuItem {
                 id: bgGreen
                 text: "Green"
+                value: "green"
                 checkable: true
-                autoExclusive: true
+                ButtonGroup.group: backgroundGroup
             }
-            MenuItem {
+            ColorMenuItem {
                 id: bgBlue
                 text: "Blue"
+                value: "blue"
                 checkable: true
-                autoExclusive: true
+                ButtonGroup.group: backgroundGroup
             }
+            ColorMenuItem {
+                id: bgCustom
+                text: "Custom"
+                checkable: true
+                value: dialogColor.color
+                ButtonGroup.group: backgroundGroup
+                onClicked: {
+                    dialogColor.open()
+                }
+            }
+            MenuSeparator {
+
+            }
+            MenuItem {
+                id: bgImage
+                text: "Image..."
+                onClicked: {
+                    tsimg.startSelector()
+                }
+            }
+            MenuItem {
+                id: bgImageClear
+                text: "Clear"
+                onClicked: {
+                    l3window.setBackground('image', '');
+                    l3window.setBackground(backgroundGroup.currentValue);
+                }
+            }
+        }
+    }
+
+    ButtonGroup {
+        id: backgroundGroup
+        property string currentValue: 'black';
+        onClicked: {
+            l3window.setBackground(button.value)
+            currentValue=button.value
+        }
+    }
+
+    ColorDialog {
+        id: dialogColor
+        onAccepted: {
+            l3window.setBackground('custom', color);
+            backgroundGroup.currentValue=color;
+        }
+        onRejected: {
+
+        }
+    }
+
+    TextSelector {
+        id: tsimg
+        filter: [ "*.jpg" ]
+        onFileSelected: {
+            l3window.setBackground('image', src)
         }
     }
     
