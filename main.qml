@@ -1600,9 +1600,15 @@ ApplicationWindow {
                     value: 5
                 }
                 Button {
-                    text: "Show"
+                    text: "Show L"
                     onClicked: {
                         l3window.show();
+                    }
+                }
+                Button {
+                    text: "Show R"
+                    onClicked: {
+                        l3window.showRight();
                     }
                 }
             }

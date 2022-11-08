@@ -26,12 +26,15 @@ Rectangle {
 
     property bool fullWidth: true    
     property int margin: 32
+    
+    property int alignHorizontal: Qt.AlignLeft
+    property int alignVertical: Qt.AlignBottom
 
     visible: x>-width
     //radius: 8
-    width: fullWidth ? parent.width-margin*2 : parent.width/2
+    width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin
     height: cl.height+8
-    x: -width-margin
+    x: xpos
     y: ypos
 
     layer.enabled: false
@@ -44,7 +47,29 @@ Rectangle {
         transparentBorder: true
     }
 
-    readonly property int ypos: parent.height-height-l3BottomMargin
+    readonly property int xpos: getXpos(parent.width, width, alignHorizontal) // -width-margin
+    
+    function getXpos(pw, w, ah) {
+        switch (ah) {
+        case Qt.AlignLeft:
+            return -w-margin
+        case Qt.AlignRight:
+            return pw+margin
+        }
+    }
+    
+    readonly property int ypos: getYpos(parent.height, height, l3BottomMargin, alignVertical)
+    
+    function getYpos(ph,h,m,av) {
+        switch (av) {
+        case Qt.AlignBottom:
+            return ph-h-m
+        case Qt.AlignCenter:
+            return ph/2-h/2
+        case Qt.AlignTop:
+            return m
+        }
+    }
     
     property int l3BottomMargin: margin+8
     
@@ -62,8 +87,8 @@ Rectangle {
     onL3BottomMarginChanged: resetLocation()
 
     function resetLocation() {
-        x=-width-margin;
-        y=ypos;
+        x=getXpos(parent.width, width, alignHorizontal);
+        y=getYpos(parent.height, height, l3BottomMargin, alignVertical);
     }
     
     SequentialAnimation {
@@ -77,8 +102,8 @@ Rectangle {
                 property: "x"
                 easing.type: Easing.InOutCubic;
                 duration: 1200
-                from: -l3.width-margin
-                to: margin
+                from: getXpos(l3.parent.width, width, alignHorizontal)
+                to: alignHorizontal==Qt.AlignLeft ? margin : width+margin
             }
 //            NumberAnimation {
 //                target: l3

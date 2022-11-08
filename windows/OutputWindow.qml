@@ -136,6 +136,10 @@ Window {
     function show() {
         l3.show();
     }
+    
+    function showRight() {
+        l3r.show();
+    }
 
     function setMessage(msg) {
         msgText.text=msg;
@@ -382,6 +386,15 @@ Window {
         secondaryTitle: main.secondary
         displayTime: delayTime.value*1000
         fullWidth: menuThirdsFullWidth.checked
+    }
+    
+    LowerThirdBase {
+        id: l3r
+        mainTitle: main.primary
+        secondaryTitle: main.secondary
+        displayTime: delayTime.value*1000
+        fullWidth: menuThirdsFullWidth.checked
+        alignHorizontal: Qt.AlignRight
     }
     
     function setPosition(item, ax, ay) {
