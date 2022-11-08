@@ -9,6 +9,7 @@ import QtQuick.Dialogs 1.3
 
 import org.tal 1.0
 import org.tal.cutehyper 1.0
+import org.tal.mqtt 1.0
 
 import "windows"
 import "selectors"
@@ -62,6 +63,8 @@ ApplicationWindow {
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
         
         l3window.maskWindow=maskwindow;
+
+        mqttClient.connectToHost();
     }
     
     onClosing: {
@@ -436,7 +439,7 @@ ApplicationWindow {
                 text: "Clear"
                 onClicked: {
                     l3window.setBackground('image', '');
-                    l3window.setBackground(backgroundGroup.currentValue);
+                    l3window.setBackground(backgroundGroup.currentValue);                    
                 }
             }
         }
@@ -476,6 +479,7 @@ ApplicationWindow {
         filter: [ "*.jpg" ]
         onFileSelected: {
             l3window.setBackground('image', src)
+            settings.setSettingsStr("background/image", src)
         }
     }
     
@@ -1783,5 +1787,46 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    MqttClient {
+        id: mqttClient
+        clientId: "cuteproduction"
+        hostname: "127.0.0.1"
+        // port: "1883"
+
+        readonly property string topicBase: "cuteproduction/0/"
+
+        onConnected: {
+            console.debug("MQTT: Connected")
+
+            publishActive(1)
+            setWillTopic(topicBase+"active")
+            setWillMessage(0)
+
+            subscribeTopic(topicBase+"message", showMessage)
+        }
+
+        onDisconnected: {
+            console.debug("MQTT: Disconnected")
+        }
+
+        onErrorChanged: console.debug("MQTT: Error "+ error)
+        onStateChanged: console.debug("MQTT: State "+state)
+        //onPingResponseReceived: console.debug("MQTT: Ping")
+        //onMessageSent: console.debug("MQTT: Sent "+id)
+
+        function subscribeTopic(topic, cb) {
+            let s=mqttClient.subscribe(topic)
+            s.messageReceived.connect(cb)
+        }
+
+        function publishActive(i) {
+            publish(topicBase+"active", i, 1, true)
+        }
+    }
+
+    function showMessage(str) {
+        l3window.setMessage(str)
     }
 }

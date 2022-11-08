@@ -371,6 +371,11 @@ Window {
         visible: switchMessageListRight.checked
     }
 
+    function setLowerThird(primaryTitle, secondaryTitle) {
+        l3.mainTitle=primaryTitle;
+        l3.secondaryTitle=secondaryTitle;
+    }
+
     LowerThirdBase {
         id: l3
         mainTitle: main.primary
