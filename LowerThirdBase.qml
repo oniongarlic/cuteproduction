@@ -30,9 +30,11 @@ Rectangle {
     property int alignHorizontal: Qt.AlignLeft
     property int alignVertical: Qt.AlignBottom
 
+    property bool useOpacity: false
+
     visible: x>-width
     //radius: 8
-    width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin
+    width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin*2
     height: cl.height+8
     x: xpos
     y: ypos
@@ -102,8 +104,8 @@ Rectangle {
                 property: "x"
                 easing.type: Easing.InOutCubic;
                 duration: 1200
-                from: getXpos(l3.parent.width, width, alignHorizontal)
-                to: alignHorizontal==Qt.AlignLeft ? margin : width+margin
+                from: getXpos(l3.parent.width, l3.width, alignHorizontal)
+                to: alignHorizontal==Qt.AlignLeft ? margin : l3.parent.width/2+margin
             }
 //            NumberAnimation {
 //                target: l3
@@ -200,6 +202,8 @@ Rectangle {
                 font.family: "Helvetica"
                 font.bold: true
                 font.pixelSize: 42
+                minimumPixelSize: 36
+                fontSizeMode: Text.HorizontalFit
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
             }
@@ -211,6 +215,8 @@ Rectangle {
                 text: ""
                 font.family: "Helvetica"
                 font.pixelSize: 32
+                minimumPixelSize: 26
+                fontSizeMode: Text.HorizontalFit
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
             }
