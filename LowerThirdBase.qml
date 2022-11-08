@@ -39,7 +39,7 @@ Rectangle {
     x: xpos
     y: ypos
 
-    layer.enabled: false
+    layer.enabled: useOpacity
     layer.effect: Glow {
         anchors.fill: l3
         radius: 8
@@ -107,14 +107,14 @@ Rectangle {
                 from: getXpos(l3.parent.width, l3.width, alignHorizontal)
                 to: alignHorizontal==Qt.AlignLeft ? margin : l3.parent.width/2+margin
             }
-//            NumberAnimation {
-//                target: l3
-//                property: "opacity"
-//                from: 0
-//                to: 1
-//                easing.type: Easing.InOutCubic;
-//                duration: 1000
-//            }
+            NumberAnimation {
+                target: useOpacity ? l3 : undefined;
+                property: "opacity"
+                from: 0
+                to: 1
+                easing.type: Easing.InOutCubic;
+                duration: 1000;
+            }
         }
         PauseAnimation {
             id: displayTimer
@@ -129,14 +129,14 @@ Rectangle {
                 to: l3.parent.height+16
                 from: ypos
             }
-//            NumberAnimation {
-//                target: l3
-//                property: "opacity"
-//                from: 1
-//                to: 0
-//                easing.type: Easing.InOutCubic;
-//                duration: 800
-//            }
+            NumberAnimation {
+                target: useOpacity ? l3 : undefined;
+                property: "opacity"
+                from: 1
+                to: 0
+                easing.type: Easing.InOutCubic;
+                duration: 800;
+            }
         }
         ScriptAction {
             script: resetLocation();
