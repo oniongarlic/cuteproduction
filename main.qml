@@ -1647,14 +1647,14 @@ ApplicationWindow {
                 }
                 Button {
                     text: "Show L"
-                    enabled: currentIndexLeft>0
+                    enabled: l3selector.currentIndexLeft>-1
                     onClicked: {
                         l3window.lthirdLeft.show();
                     }
                 }
                 Button {
                     text: "Show R"
-                    enabled: currentIndexRight>0
+                    enabled: l3selector.currentIndexRight>-1
                     onClicked: {
                         l3window.lthirdRight.show();
                     }
