@@ -1610,8 +1610,8 @@ ApplicationWindow {
                 Layout.maximumHeight: gl.height/3
                 highlight: Rectangle { color: "lightblue" }
                 
-                property int currentIndexLeft;
-                property int currentIndexRight;
+                property int currentIndexLeft: -1;
+                property int currentIndexRight: -1;
                 
                 onCurrentIndexLeftChanged: {
                     const data=model.get(currentIndexLeft);
