@@ -63,7 +63,7 @@ ApplicationWindow {
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
         
         l3window.maskWindow=maskwindow;
-
+        
         mqttClient.connectToHost();
     }
     
@@ -87,7 +87,7 @@ ApplicationWindow {
     FileReader {
         id: fr
     }
-
+    
     Component {
         id: tpw
         TelepromptWindow {
@@ -200,7 +200,7 @@ ApplicationWindow {
                 }
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "IRC Source"
@@ -315,7 +315,7 @@ ApplicationWindow {
                 onClicked: l3window.setTickerPosition(Qt.AlignBottom)
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "Clear"
@@ -425,7 +425,7 @@ ApplicationWindow {
                 }
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 id: bgImage
@@ -444,7 +444,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     ButtonGroup {
         id: backgroundGroup
         property string currentValue: 'black';
@@ -456,7 +456,7 @@ ApplicationWindow {
             settings.setSettingsStr("background/color", currentValue)
         }
     }
-
+    
     ColorDialog {
         id: dialogColor
         onAccepted: {
@@ -464,7 +464,7 @@ ApplicationWindow {
             backgroundGroup.currentValue=color;
         }
         onRejected: {
-
+            
         }
         Component.onCompleted: {
             color=settings.getSettingsStr("background/customColor", "yellow")
@@ -473,7 +473,7 @@ ApplicationWindow {
             settings.setSettingsStr("background/customColor", color)
         }
     }
-
+    
     TextSelector {
         id: tsimg
         filter: [ "*.jpg" ]
@@ -507,7 +507,7 @@ ApplicationWindow {
             plist.load(src, "m3u8")
         }
     }
-
+    
     TextSelector {
         id: playListSaveSelector
         filter: [ "*.m3u8" ]
@@ -821,7 +821,7 @@ ApplicationWindow {
             }
         }
     }
-
+    
     Drawer {
         id: chatDrawer
         dragMargin: 0
@@ -1023,6 +1023,12 @@ ApplicationWindow {
         dragMargin: 0
         width: parent.width/1.5
         height: parent.height
+        
+        function clearL3Input() {
+            textl3Primary.clear()
+            textl3Secondary.clear()
+        }
+        
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 16
@@ -1030,13 +1036,13 @@ ApplicationWindow {
             TextField {
                 id: textl3Primary
                 Layout.fillWidth: true
-                placeholderText: "Primary"
+                placeholderText: "Primary (name, etc)"
                 selectByMouse: true
             }
             TextField {
                 id: textl3Secondary
                 Layout.fillWidth: true
-                placeholderText: "Secondary"
+                placeholderText: "Secondary (title, e-mail, etc)"
                 selectByMouse: true
             }
             RowLayout {
@@ -1051,8 +1057,7 @@ ApplicationWindow {
                 Button {
                     text: "Clear"
                     onClicked: {
-                        textl3Primary.clear()
-                        textl3Secondary.clear()
+                        thirdsDrawer.clearL3Input();
                     }
                 }
                 Button {
@@ -1428,7 +1433,7 @@ ApplicationWindow {
     ListModel {
         id: l3ModelCustom
     }
-
+    
     LowerThirdModel {
         id: l3Model
         source: "persons.xml"
@@ -1468,21 +1473,43 @@ ApplicationWindow {
         id: tickerUp
     }
     
+    ButtonGroup {
+        id: l3delegateButtonGroupLeft
+    }
+    
+    ButtonGroup {
+        id: l3delegateButtonGroupRight
+    }
+    
     Component {
         id: l3delegate
         ItemDelegate {
             width: ListView.view.width
-            height: c.height
-            ColumnLayout {
-                id: c
-                Text { text: primary; font.pointSize: 14 }
-                Text { text: secondary; font.pointSize: 12 }
+            height: r.height
+            RowLayout {
+                id: r
+                width: ListView.view.width
+                ColumnLayout {
+                    id: c
+                    Layout.fillWidth: true
+                    Text { text: primary; font.pointSize: 12 }
+                    Text { text: secondary; font.pointSize: 10 }
+                }
+                RadioButton {
+                    Layout.fillWidth: false
+                    ButtonGroup.group: l3delegateButtonGroupLeft
+                }
+                RadioButton {
+                    Layout.fillWidth: false
+                    ButtonGroup.group: l3delegateButtonGroupRight
+                    
+                }
             }
             onClicked: {
-                l3selector.currentIndex=index;
+                ListView.view.currentIndex=index;
             }
             onDoubleClicked: {
-                l3selector.currentIndex=index;
+                ListView.view.currentIndex=index;
                 l3window.show();
             }
         }
@@ -1574,7 +1601,16 @@ ApplicationWindow {
                 Layout.minimumHeight: gl.height/6
                 Layout.maximumHeight: gl.height/3
                 highlight: Rectangle { color: "lightblue" }
-                onCurrentIndexChanged: {
+                
+                property int currentIndexLeft;
+                property int currentIndexRight;
+                
+                onCurrentIndexLeftChanged: {
+                    main.primary=model.get(currentIndex).primary
+                    main.secondary=model.get(currentIndex).secondary
+                }
+                
+                onCurrentIndexRightChanged: {
                     main.primary=model.get(currentIndex).primary
                     main.secondary=model.get(currentIndex).secondary
                 }
@@ -1637,7 +1673,7 @@ ApplicationWindow {
                     window: l3window;
                     item: l3window.txtTime
                 }
-
+                
             }
             RowLayout {
                 Switch {
@@ -1794,44 +1830,44 @@ ApplicationWindow {
             }
         }
     }
-
+    
     MqttClient {
         id: mqttClient
         clientId: "cuteproduction"
         hostname: "127.0.0.1"
         // port: "1883"
-
+        
         readonly property string topicBase: "cuteproduction/0/"
-
+        
         onConnected: {
             console.debug("MQTT: Connected")
-
+            
             publishActive(1)
             setWillTopic(topicBase+"active")
             setWillMessage(0)
-
+            
             subscribeTopic(topicBase+"message", showMessage)
         }
-
+        
         onDisconnected: {
             console.debug("MQTT: Disconnected")
         }
-
+        
         onErrorChanged: console.debug("MQTT: Error "+ error)
         onStateChanged: console.debug("MQTT: State "+state)
         //onPingResponseReceived: console.debug("MQTT: Ping")
         //onMessageSent: console.debug("MQTT: Sent "+id)
-
+        
         function subscribeTopic(topic, cb) {
             let s=mqttClient.subscribe(topic)
             s.messageReceived.connect(cb)
         }
-
+        
         function publishActive(i) {
             publish(topicBase+"active", i, 1, true)
         }
     }
-
+    
     function showMessage(str) {
         l3window.setMessage(str)
     }
