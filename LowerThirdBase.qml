@@ -81,6 +81,13 @@ Rectangle {
     property alias secondaryTitle: txtSecondary.text
     property alias topic: txtTopic.text
     property alias image: person.source
+
+    function setDetails(m, s, t='', i='') {
+        mainTitle=m;
+        secondaryTitle=s;
+        topic=t;
+        image=i;
+    }
     
     property alias displayTime: displayTimer.duration
 

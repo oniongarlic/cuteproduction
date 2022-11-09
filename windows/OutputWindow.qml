@@ -27,14 +27,17 @@ Window {
 
     property bool spanWindow: false;
 
-    property alias lowerThirdsFullWidth: l3.fullWidth
-    property alias lowerThirdsMargin: l3.margin
+    property alias lowerThirdsFullWidth: l3l.fullWidth
+    property alias lowerThirdsMargin: l3l.margin
 
     property alias tickerItemsVisible: newsTicker.itemsVisible
     property alias tickerVisible: newsTicker.tickerVisible
 
     property alias newsTickerVisible: newsTicker.visible
-    property alias lowerThirdsVisible: l3.visible
+    property bool lowerThirdsVisible: l3l.visible || l3r.visible
+
+    property LowerThirdBase lthirdLeft: l3l
+    property LowerThirdBase lthirdRight: l3r
 
     property ListModel newsTickerModel: tickerModel
 
@@ -131,14 +134,6 @@ Window {
 
     function setTickerPosition(align) {
         newsTicker.position.setPosition(Qt.AlignLeft, align)
-    }
-
-    function show() {
-        l3.show();
-    }
-    
-    function showRight() {
-        l3r.show();
     }
 
     function setMessage(msg) {
@@ -375,23 +370,17 @@ Window {
         visible: switchMessageListRight.checked
     }
 
-    function setLowerThird(primaryTitle, secondaryTitle) {
-        l3.mainTitle=primaryTitle;
-        l3.secondaryTitle=secondaryTitle;
-    }
-
+    /* Left side */
     LowerThirdBase {
-        id: l3
-        mainTitle: main.primary
-        secondaryTitle: main.secondary
+        id: l3l
         displayTime: delayTime.value*1000
         fullWidth: menuThirdsFullWidth.checked
     }
     
+    /* Right side */
     LowerThirdBase {
         id: l3r
-        mainTitle: main.primary
-        secondaryTitle: main.secondary
+        margin: l3l.margin
         displayTime: delayTime.value*1000
         fullWidth: menuThirdsFullWidth.checked
         alignHorizontal: Qt.AlignRight

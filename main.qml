@@ -1484,6 +1484,7 @@ ApplicationWindow {
     Component {
         id: l3delegate
         ItemDelegate {
+            id: l3id
             width: ListView.view.width
             height: r.height
             RowLayout {
@@ -1498,11 +1499,18 @@ ApplicationWindow {
                 RadioButton {
                     Layout.fillWidth: false
                     ButtonGroup.group: l3delegateButtonGroupLeft
+                    onCheckedChanged: {
+                        if (checked)
+                            l3id.ListView.view.currentIndexLeft=index;
+                    }
                 }
                 RadioButton {
                     Layout.fillWidth: false
                     ButtonGroup.group: l3delegateButtonGroupRight
-                    
+                    onCheckedChanged: {
+                        if (checked)
+                            l3id.ListView.view.currentIndexRight=index;
+                    }
                 }
             }
             onClicked: {
@@ -1510,7 +1518,7 @@ ApplicationWindow {
             }
             onDoubleClicked: {
                 ListView.view.currentIndex=index;
-                l3window.show();
+                l3window.lthirdLeft.show();
             }
         }
     }
@@ -1606,14 +1614,16 @@ ApplicationWindow {
                 property int currentIndexRight;
                 
                 onCurrentIndexLeftChanged: {
-                    main.primary=model.get(currentIndex).primary
-                    main.secondary=model.get(currentIndex).secondary
+                    const data=model.get(currentIndexLeft);
+                    l3window.lthirdLeft.setDetails(data.primary, data.secondary)
                 }
                 
                 onCurrentIndexRightChanged: {
-                    main.primary=model.get(currentIndex).primary
-                    main.secondary=model.get(currentIndex).secondary
+                    const data=model.get(currentIndexRight);
+                    l3window.lthirdRight.setDetails(data.primary, data.secondary)
                 }
+
+                ScrollIndicator.vertical: ScrollIndicator {}
             }
             
             RowLayout {
@@ -1637,14 +1647,16 @@ ApplicationWindow {
                 }
                 Button {
                     text: "Show L"
+                    enabled: currentIndexLeft>0
                     onClicked: {
-                        l3window.show();
+                        l3window.lthirdLeft.show();
                     }
                 }
                 Button {
                     text: "Show R"
+                    enabled: currentIndexRight>0
                     onClicked: {
-                        l3window.showRight();
+                        l3window.lthirdRight.show();
                     }
                 }
             }
