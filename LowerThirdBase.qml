@@ -187,11 +187,12 @@ Rectangle {
             Layout.rightMargin: 16
             Layout.leftMargin: 16
 
-            Layout.minimumWidth: wc+32
-            Layout.preferredWidth: wc+64
-            Layout.maximumWidth: rl.width
+            // Layout.minimumWidth: l3.width
+            //Layout.preferredWidth: wc
+            Layout.maximumWidth: l3.width-box.width
 
             readonly property int wc: Math.max(txtPrimary.contentWidth, txtSecondary.contentWidth)
+            readonly property int wt: Math.max(txtPrimary.width, txtSecondary.width)
 
             Text {
                 id: txtPrimary
@@ -202,10 +203,13 @@ Rectangle {
                 font.family: "Helvetica"
                 font.bold: true
                 font.pixelSize: 42
-                minimumPixelSize: 36
+                minimumPixelSize: 32
                 fontSizeMode: Text.HorizontalFit
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
+                elide: Text.ElideRight
+                textFormat: Text.PlainText
+                maximumLineCount: 1
             }
             Text {
                 id: txtSecondary
@@ -215,10 +219,13 @@ Rectangle {
                 text: ""
                 font.family: "Helvetica"
                 font.pixelSize: 32
-                minimumPixelSize: 26
+                minimumPixelSize: 22
                 fontSizeMode: Text.HorizontalFit
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
+                elide: Text.ElideRight
+                textFormat: Text.PlainText
+                maximumLineCount: 1
             }
         }
     }
@@ -226,9 +233,11 @@ Rectangle {
     function show() {
         l3animation.stop()
         resetLocation();
+        visible=true;
         l3animation.start()
     }
     function hide() {
         resetLocation()
+        visible=false;
     }
 }
