@@ -1615,12 +1615,12 @@ ApplicationWindow {
                 
                 onCurrentIndexLeftChanged: {
                     const data=model.get(currentIndexLeft);
-                    l3window.lthirdLeft.setDetails(data.primary, data.secondary)
+                    l3window.lthirdLeft.setDetails(data.primary, data.secondary, data.topic, data.image)
                 }
                 
                 onCurrentIndexRightChanged: {
                     const data=model.get(currentIndexRight);
-                    l3window.lthirdRight.setDetails(data.primary, data.secondary)
+                    l3window.lthirdRight.setDetails(data.primary, data.secondary, data.topic, data.image)
                 }
 
                 ScrollIndicator.vertical: ScrollIndicator {}

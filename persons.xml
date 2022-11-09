@@ -3,10 +3,13 @@
  <item>
    <primary>Teppo Testaaja</primary>
    <secondary>Testaaja</secondary>
+   <topic>Dev</topic>
  </item>
  <item>
    <primary>Teppo Avustaja</primary>
    <secondary>Avustaja</secondary>
+   <topic>Dev</topic>
+   <image>person.png</image>
  </item>
  <item>
    <primary>Antti Testaaja</primary>
@@ -15,6 +18,7 @@
  <item>
    <primary>Pekka Testaaja</primary>
    <secondary>Testaaja</secondary>
+   <image>person.png</image>
  </item>
  <item>
    <primary>Liisa Testaaja</primary>
@@ -23,6 +27,8 @@
  <item>
    <primary>Laila Testaaja</primary>
    <secondary>Testaaja</secondary>
+   <topic>Money</topic>
+   <image>person.png</image>
  </item>
  <item>
    <primary>Ville Testaaja</primary>
@@ -31,5 +37,6 @@
  <item>
    <primary>Kalle Testaaja</primary>
    <secondary>Testaaja</secondary>
+   <image>person.png</image>
  </item>
 </thirds>

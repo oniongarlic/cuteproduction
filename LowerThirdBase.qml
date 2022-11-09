@@ -32,6 +32,8 @@ Rectangle {
 
     property bool useOpacity: false
 
+    property bool showImage: true
+
     visible: x>-width
     //radius: 8
     width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin*2
@@ -163,11 +165,14 @@ Rectangle {
             Image {
                 id: person
                 source: "person.png"
-                visible: false
+                visible: showImage && source!='' && status==Image.Ready
                 width: box.width
                 height: width
                 fillMode: Image.PreserveAspectFit
                 anchors.bottom: parent.bottom
+                onStatusChanged: {
+                    console.debug("L3 image status: "+status)
+                }
             }
 
             Text {
