@@ -10,6 +10,8 @@ Item {
     property alias source: voi.source
     property Rectangle borderRect: mediaBorder
 
+    property alias videoAngle: rotation.angle
+
     onWidthChanged: {
         voi.updatePosition()
     }
@@ -20,6 +22,10 @@ Item {
 
     function setMediaPosition(r) {
         voi.pos=r;
+    }
+
+    function setMediaAngle(a) {
+        videoAngle=a;
     }
 
     VideoOutput {
@@ -54,8 +60,18 @@ Item {
             id: mediaBorder
             border.color: "#ffffff"
             border.width: 1
-            color: "transparent"
-            anchors.fill: parent
+            color: "transparent"            
+            anchors.fill: parent            
+        }
+
+        transform: Rotation {
+            id: rotation
+            origin.x: voi.width/2
+            origin.y: voi.height/2
+            axis.x: 0
+            axis.y: 1
+            axis.z: 0
+            angle: 0
         }
     }
 }
