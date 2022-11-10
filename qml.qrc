@@ -28,5 +28,6 @@
         <file>components/MessageText.qml</file>
         <file>components/ColorMenuItem.qml</file>
         <file>components/ValueMenuItem.qml</file>
+        <file>components/CameraSelectorPopup.qml</file>
     </qresource>
 </RCC>
