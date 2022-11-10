@@ -37,6 +37,11 @@ Item {
 
         property rect pos: Qt.rect(0, 0, 1, 1)
 
+        Behavior on x { NumberAnimation { duration: 250; } }
+        Behavior on y { NumberAnimation { duration: 250; } }
+        Behavior on width { NumberAnimation { duration: 250; } }
+        Behavior on height { NumberAnimation { duration: 250; } }
+
         onPosChanged: updatePosition();
         onParentChanged: updatePosition();
 
@@ -72,6 +77,8 @@ Item {
             axis.y: 1
             axis.z: 0
             angle: 0
+
+            Behavior on angle { NumberAnimation { duration: 250; } }
         }
     }
 }
