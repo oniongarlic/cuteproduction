@@ -380,6 +380,14 @@ ApplicationWindow {
                     }
                 }
                 MenuItem {
+                    text: "Select"
+                    enabled: !l3window.videoInputActive
+                    onClicked: {
+                        cameraSelector.open()
+                    }
+                }
+                MenuItem {
+                    text: "Show"
                     checkable: true
                     checked: true
                     onClicked: {
@@ -442,6 +450,13 @@ ApplicationWindow {
                     l3window.setBackground(backgroundGroup.currentValue);                    
                 }
             }
+        }
+    }
+
+    CameraSelectorPopup {
+        id: cameraSelector
+        onCameraSelected: {
+
         }
     }
     
