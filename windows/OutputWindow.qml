@@ -289,12 +289,12 @@ Window {
     Grid {
         id: mainGrid
         anchors.fill: parent
-        anchors.bottomMargin: bm(l3.visible, newsTicker.visible);
+        anchors.bottomMargin: bm(l3l.visible || l3r.visible, newsTicker.visible);
         columns: 3
         spacing: 16
         
         function bm(ltv, nt) {
-            bm=0;
+            bm=16;
             if (ltv) bm+=l3.height+32
             if (nt) bm+=newsTicker.height+32
             return bm;
@@ -321,19 +321,19 @@ Window {
         Rectangle {
             id: leftSide
             color: "transparent"
-            width: mainGrid.width/4
+            width: mainGrid.width/3
             height: parent.height
         }
         Rectangle {
             id: middleSide
             color: "transparent"
-            width: mainGrid.width/2
+            width: mainGrid.width/3
             height: parent.height
         }
         Rectangle {
             id: rightSide
             color: "transparent"
-            width: mainGrid.width/4
+            width: mainGrid.width/3
             height: parent.height
         }
     }
