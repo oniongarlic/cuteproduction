@@ -34,8 +34,7 @@ Rectangle {
 
     property bool showImage: true
 
-    visible: x>-width
-    //radius: 8
+    visible: false
     width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin*2
     height: cl.height+8
     x: xpos
@@ -105,7 +104,10 @@ Rectangle {
     SequentialAnimation {
         id: l3animation
         ScriptAction {
-            script: resetLocation();
+            script: {
+                resetLocation();
+                l3.visible=true;
+            }
         }
         ParallelAnimation {
             NumberAnimation {
@@ -148,7 +150,10 @@ Rectangle {
             }
         }
         ScriptAction {
-            script: resetLocation();
+            script: {
+                resetLocation();
+                l3.visible=false;
+            }
         }
     }
     
@@ -242,12 +247,13 @@ Rectangle {
         }
     }
     
-    function show() {
+    function show() {        
         l3animation.stop()
-        resetLocation();
-        visible=true;
+        visible=false;
+        resetLocation();        
         l3animation.start()
     }
+
     function hide() {
         resetLocation()
         visible=false;
