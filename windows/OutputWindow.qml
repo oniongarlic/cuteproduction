@@ -425,6 +425,7 @@ Window {
     NewsTicker {
         id: newsTicker
         model: tickerModel
+        needToHide: l3l.visible || l3r.visible
     }
 
     DropShadow {

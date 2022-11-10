@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.12
 ColumnLayout {
     id: newsTicker
     spacing: 0
-    visible: tickerModel.count>0 && tickerVisible && !l3.visible
+    visible: tickerModel.count>0 && tickerVisible && !needToHide
 
     property alias model: tickerList.model
 
@@ -14,6 +14,8 @@ ColumnLayout {
 
     property alias delay: tickerTimer.delay
     property alias counter: tickerTimer.ct
+
+    property bool needToHide: false
 
     x: pos.x
     y: pos.y
