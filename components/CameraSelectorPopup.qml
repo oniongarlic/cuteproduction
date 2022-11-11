@@ -9,7 +9,7 @@ Popup {
     x: parent.width/6
     y: parent.width/4
     width: parent.width/1.5
-    height: parent.height/2
+    height: parent.height/3
 
     signal cameraSelected(string id)
 
@@ -40,6 +40,7 @@ Popup {
                     console.debug(modelData.deviceId)
                     console.debug(modelData.displayName)
                     console.debug(modelData.position)
+                    cameraSelected(modelData.deviceId)
                     cameraPopup.close();
                 }
             }

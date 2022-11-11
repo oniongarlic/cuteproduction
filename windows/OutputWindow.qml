@@ -219,6 +219,11 @@ Window {
         videoInput.stop();
     }
 
+    function setCameraDevice(id) {
+        videoInput.stop();
+        videoInput.deviceId=id
+    }
+
     function videoOutputVisible(v) {
         vovi.visible=v;
     }

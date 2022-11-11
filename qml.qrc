@@ -29,5 +29,6 @@
         <file>components/ColorMenuItem.qml</file>
         <file>components/ValueMenuItem.qml</file>
         <file>components/CameraSelectorPopup.qml</file>
+        <file>components/CameraResolutionPopup.qml</file>
     </qresource>
 </RCC>

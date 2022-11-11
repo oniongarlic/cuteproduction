@@ -456,6 +456,13 @@ ApplicationWindow {
     CameraSelectorPopup {
         id: cameraSelector
         onCameraSelected: {
+            l3window.setCameraDevice(id)
+        }
+    }
+
+    CameraResolutionPopup {
+        id: cameraResolutionSelector
+        onCameraResolutionSelected: {
 
         }
     }
