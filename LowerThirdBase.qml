@@ -116,7 +116,7 @@ Rectangle {
                 easing.type: Easing.InOutCubic;
                 duration: 1200
                 from: getXpos(l3.parent.width, l3.width, alignHorizontal)
-                to: alignHorizontal==Qt.AlignLeft ? margin : l3.parent.width/2+margin
+                to: alignHorizontal==Qt.AlignLeft ? margin : (fullWidth ? margin : l3.parent.width/2+margin)
             }
             NumberAnimation {
                 target: useOpacity ? l3 : undefined;
