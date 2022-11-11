@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<CuteHyper>("org.tal.cutehyper", 1, 0, "HyperServer");
     qmlRegisterType<CuteMqttClient>("org.tal.mqtt", 1, 0, "MqttClient");
-    qmlRegisterUncreatableType<CuteMqttSubscription>("MqttClient", 1, 0, "MqttSubscription", QLatin1String("MQTT subscriptions are read-only"));
+    qRegisterMetaType<CuteMqttSubscription::TopicType>("TopicType");
+    qmlRegisterUncreatableType<CuteMqttSubscription>("org.tal.mqtt", 1, 0, "MqttSubscription", QLatin1String("MQTT subscriptions are read-only"));        
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

@@ -2,6 +2,8 @@
 
 #include <QMqttTopicFilter>
 #include <QMqttSubscription>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 CuteMqttClient::CuteMqttClient(QObject *parent) : QMqttClient(parent)
 {
@@ -22,9 +24,10 @@ CuteMqttSubscription* CuteMqttClient::subscribe(const QString &filter)
     return r;
 }
 
-CuteMqttSubscription* CuteMqttClient::subscribeType(const QString &filter, QMetaType::Type t)
+CuteMqttSubscription* CuteMqttClient::subscribeType(const QString &filter, CuteMqttSubscription::TopicType t)
 {
     QMqttSubscription *s=QMqttClient::subscribe(filter, 0);
+    qDebug() << "******* " << t;
     auto r=new CuteMqttSubscription(s, this, t);
 
     return r;
@@ -35,34 +38,15 @@ CuteMqttSubscription::CuteMqttSubscription(QMqttSubscription *s, CuteMqttClient 
     , m_client(c)
 {
     connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleMessage);
-    m_type=QMetaType::QByteArray;
+    m_type=TopicType::ByteArray;
     m_topic=m_sub->topic();
 }
 
-CuteMqttSubscription::CuteMqttSubscription(QMqttSubscription *s, CuteMqttClient *c, QMetaType::Type t)
+CuteMqttSubscription::CuteMqttSubscription(QMqttSubscription *s, CuteMqttClient *c, CuteMqttSubscription::TopicType t)
     : m_sub(s)
     , m_client(c)
 {
-    switch (t) {
-    case QMetaType::QByteArray:
-        connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleMessage);
-        break;
-    case QMetaType::QString:
-        connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleStringMessage);
-        break;
-    case QMetaType::Int:
-        connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleNumericMessage);
-        break;
-    case QMetaType::Float:
-    case QMetaType::Double:
-        connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleNumericMessage);
-        m_scale=1.0;
-        break;
-    default:
-        qWarning("Unsupported data type");
-    break;
-    }
-
+    connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleMessage);
     m_type=t;
     m_topic=m_sub->topic();
 }
@@ -73,22 +57,37 @@ CuteMqttSubscription::~CuteMqttSubscription()
 
 void CuteMqttSubscription::handleMessage(const QMqttMessage &qmsg)
 {
-    emit messageReceived(qmsg.payload());
+    switch (m_type) {
+    case TopicType::ByteArray:
+        emit messageReceived(qmsg.payload());
+        break;
+    case TopicType::String:
+        emit messageReceived(qmsg.payload());
+        break;
+    case TopicType::Integer:
+        emit messageReceived(qmsg.payload().toInt()/(int)m_scale);
+        break;
+    case TopicType::Double:
+        emit messageReceived(qmsg.payload().toDouble()/m_scale);
+        m_scale=1.0;
+        break;
+    case TopicType::JsonObject:
+        handleJsonMessage(qmsg);
+        break;
+    default:
+        qWarning() << "Unsupported data type" << m_type;
+    break;
+    }
 }
 
-void CuteMqttSubscription::handleStringMessage(const QMqttMessage &qmsg)
+void CuteMqttSubscription::handleJsonMessage(const QMqttMessage &qmsg)
 {
-    emit messageStringReceived(qmsg.payload());
-}
-
-void CuteMqttSubscription::handleNumericMessage(const QMqttMessage &qmsg)
-{
-    emit messageNumericReceived(qmsg.payload().toFloat()/m_scale);
-}
-
-void CuteMqttSubscription::handleIntegerMessage(const QMqttMessage &qmsg)
-{
-    emit messageNumericReceived(qmsg.payload().toInt()/(int)m_scale);
+    QJsonDocument json=QJsonDocument::fromJson(qmsg.payload());
+    if (json.isNull() || json.isEmpty()) {
+        qWarning() << "Invalid JSON from topic " << qmsg.topic();
+        return;
+    }    
+    emit messageReceived(json.object().toVariantMap());
 }
 
 void CuteMqttSubscription::setScale(float scale)
