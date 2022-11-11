@@ -198,7 +198,7 @@ Window {
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         anchors.fill: parent
-        visible: src!==''
+        visible: source!==''
     }
 
     CustomVideoOutput {
@@ -300,7 +300,7 @@ Window {
         
         function bm(ltv, nt) {
             bm=16;
-            if (ltv) bm+=l3.height+32
+            if (ltv) bm+=l3l.height+32
             if (nt) bm+=newsTicker.height+32
             return bm;
         }
