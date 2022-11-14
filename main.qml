@@ -1518,15 +1518,19 @@ ApplicationWindow {
             height: r.height
             RowLayout {
                 id: r
-                width: ListView.view.width
+                width: parent.width
                 ColumnLayout {
                     id: c
+                    spacing: 4
                     Layout.fillWidth: true
-                    Text { text: primary; font.pointSize: 12 }
-                    Text { text: secondary; font.pointSize: 10 }
+                    Layout.preferredWidth: parent.width/1.5
+                    Text { text: primary; font.pixelSize: 14 }
+                    Text { text: secondary; font.pixelSize: 12 }
                 }
                 RadioButton {
+                    text: "L"
                     Layout.fillWidth: false
+                    Layout.preferredWidth: parent.width/5
                     ButtonGroup.group: l3delegateButtonGroupLeft
                     onCheckedChanged: {
                         if (checked)
@@ -1534,7 +1538,9 @@ ApplicationWindow {
                     }
                 }
                 RadioButton {
+                    text: "R"
                     Layout.fillWidth: false
+                    Layout.preferredWidth: parent.width/5
                     ButtonGroup.group: l3delegateButtonGroupRight
                     onCheckedChanged: {
                         if (checked)
@@ -1685,6 +1691,14 @@ ApplicationWindow {
                     text: "Show R"
                     enabled: l3selector.currentIndexRight>-1
                     onClicked: {
+                        l3window.lthirdRight.show();
+                    }
+                }
+                Button {
+                    text: "Show LR"
+                    enabled: l3selector.currentIndexRight>-1 && l3selector.currentIndexLeft>-1
+                    onClicked: {
+                        l3window.lthirdLeft.show();
                         l3window.lthirdRight.show();
                     }
                 }
