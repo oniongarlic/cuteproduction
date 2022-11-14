@@ -1511,7 +1511,7 @@ ApplicationWindow {
             height: r.height
             RowLayout {
                 id: r
-                width: ListView.view.width
+                width: parent.width
                 ColumnLayout {
                     id: c
                     Layout.fillWidth: true
