@@ -29,12 +29,12 @@ ApplicationWindow {
     //flags: Qt.WA_TranslucentBackground
     property int oflags;
     //color: "#00000040"
-    color: "white"
+    color: "#F0F0F0"
     
     property OutputWindow l3window;
     property MaskWindow maskwindow;
-    property TelepromptWindow tpwindow;    
-    
+    property TelepromptWindow tpwindow;
+
     Component.onCompleted: {
         oflags=flags;
         console.debug("Screens: " + Qt.application.screens.length)
@@ -1880,7 +1880,8 @@ ApplicationWindow {
             setWillTopic(topicBase+"active")
             setWillMessage(0)
             
-            subscribeTopic(topicBase+"message", showMessage)
+            subscribeTopic(topicBase+"message", showMessage, MqttSubscription.String)
+            subscribeTopic(topicBase+"chat", addChatMessage, MqttSubscription.JsonObject)
         }
         
         onDisconnected: {
@@ -1892,11 +1893,13 @@ ApplicationWindow {
         //onPingResponseReceived: console.debug("MQTT: Ping")
         //onMessageSent: console.debug("MQTT: Sent "+id)
         
-        function subscribeTopic(topic, cb) {
-            let s=mqttClient.subscribe(topic)
+        function subscribeTopic(topic, cb, type) {
+            console.debug(MqttSubscription.String)
+            let s=mqttClient.subscribe(topic, 0)
+            s.setType(type)
             s.messageReceived.connect(cb)
         }
-        
+
         function publishActive(i) {
             publish(topicBase+"active", i, 1, true)
         }
@@ -1904,5 +1907,9 @@ ApplicationWindow {
     
     function showMessage(str) {
         l3window.setMessage(str)
+    }
+
+    function addChatMessage(data) {        
+        l3window.addMessageLeft(data.topic, data.message);
     }
 }
