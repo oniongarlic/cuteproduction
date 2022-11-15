@@ -124,6 +124,9 @@ ColumnLayout {
         highlightRangeMode: ListView.StrictlyEnforceRange
         onCurrentIndexChanged: {
             console.debug("Tick: "+currentIndex)
+            if (currentIndex<0)
+                return;
+
             tickerMsg.text=tickerModel.get(currentIndex).msg
             tickerMsg.opacity=1
             tickerMsgContainer.opacity=1
