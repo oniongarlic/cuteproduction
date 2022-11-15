@@ -231,7 +231,7 @@ ApplicationWindow {
                 onClicked: tsf.startSelector();
             }
             MenuItem {
-                text: "Add.."
+                text: "Manage.."
                 onClicked: {
                     thirdsDrawer.open()
                 }
@@ -248,7 +248,7 @@ ApplicationWindow {
             MenuItem {
                 text: "Clear"
                 onClicked: {
-                    l3Model.source=""
+                    l3ModelFinal.clear()
                 }
             }
         }
@@ -1074,13 +1074,23 @@ ApplicationWindow {
                 placeholderText: "Secondary (title, e-mail, etc)"
                 selectByMouse: true
             }
+            TextField {
+                id: textl3Topic
+                Layout.fillWidth: true
+                placeholderText: "Topic/Keyword"
+                selectByMouse: true
+            }
             RowLayout {
                 spacing: 8
                 Button {
                     text: "Add"
                     onClicked: {
-                        const item={ "topic": textl3Primary.text, "msg": textl3Secondary.text }
-                        l3window.addNewsItem(item)
+                        const item={
+                            "primary": textl3Primary.text,
+                            "secondary": textl3Secondary.text,
+                            "topic": textl3Topic.text,
+                            "image": ""}
+                        l3ModelFinal.append(item)
                     }
                 }
                 Button {
@@ -1460,12 +1470,16 @@ ApplicationWindow {
     }
     
     ListModel {
-        id: l3ModelCustom
+        id: l3ModelFinal
     }
-    
+
+    // XML Loader model
     LowerThirdModel {
         id: l3Model
         source: "persons.xml"
+        onLoaded: {
+            copyToListModel(l3ModelFinal)
+        }
     }
     
     IrcSource {
@@ -1636,7 +1650,7 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignTop
             ListView {
                 id: l3selector
-                model: l3Model
+                model: l3ModelFinal
                 delegate: l3delegate
                 clip: true
                 Layout.fillWidth: true

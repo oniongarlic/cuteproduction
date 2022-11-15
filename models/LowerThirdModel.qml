@@ -10,15 +10,25 @@ XmlListModel {
     XmlRole { name: "topic"; query: "topic/string()"; }
     XmlRole { name: "image"; query: "image/string()"; }
 
+    signal loaded()
+
     onStatusChanged: {
         switch (status) {
         case XmlListModel.Ready:
-            //msg.text="T"
+            loaded()
             break;
         case XmlListModel.Error:
             console.debug(errorString())
             break;
         }
     }
+
+    function copyToListModel(tmodel) {
+        tmodel.clear();
+        for (let i=0;i<count;i++) {
+            tmodel.append(get(i))
+        }
+    }
+
 }
 
