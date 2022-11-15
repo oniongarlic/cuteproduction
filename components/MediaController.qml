@@ -7,7 +7,7 @@ import QtMultimedia 5.15
 ColumnLayout {
     id: mediaSizing
 
-    property CustomVideoOutput vo;    
+    property CustomVideoOutput vo;
 
     property var savedSize: [];
     property var savedAngles: [];
@@ -100,9 +100,29 @@ ColumnLayout {
                 loadPosition(2)
             }
         }
+        Switch {
+            id: posAB
+            text: "AB"
+            onCheckedChanged: {
+                vo.animationDuration=checked ? 2000 : 250
+            }
+        }
+    }
+
+    Timer {
+        id: positionAnimator
+        running: posAB.checked
+        property int curPos: 0
+        repeat: true
+        interval: 4000
+        onTriggered: {
+            loadPosition(curPos)
+            curPos=!curPos
+        }
     }
 
     RowLayout {
+        Layout.fillWidth: true
         Button {
             text: "Set A"
             onClicked: {
@@ -147,50 +167,32 @@ ColumnLayout {
             vo.setMediaAngle(angle)
     }
 
-    Slider {
-        id: mpx
-        Layout.fillWidth: true
-        from: -1
-        value: 0
-        to: 1
-        stepSize: 0.001
-        wheelEnabled: true
+    SliderSpinboxRow {
+        id:mpx
         onValueChanged: mediaSizing.size.x=value;
     }
-    Slider {
-        id: mpy
-        Layout.fillWidth: true
-        from: -1
-        value: 0
+    SliderSpinboxRow {
+        id:mpy
+        onValueChanged: mediaSizing.size.y=value;
+    }
+    SliderSpinboxRow {
+        id:mpw
+        from: 0
         to: 1
-        stepSize: 0.001
-        wheelEnabled: true
-        onValueChanged: mediaSizing.size.y=value
+        onValueChanged: mediaSizing.size.width=value;
     }
-    Slider {
-        id: mph
-        Layout.fillWidth: true
-        value: 1
-        stepSize: 0.001
-        wheelEnabled: true
-        onValueChanged: mediaSizing.size.height=value
+    SliderSpinboxRow {
+        id:mph
+        from: 0
+        to: 1
+        onValueChanged: mediaSizing.size.height=value;
     }
-    Slider {
-        id: mpw
-        Layout.fillWidth: true
-        value: 1
-        stepSize: 0.001
-        wheelEnabled: true
-        onValueChanged: mediaSizing.size.width=value
-    }
-    Slider {
-        id: mpa
-        Layout.fillWidth: true
+    SliderSpinboxRow {
+        id:mpa
         from: -360
-        value: 0
-        to: 360
         stepSize: 1
-        wheelEnabled: true
-        onValueChanged: mediaSizing.angle=value
+        to: 360
+        spinScale: 1
+        onValueChanged: mediaSizing.angle=value;
     }
 }

@@ -12,6 +12,8 @@ Item {
 
     property alias videoAngle: rotation.angle
 
+    property int animationDuration: 250
+
     onWidthChanged: {
         voi.updatePosition()
     }
@@ -37,10 +39,10 @@ Item {
 
         property rect pos: Qt.rect(0, 0, 1, 1)
 
-        Behavior on x { NumberAnimation { duration: 250; easing.type: Easing.InOutCubic; } }
-        Behavior on y { NumberAnimation { duration: 250; easing.type: Easing.InOutCubic; } }
-        Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.InOutCubic; } }
-        Behavior on height { NumberAnimation { duration: 250; easing.type: Easing.InOutCubic; } }
+        Behavior on x { NumberAnimation { duration: animationDuration; easing.type: Easing.InOutCubic; } }
+        Behavior on y { NumberAnimation { duration: animationDuration; easing.type: Easing.InOutCubic; } }
+        Behavior on width { NumberAnimation { duration: animationDuration; easing.type: Easing.InOutCubic; } }
+        Behavior on height { NumberAnimation { duration: animationDuration; easing.type: Easing.InOutCubic; } }
 
         onPosChanged: updatePosition();
         onParentChanged: updatePosition();
@@ -78,7 +80,7 @@ Item {
             axis.z: 0
             angle: 0
 
-            Behavior on angle { NumberAnimation { duration: 250; easing.type: Easing.InOutCubic; } }
+            Behavior on angle { NumberAnimation { duration: animationDuration; easing.type: Easing.InOutCubic; } }
         }
     }
 }
