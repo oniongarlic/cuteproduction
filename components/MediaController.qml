@@ -112,9 +112,12 @@ ColumnLayout {
     Timer {
         id: positionAnimator
         running: posAB.checked
-        property int curPos: 0
         repeat: true
         interval: 4000
+        triggeredOnStart: true
+
+        property int curPos: 0
+
         onTriggered: {
             loadPosition(curPos)
             curPos=!curPos
