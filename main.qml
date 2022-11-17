@@ -658,6 +658,19 @@ ApplicationWindow {
         dragMargin: 0
         width: parent.width/1.5
         height: parent.height
+        DropArea {
+            id: mediaDropArea
+            anchors.fill: parent
+            // XXX: huh?
+            //keys: ["video/quicktime", "video/mp4", "audio/mpeg", "audio/mp3", "audio/flac", "application/ogg"]
+            onDropped: {
+                if (drop.hasUrls) {
+                    console.debug(drop.urls[0])
+                    mediaListView.model.addItems(drop.urls);
+                    drop.acceptProposedAction()
+                }
+            }
+        }
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 16
@@ -1115,7 +1128,7 @@ ApplicationWindow {
         width: parent.width/1.5
         height: parent.height
         DropArea {
-            id: dropArea
+            id: newsDropArea
             anchors.fill: parent
             keys: ["text/plain"]
             onDropped: {
@@ -1352,7 +1365,7 @@ ApplicationWindow {
         id: telepromptDrawer
         dragMargin: 0
         width: parent.width/1.5
-        height: parent.height
+        height: parent.height        
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 16
