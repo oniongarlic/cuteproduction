@@ -70,6 +70,10 @@ ApplicationWindow {
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
         
         l3window.maskWindow=maskwindow;
+
+        console.debug("Loading settings...")
+        loadSettings()
+        console.debug("...done")
         
         mqttClient.connectToHost();
     }
@@ -101,6 +105,8 @@ ApplicationWindow {
             id: teleWindow
             mirror: telepromptMirror.checked
             flip: telepromptFlip.checked
+            onFlipChanged: settings.setSettings("teleprompt/flip", flip)
+            onMirrorChanged: settings.setSettings("teleprompt/mirror", mirror)
         }
     }
     
@@ -117,7 +123,15 @@ ApplicationWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             tickerVisible: menuTickerVisible.checked
             mediaPlayer: mp
+
+            onTickerItemsVisibleChanged: settings.setSettings("ticker/items", tickerItemsVisible)
+            onTickerVisibleChanged: settings.setSettings("ticker/visible", tickerVisible)
         }
+    }
+
+    function loadSettings() {
+        menuTickerVisible.checked=settings.getSettingsBool("ticker/visible", false);
+        menuTickerFullWidth.checked=settings.getSettingsInt("ticker/items", 1, 1, 4)===1 ? true : false;
     }
     
     menuBar: MenuBar {
@@ -1743,6 +1757,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignLeft
                     text: "Time"
                     checked: true
+                    onCheckedChanged: settings.setSettings("timers/time", checked)
                 }
                 Text {
                     id: timeCurrent
@@ -1763,6 +1778,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignLeft
                     text: "Counter"
                     checked: false
+                    onCheckedChanged: settings.setSettings("timers/counter", checked)
                 }
                 Text {
                     id: timeCount
@@ -1795,6 +1811,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignLeft
                     text: "Down"
                     checked: false
+                    onCheckedChanged: settings.setSettings("timers/countdown", checked)
                 }
                 Text {
                     id: timeCountdown
@@ -1828,11 +1845,7 @@ ApplicationWindow {
                             }
                         }
                     }
-                }
-                MenuAlignment {
-                    window: l3window;
-                    item: l3window.txtCountdown
-                }
+                }                
                 Button {
                     text: "+10s"
                     onClicked: ticker.addCountdownSeconds(10);
@@ -1852,6 +1865,10 @@ ApplicationWindow {
                 Button {
                     text: "0"
                     onClicked: ticker.setCountdownSeconds(0);
+                }
+                MenuAlignment {
+                    window: l3window;
+                    item: l3window.txtCountdown
                 }
             }
             RowLayout {
