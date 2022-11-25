@@ -1,14 +1,14 @@
 import QtQuick 2.15
-import QtQuick.XmlListModel 2.15
+import QtQml.XmlListModel
 
 XmlListModel {
     id: l3Model
     query: "/thirds/item"
 
-    XmlRole { name: "primary"; query: "primary/string()"; }
-    XmlRole { name: "secondary"; query: "secondary/string()"; }
-    XmlRole { name: "topic"; query: "topic/string()"; }
-    XmlRole { name: "image"; query: "image/string()"; }
+    XmlListModelRole { name: "primary"; elementName: "primary"; }
+    XmlListModelRole { name: "secondary"; elementName: "secondary"; }
+    XmlListModelRole { name: "topic"; elementName: "topic"; }
+    XmlListModelRole { name: "image"; elementName: "image"; }
 
     signal loaded()
 

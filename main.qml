@@ -2,14 +2,15 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
-import QtGraphicalEffects 1.15
-import QtMultimedia 5.15
-import QtQuick.XmlListModel 2.15
-import QtQuick.Dialogs 1.3
+import QtMultimedia
+import QtQml.XmlListModel
+import QtQuick.Dialogs
 
 import org.tal 1.0
 import org.tal.cutehyper 1.0
 import org.tal.mqtt 1.0
+
+import org.tal.trdparty
 
 import "windows"
 import "selectors"
@@ -71,6 +72,12 @@ ApplicationWindow {
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
         
         l3window.maskWindow=maskwindow;
+
+        mp.videoOutput=l3window.mediaPlayerOutput
+
+        console.debug("Loading settings...")
+        loadSettings()
+        console.debug("...done")
         
         mqttClient.connectToHost();
     }
