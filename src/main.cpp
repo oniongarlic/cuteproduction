@@ -12,6 +12,8 @@
 #include "hyper.h"
 #include "cutemqttclient.h"
 
+#include "qmediaplaylist.h"
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -43,6 +45,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<CuteMqttClient>("org.tal.mqtt", 1, 0, "MqttClient");
     qRegisterMetaType<CuteMqttSubscription::TopicType>("TopicType");
     qmlRegisterUncreatableType<CuteMqttSubscription>("org.tal.mqtt", 1, 0, "MqttSubscription", QLatin1String("MQTT subscriptions are read-only"));        
+
+    qmlRegisterType<QMediaPlaylist>("org.tal.trdparty", 1, 0, "Playlist");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

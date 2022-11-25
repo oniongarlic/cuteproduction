@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.12
 
 Item {
@@ -15,12 +15,12 @@ Item {
 
     FileDialog {
         id: filesDialog
-        folder: shortcuts.pictures
+        //folder: shortcuts.pictures
         nameFilters: [ "*.mp4", "*.mov", "*.mp3", "*.avi", "*.jpg" ]
         title: qsTr("Select media file(s)")
-        selectExisting: true
-        selectFolder: false
-        selectMultiple: true
+        //selectExisting: true
+        //selectFolder: false
+        //selectMultiple: true
         onAccepted: {
             // XXX: Need to convert to string, otherwise sucka
             if (fileUrl!="") {

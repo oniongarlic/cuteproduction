@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QtNetwork>
 #include <QMediaPlayer>
-#include <QMediaPlaylist>
+
+#include "qmediaplaylist.h"
 
 class CuteHyper : public QObject
 {

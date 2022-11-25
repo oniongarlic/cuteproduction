@@ -13,7 +13,7 @@ SOURCES += \
         src/settings.cpp \
         src/ticker.cpp \
         src/hyper.cpp \
-        src/cutemqttclient.cpp
+        src/cutemqttclient.cpp       
 
 HEADERS += \
     src/filereader.h \
@@ -22,6 +22,11 @@ HEADERS += \
     src/ticker.h \
     src/hyper.h \
     src/cutemqttclient.h
+
+# QMediaPlaylist
+SOURCES += 3rdparty/qmediaplaylist/qmediaplaylist.cpp 3rdparty/qmediaplaylist/playlistmodel.cpp 3rdparty/qmediaplaylist/qplaylistfileparser.cpp
+HEADERS += 3rdparty/qmediaplaylist/playlistmodel.h 3rdparty/qmediaplaylist/qmediaplaylist.h 3rdparty/qmediaplaylist/qmediaplaylist_p.h 3rdparty/qmediaplaylist/qplaylistfileparser_p.h
+INCLUDEPATH += 3rdparty/qmediaplaylist/
 
 RESOURCES += qml.qrc
 
