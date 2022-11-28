@@ -27,7 +27,7 @@ Window {
     
     property alias fontSize: teleprompt.fontSize
 
-    onClosing: {
+    onClosing: (close) => {
         close.accepted=false;
     }
 

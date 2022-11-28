@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Dialogs
-import QtQuick.Layouts 1.15
+import QtQuick.Layouts
 
 Item {
     id: igs
@@ -29,12 +29,12 @@ Item {
 //        selectMultiple: false
         onAccepted: {
             // XXX: Need to convert to string, otherwise sucka
-            if (fileUrl!="") {
-                var f=""+fileUrl
+            if (selectedFile!="") {
+                var f=""+selectedFile
                 fileSelected(f);
             } else {
-                console.debug(fileUrls)
-                filesSelected(fileUrls)
+                console.debug(selectedFiles)
+                filesSelected(selectedFiles)
             }
         }
     }
