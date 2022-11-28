@@ -83,6 +83,14 @@ ApplicationWindow {
     }
     
     onClosing: {
+        cuteQuit();
+    }
+
+    function cuteQuit() {
+        l3window.destroy()
+        tpwindow.destroy()
+        maskwindow.destroy()
+
         Qt.quit();
     }
     
@@ -155,7 +163,7 @@ ApplicationWindow {
             }
             MenuItem {
                 text: "Quit"
-                onClicked: Qt.quit()
+                onClicked: cuteQuit()
             }
         }
         Menu {
@@ -471,7 +479,7 @@ ApplicationWindow {
                 id: bgCustomChoose
                 text: "Select custom..."
                 checkable: true
-                value: dialogColor.color
+                value: dialogColor.selectedColor
                 ButtonGroup.group: backgroundGroup
                 onClicked: {
                     dialogColor.open()
@@ -533,7 +541,7 @@ ApplicationWindow {
     ButtonGroup {
         id: backgroundGroup
         property string currentValue: 'black';
-        onClicked: {
+        onClicked: (button) => {
             l3window.setBackground(button.value)
             currentValue=button.value
         }
@@ -545,14 +553,14 @@ ApplicationWindow {
     ColorDialog {
         id: dialogColor
         onAccepted: {
-            l3window.setBackground('custom', color);
-            backgroundGroup.currentValue=color;
+            l3window.setBackground('custom', dialogColor.color);
+            backgroundGroup.currentValue=dialogColor.color;
         }
         onRejected: {
             
         }
         Component.onCompleted: {
-            color=settings.getSettingsStr("background/customColor", "yellow")
+            dialogColor.color=settings.getSettingsStr("background/customColor", "yellow")
         }
         onSelectedColorChanged: {
             settings.setSettingsStr("background/customColor", selectedColor)

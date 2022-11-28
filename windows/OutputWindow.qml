@@ -92,7 +92,7 @@ Window {
         });
     }
 
-    onClosing: (close) => {
+    onClosing: (close) => {        
         close.accepted=false;
     }
 
@@ -263,8 +263,7 @@ Window {
         // deviceId: "/dev/video0"
         onErrorOccurred: console.debug("CameraError: "+errorString)
 
-        Component.onCompleted: {
-            console.debug("Camera is: "+deviceId)
+        Component.onCompleted: {            
             console.debug("Camera orientation is: "+orientation)
             // videoInput.exposure.exposureMode=Camera.ExposureAuto
         }
@@ -278,10 +277,10 @@ Window {
         spacing: 16
         
         function bm(ltv, nt) {
-            bm=16;
-            if (ltv) bm+=l3l.height+32
-            if (nt) bm+=newsTicker.height+32
-            return bm;
+            let tbm=16;
+            if (ltv) tbm+=l3l.height+32
+            if (nt) tbm+=newsTicker.height+32
+            return tbm;
         }
         
         move: Transition {

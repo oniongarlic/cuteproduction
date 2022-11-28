@@ -35,7 +35,7 @@ Window {
         settings.setSettingsStr("windows/teleprompt", screen.name)
     }
 
-    onClosing: {
+    onClosing: (close) => {
         close.accepted=false;
     }
 
