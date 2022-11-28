@@ -92,7 +92,7 @@ Window {
         });
     }
 
-    onClosing: {
+    onClosing: (close) => {
         close.accepted=false;
     }
 

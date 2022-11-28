@@ -554,8 +554,8 @@ ApplicationWindow {
         Component.onCompleted: {
             color=settings.getSettingsStr("background/customColor", "yellow")
         }
-        onColorChanged: {
-            settings.setSettingsStr("background/customColor", color)
+        onSelectedColorChanged: {
+            settings.setSettingsStr("background/customColor", selectedColor)
         }
     }
     
@@ -597,7 +597,7 @@ ApplicationWindow {
     TextSelector {
         id: playListSaveSelector
         filter: [ "*.m3u8" ]
-        selectExisting: false
+        //selectExisting: false
         onFileSelected: {
             plist.save(src, "m3u8");
         }
@@ -651,29 +651,32 @@ ApplicationWindow {
     
     MediaPlayer {
         id: mp
-        playlist: plist
-        autoLoad: true
-        loops: checkLoop.checked ? MediaPlayer.Infinite : 1
-        muted: checkMuted.checked
-        volume: volumeDial.value/100
-        audioRole: MediaPlayer.VideoRole
-        onPlaying: {
-            //hs.setStatus("playing")
+        //playlist: plist
+        loops: checkLoop.checked ? MediaPlayer.Infinite : 1        
+        audioOutput: AudioOutput {
+            volume: volumeDial.value/100
+            muted: checkMuted.checked
         }
-        onStopped: {
-            //hs.setStatus("stopped")
-        }
-        onPaused: {
-            //hs.setStatus("stopped")
-        }
+
         onPositionChanged: {
             //hs.setTimecode(position);
         }
         onDurationChanged: {
             //hs.setDuration(duration)
         }
+
+        onPlaybackStateChanged: {
+            switch (playbackState) {
+            case MediaPlayer.PlayingState:
+                break;
+            case MediaPlayer.PausedState:
+                break;
+            case MediaPlayer.StoppedState:
+                break;
+            }
+        }
         
-        onStatusChanged: console.debug(status)
+        //onStatusChanged: console.debug(status)
     }
     
     Playlist {
