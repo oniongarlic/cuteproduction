@@ -67,8 +67,9 @@ Item {
             id: mediaBorder
             border.color: "#ffffff"
             border.width: 1
-            color: "transparent"            
-            anchors.fill: parent            
+            color: "transparent"
+            antialiasing: true
+            anchors.fill: parent
         }
 
         transform: Rotation {
