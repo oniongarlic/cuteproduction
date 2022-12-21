@@ -1878,6 +1878,12 @@ ApplicationWindow {
                     text: "Animation"
                     checked: false
                 }
+                Switch {
+                    id: activeAnimation
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Active"
+                    checked: true
+                }
                 ComboBox {
                     id: animationSelector
                     model: [ "Snow" ]

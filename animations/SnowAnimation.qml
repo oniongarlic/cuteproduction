@@ -4,8 +4,10 @@ import QtQuick.Particles 2.15
 ParticleSystem {
     id: sys
     anchors.fill: parent
-    running: true
-    visible: running
+    running: visible
+    visible: false
+    
+    property alias emitting: snowEmitter.enabled
 
     ImageParticle {
         source: "qrc:///snowflake.png"
@@ -18,8 +20,9 @@ ParticleSystem {
     }
 
     Timer {
-        running: sys.running
-        interval: 100
+        id: emissionTimer
+        running: snowEmitter.enabled
+        interval: 200
         repeat: true
         onTriggered: {
             snowEmitter.x=Math.random()*parent.width

@@ -446,7 +446,8 @@ Window {
 
     SnowAnimation {
         id: particle
-        running: showAnimation.checked
+        visible: showAnimation.checked
+        emitting: activeAnimation.checked
     }
 
 }
