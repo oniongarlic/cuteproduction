@@ -13,12 +13,12 @@ ColumnLayout {
     property var savedAngles: [];
 
     Component.onCompleted: {
-        savedSize[0]=Qt.rect(0, 0, 0.90, 0.90)
-        savedSize[1]=Qt.rect(0, 0, 1, 1)
+        savedSize[0]=Qt.rect(0.05, 0.05, 0.84, 0.84)
+        savedSize[1]=Qt.rect(0, 0, 0.805, 0.805)
         savedSize[2]=Qt.rect(0.027, 0.107, 0.7, 0.7)
-        savedAngles[0]=15;
-        savedAngles[1]=25;
-        savedAngles[2]=35;
+        savedAngles[0]=8;
+        savedAngles[1]=12;
+        savedAngles[2]=17;
     }
 
     function loadPosition(i) {
