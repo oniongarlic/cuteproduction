@@ -144,6 +144,14 @@ ColumnLayout {
                 savePosition(2)
             }
         }
+        Switch {
+            id: mediaBorder
+            text: "Border"
+            checked: true
+            onCheckedChanged: {
+                vo.borderRect.visible=checked
+            }
+        }
     }
 
     onSavedSizeChanged: console.debug(savedSize)
