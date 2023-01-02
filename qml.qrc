@@ -32,6 +32,7 @@
         <file>components/CameraResolutionPopup.qml</file>
         <file>components/SliderSpinboxRow.qml</file>
         <file>models/EasingModel.qml</file>
+        <file>components/CountDown.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>

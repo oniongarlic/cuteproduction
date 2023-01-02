@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 
 import ".."
+import "../components"
 
 Window {
     id: teleWindow
@@ -66,51 +67,21 @@ Window {
         }
     }
 
-    Rectangle {
-        id: countDownBackground
+    CountDown {
+        id: countdown
         anchors.fill: parent
-        color: "blue"
-        opacity: 0.7
-        visible: countdownTimer.running
-    }
+        flip: teleWindow.flip
+        mirror: teleWindow.mirror
+        countdownSeconds: teleWindow.countdownSeconds
 
-    Text {
-        id: countDownText
-        anchors.centerIn: countDownBackground
-        color: "white"
-        font.pixelSize: 128
-        text: countdownTimer.count
-        visible: countdownTimer.running
-        transform: Scale {
-            origin.x: countDownText.width/2
-            origin.y: countDownText.height/2
-            xScale: mirror ? -1 : 1
-            yScale: flip ? -1 : 1
-        }
-    }
-
-    Timer {
-        id: countdownTimer
-        interval: 1000
-        repeat: true
-        property int count: 0
-        onTriggered: {
-            count--
-            if (count==0) {
-                countdownTimer.stop();
-                teleprompt.start()
-            }
-        }
-
-        function startCountdown() {
-            count=countdownSeconds;
-            countdownTimer.start()
+        onCountDownExpired: {
+            teleprompt.start()
         }
     }
 
     function telepromptStart() {
         if (countdownSeconds>0)
-            countdownTimer.startCountdown()
+            countdown.start()
         else
             teleprompt.start()
     }
@@ -121,6 +92,8 @@ Window {
         teleprompt.resume()
     }
     function telepromptStop() {
+        if (countdown.active)
+            countdown.stop()
         teleprompt.stop()
     }
     function telepromptReset() {
