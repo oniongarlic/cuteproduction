@@ -14,7 +14,7 @@ Flickable {
 
     property int scrollType: 0
 
-    property alias running: timerScroll.running
+    property bool running: timerScroll.running || svanim.running
 
     property alias text: txt.text
     property alias fontSize: txt.font.pixelSize
@@ -22,6 +22,18 @@ Flickable {
     property real scrollSpeed: 1
     property real lineSpeed: 0.6
     property int scrollSpeedSeconds: txt.lineCount/lineSpeed
+
+    property int seconds: 0
+
+    Timer {
+        id: scrollTicker
+        interval: 1000
+        repeat: true
+        running: sv.running
+        onTriggered: {
+            seconds++
+        }
+    }
 
     ScrollBar.vertical: ScrollBar {
         parent: sv.parent
@@ -63,6 +75,7 @@ Flickable {
             svanim.resume()
     }
     function reset() {
+        seconds=0;
         sv.contentY=topMargin;
     }
     function restart() {

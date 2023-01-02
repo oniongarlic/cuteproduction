@@ -43,3 +43,11 @@ void Settings::setSettingsStr(const QString &key, const QString value)
     m_settings->setValue(key, value);
     m_settings->sync();
 }
+
+void Settings::setArray(const QString &prefix, const QVariantList values) {
+    m_settings->beginWriteArray(prefix);
+    for (int i=0;i<values.size();i++) {
+        m_settings->setArrayIndex(i);
+    }
+    m_settings->endArray();
+}

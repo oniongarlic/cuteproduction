@@ -14,6 +14,8 @@ public:
     Q_INVOKABLE QByteArray data();
     Q_INVOKABLE bool read(QUrl file);
     Q_INVOKABLE void clear();
+
+    Q_INVOKABLE int getMetaData(const QString file);
 signals:
 
 private:

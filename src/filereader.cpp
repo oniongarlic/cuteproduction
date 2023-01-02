@@ -1,10 +1,33 @@
-
 #include "filereader.h"
+
+#include <QDebug>
+
+extern "C" {
+#include <libavformat/avformat.h>
+#include <libavutil/dict.h>
+}
 
 FileReader::FileReader(QObject *parent)
     : QObject{parent}
 {
 
+}
+
+int FileReader::getMetaData(const QString file)
+{
+    AVFormatContext *fmt_ctx = NULL;
+    AVDictionaryEntry *tag = NULL;
+    int ret;
+
+    if ((ret = avformat_open_input(&fmt_ctx, file.toLocal8Bit().data(), NULL, NULL)))
+        return ret;
+
+    while ((tag = av_dict_get(fmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX)))
+        qDebug() << tag->key << tag->value;
+
+    avformat_free_context(fmt_ctx);
+
+    return 0;
 }
 
 bool FileReader::read(QUrl file)

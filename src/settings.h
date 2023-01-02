@@ -18,6 +18,7 @@ public:
 
     Q_INVOKABLE void setSettingsStr(const QString &key, const QString value);
     Q_INVOKABLE QString getSettingsStr(const QString &key, const QString defaultValue);
+    Q_INVOKABLE void setArray(const QString &key, const QVariantList values);
 signals:
 
 public slots:

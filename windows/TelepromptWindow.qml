@@ -67,6 +67,42 @@ Window {
         }
     }
 
+    Timer {
+        id: timerGeneric
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: {
+            updateCurrentTime();
+            //updateCounter();
+        }
+    }
+
+    function updateCurrentTime() {
+        var date = new Date;
+        timeCurrent.text=Qt.formatTime(date, "hh:mm:ss");
+    }
+
+    TimeText {
+        id: timeCurrent
+        visible: true
+        font.pixelSize: 48
+        Component.onCompleted: {
+            position.marginTop=8;
+            position.setPosition(Qt.AlignLeft, Qt.AlignTop)
+        }
+    }
+    TimeText {
+        id: timeCount
+        visible: true
+        font.pixelSize: 48
+        text: formatSeconds(teleprompt.seconds)
+        Component.onCompleted: {
+            position.marginTop=8;
+            position.setPosition(Qt.AlignRight, Qt.AlignTop)            
+        }
+    }
+
     CountDown {
         id: countdown
         anchors.fill: parent
