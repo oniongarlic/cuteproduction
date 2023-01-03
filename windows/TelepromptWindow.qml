@@ -92,20 +92,20 @@ Window {
     TimeText {
         id: timeCurrent
         visible: true
-        font.pixelSize: 48
+        font.pixelSize: 32
         Component.onCompleted: {
-            position.marginTop=8;
-            position.setPosition(Qt.AlignLeft, Qt.AlignTop)
+            position.marginBottom=8;
+            position.setPosition(Qt.AlignLeft, Qt.AlignBottom)
         }
     }
     TimeText {
         id: timeCount
         visible: true
-        font.pixelSize: 48
+        font.pixelSize: 32
         text: formatSeconds(teleprompt.seconds)
         Component.onCompleted: {
-            position.marginTop=8;
-            position.setPosition(Qt.AlignRight, Qt.AlignTop)            
+            position.marginBottom=8;
+            position.setPosition(Qt.AlignRight, Qt.AlignBottom)
         }
     }
 
