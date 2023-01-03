@@ -34,6 +34,10 @@ Window {
         close.accepted=false;
     }
 
+    function setMessage(msg) {
+        msgText.text=msg;
+    }
+
     MouseArea {
         anchors.fill: parent
         onDoubleClicked: {
@@ -52,6 +56,21 @@ Window {
         anchors.leftMargin: 32
         anchors.rightMargin: 32
         spacing: 8
+
+        Rectangle {
+            id: msgContainer
+            visible: msgText.visible
+            Layout.fillWidth: true
+            Layout.fillHeight: false
+            MessageText {
+                id: msgText
+                visible: text!=""
+                text: "Hello World"
+                font.pixelSize: 42
+                width: parent.width
+            }
+        }
+
 
         TelepromptScroller {
             id: teleprompt

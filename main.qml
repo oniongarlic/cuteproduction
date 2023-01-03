@@ -1385,6 +1385,59 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.margins: 16
             spacing: 8
+
+            ColumnLayout {
+                id: telepromptItemMessage
+                Layout.alignment: Qt.AlignTop
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                ScrollView {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                    background: Rectangle {
+                        border.color: "black"
+                        border.width: 1
+                    }
+                    TextArea {
+                        id: telepromptTextMsg
+                        placeholderText: "Write a telepromt message here"
+                        selectByKeyboard: true
+                        selectByMouse: true
+                        textFormat: TextEdit.PlainText
+                        wrapMode: TextEdit.Wrap
+                    }
+                }
+                RowLayout {
+                    Switch {
+                        id: telepromptMsgSwitch
+                        Layout.alignment: Qt.AlignLeft
+                        text: "Display message"
+                        onCheckedChanged: {
+                            if (checked)
+                                tpwindow.setMessage(telepromptTextMsg.text)
+                            else
+                                tpwindow.setMessage("")
+                        }
+                    }
+                    Button {
+                        text: "Update"
+                        enabled: telepromptMsgSwitch.checked
+                        onClicked: {
+                            tpwindow.setMessage(telepromptTextMsg.text)
+                        }
+                    }
+                    Button {
+                        text: "Send"
+                        enabled: telepromptMsgSwitch.checked
+                        onClicked: {
+                            tpwindow.setMessage(telepromptTextMsg.text)
+                            telepromptTextMsg.text=""
+                        }
+                    }
+                }
+            }
             
             ScrollView {
                 Layout.fillHeight: true
