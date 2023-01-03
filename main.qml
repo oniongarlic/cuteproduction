@@ -174,13 +174,7 @@ ApplicationWindow {
                 checkable: true
                 checked: maskwindow.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: maskwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
-            }
-            MenuItem {
-                text: "Full screen (Teleprompt)"
-                checkable: true
-                checked: tpwindow.visibility==Window.FullScreen ? true : false
-                onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
-            }
+            }            
         }
         
         Menu {
@@ -304,6 +298,13 @@ ApplicationWindow {
                 onCheckedChanged: {
                     tpwindow.visible=checked
                 }
+            }
+            MenuItem {
+                text: "Full screen"
+                checkable: true
+                enabled: tpwindow.visible
+                checked: tpwindow.visibility==Window.FullScreen ? true : false
+                onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
             }
         }
         
@@ -1451,30 +1452,35 @@ ApplicationWindow {
                 }
                 Button {
                     text: "Start"
+                    enabled: !tpwindow.active
                     onClicked: {
                         tpwindow.telepromptStart();
                     }
                 }
                 Button {
                     text: "Stop"
+                    enabled: tpwindow.active
                     onClicked: {
                         tpwindow.telepromptStop();
                     }
                 }
                 Button {
                     text: "Pause"
+                    enabled: tpwindow.active && !tpwindow.paused
                     onClicked: {
                         tpwindow.telepromptPause();
                     }
                 }
                 Button {
                     text: "Resume"
+                    enabled: tpwindow.active && tpwindow.paused
                     onClicked: {
                         tpwindow.telepromptResume();
                     }
                 }
                 Button {
                     text: "Reset"
+                    enabled: tpwindow.active
                     onClicked: {
                         tpwindow.telepromptStop();
                     }

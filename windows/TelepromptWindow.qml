@@ -27,6 +27,8 @@ Window {
     property bool flip: false
     
     property alias fontSize: teleprompt.fontSize
+    readonly property bool active: teleprompt.running || countdown.active
+    readonly property alias paused: teleprompt.paused
 
     onClosing: {
         close.accepted=false;
@@ -45,7 +47,11 @@ Window {
     ColumnLayout {
         id: cl
         anchors.fill: parent
-        anchors.margins: 64
+        anchors.topMargin: 64
+        anchors.bottomMargin: 32
+        anchors.leftMargin: 32
+        anchors.rightMargin: 32
+        spacing: 8
 
         TelepromptScroller {
             id: teleprompt

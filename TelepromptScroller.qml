@@ -15,6 +15,7 @@ Flickable {
     property int scrollType: 0
 
     property bool running: timerScroll.running || svanim.running
+    readonly property bool paused: svanim.paused
 
     property alias text: txt.text
     property alias fontSize: txt.font.pixelSize
