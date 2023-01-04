@@ -2,10 +2,13 @@
 
 #include <QDebug>
 
+
+#ifdef FFMPEG
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/dict.h>
 }
+#endif
 
 FileReader::FileReader(QObject *parent)
     : QObject{parent}
@@ -15,6 +18,7 @@ FileReader::FileReader(QObject *parent)
 
 int FileReader::getMetaData(const QString file)
 {
+#ifdef FFMPEG
     AVFormatContext *fmt_ctx = NULL;
     AVDictionaryEntry *tag = NULL;
     int ret;
@@ -26,7 +30,7 @@ int FileReader::getMetaData(const QString file)
         qDebug() << tag->key << tag->value;
 
     avformat_free_context(fmt_ctx);
-
+#endif
     return 0;
 }
 
