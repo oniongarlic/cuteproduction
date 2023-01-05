@@ -51,7 +51,7 @@ Window {
     ColumnLayout {
         id: cl
         anchors.fill: parent
-        anchors.topMargin: 64
+        anchors.topMargin: 32
         anchors.bottomMargin: 32
         anchors.leftMargin: 32
         anchors.rightMargin: 32
@@ -62,12 +62,18 @@ Window {
             visible: msgText.visible
             Layout.fillWidth: true
             Layout.fillHeight: false
+            Layout.minimumHeight: 52
             MessageText {
                 id: msgText
                 visible: text!=""
                 text: "Hello World"
                 font.pixelSize: 42
                 width: parent.width
+                height: parent.height
+                Component.onCompleted: {
+                    position.marginBottom=8;
+                    position.marginTop=8
+                }
             }
         }
 
