@@ -140,6 +140,10 @@ Window {
         msgText.text=msg;
     }
 
+    function setSubtitle(msg) {
+        subTitle.text=msg;
+    }
+
     function updateCurrentTime() {
         var date = new Date;
         timeCurrent.text=Qt.formatTime(date, "hh:mm:ss");
@@ -424,6 +428,14 @@ Window {
         visible: text!=""
         Component.onCompleted: {
             position.setPosition(Qt.AlignCenter, Qt.AlignTop)
+        }
+    }
+
+    SubTitle {
+        id: subTitle
+        text: ""
+        Component.onCompleted: {
+            position.setPosition(Qt.AlignCenter, Qt.AlignBottom)
         }
     }
 

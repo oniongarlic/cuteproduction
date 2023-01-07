@@ -2011,7 +2011,8 @@ ApplicationWindow {
             setWillMessage(0)
             
             subscribeTopic(topicBase+"message", showMessage, MqttSubscription.String)
-            subscribeTopic(topicBase+"chat", addChatMessage, MqttSubscription.JsonObject)
+            subscribeTopic(topicBase+"subtitle", showSubtitle, MqttSubscription.String)
+            subscribeTopic(topicBase+"chat", addChatMessage, MqttSubscription.JsonObject)            
         }
         
         onDisconnected: {
@@ -2037,6 +2038,10 @@ ApplicationWindow {
     
     function showMessage(str) {
         l3window.setMessage(str)
+    }
+
+    function showSubtitle(str) {
+        l3window.setSubtitle(str)
     }
 
     function addChatMessage(data) {        
