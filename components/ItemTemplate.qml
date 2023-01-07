@@ -18,7 +18,7 @@ Item {
     property int marginLeft: 32
     property int marginRight: 32
 
-    property Item positionParent;
+    property Item positionParent: parent;
 
     onAlignXChanged: updatePositionX()
     onAlignYChanged: updatePositionY()
