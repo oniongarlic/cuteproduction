@@ -12,6 +12,7 @@ Rectangle {
     width: parent.width-64
 
     property alias text: txtSub.text
+    property bool autoHideText: false
 
     visible: txtSub.text!=''
 
@@ -19,6 +20,14 @@ Rectangle {
 
     onTextChanged: {
         pos.updatePosition()
+        if (autoHideText && txtSub.text!='')
+            autoHide.start()
+    }
+
+    Timer {
+        id: autoHide
+        interval: 5000
+        onTriggered: txtSub.text=''
     }
 
     ItemTemplate {
