@@ -1414,6 +1414,7 @@ ApplicationWindow {
                         id: telepromptMsgSwitch
                         Layout.alignment: Qt.AlignLeft
                         text: "Display message"
+                        checked: true
                         onCheckedChanged: {
                             if (checked)
                                 tpwindow.setMessage(telepromptTextMsg.text)
@@ -1423,14 +1424,14 @@ ApplicationWindow {
                     }
                     Button {
                         text: "Update"
-                        enabled: telepromptMsgSwitch.checked
+                        enabled: telepromptMsgSwitch.checked && telepromptTextMsg.length>0
                         onClicked: {
                             tpwindow.setMessage(telepromptTextMsg.text)
                         }
                     }
                     Button {
                         text: "Send"
-                        enabled: telepromptMsgSwitch.checked
+                        enabled: telepromptMsgSwitch.checked && telepromptTextMsg.length>0
                         onClicked: {
                             tpwindow.setMessage(telepromptTextMsg.text)
                             telepromptTextMsg.text=""
