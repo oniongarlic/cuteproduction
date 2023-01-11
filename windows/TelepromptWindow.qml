@@ -59,15 +59,17 @@ Window {
 
         Rectangle {
             id: msgContainer
-            visible: msgText.visible
+            visible: msgText.text!=''
             Layout.fillWidth: true
-            Layout.fillHeight: false
+            Layout.fillHeight: true
             Layout.minimumHeight: 52
+            Layout.maximumHeight: msgText.contentHeight
+            color: "#292929"
             MessageText {
                 id: msgText
-                visible: text!=""
                 text: "Hello World"
                 font.pixelSize: 42
+                color: "#ffffff"
                 width: parent.width
                 height: parent.height
                 Component.onCompleted: {
@@ -76,7 +78,6 @@ Window {
                 }
             }
         }
-
 
         TelepromptScroller {
             id: teleprompt
