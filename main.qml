@@ -445,6 +445,13 @@ ApplicationWindow {
             ColorMenuItem {
                 id: bgCustom
                 text: "Custom"
+                value: dialogColor.color
+                checkable: true
+                ButtonGroup.group: backgroundGroup
+            }
+            ColorMenuItem {
+                id: bgCustomChoose
+                text: "Select custom..."
                 checkable: true
                 value: dialogColor.color
                 ButtonGroup.group: backgroundGroup
@@ -457,7 +464,24 @@ ApplicationWindow {
             }
             MenuItem {
                 id: bgImage
-                text: "Image..."
+                text: "Image"
+                ButtonGroup.group: backgroundGroup
+                enabled: image!=''
+                checkable: true
+                property string image;
+                onClicked: {
+                    l3window.setBackground('image', image);
+                }
+                Component.onCompleted: {
+                    image=settings.getSettingsStr("background/image", '')
+                }
+                icon.source: image
+                icon.width: 32
+                icon.height: 32
+            }
+            MenuItem {
+                id: bgImageChoose
+                text: "Select Image..."
                 onClicked: {
                     tsimg.startSelector()
                 }
@@ -467,7 +491,8 @@ ApplicationWindow {
                 text: "Clear"
                 onClicked: {
                     l3window.setBackground('image', '');
-                    l3window.setBackground(backgroundGroup.currentValue);                    
+                    l3window.setBackground(backgroundGroup.currentValue);
+                    bgImage.image=''
                 }
             }
         }
@@ -522,6 +547,7 @@ ApplicationWindow {
         onFileSelected: {
             l3window.setBackground('image', src)
             settings.setSettingsStr("background/image", src)
+            bgImage.image=src;
         }
     }
     
