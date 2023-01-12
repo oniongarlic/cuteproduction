@@ -1442,8 +1442,8 @@ ApplicationWindow {
             ScrollView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.minimumHeight: gl.height/3
-                Layout.maximumHeight: gl.height/2
+                Layout.minimumHeight: telepromptDrawer.height/3
+                Layout.maximumHeight: telepromptDrawer.height/2
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 background: Rectangle {
                     border.color: "black"
@@ -1465,31 +1465,36 @@ ApplicationWindow {
                     id: telepromptMirror
                     Layout.alignment: Qt.AlignLeft
                     text: "Mirror"
-                    checked: false
+                    checked: settings.getSettingsBool("telepromt/mirror", false)
                 }
                 Switch {
                     id: telepromptFlip
                     Layout.alignment: Qt.AlignLeft
                     text: "Flip"
-                    checked: false
+                    checked: settings.getSettingsBool("telepromt/flip", false)
                 }
                 SpinBox {
                     id: lineSpeed
                     from: 1
-                    to: 10
+                    to: 12
                     stepSize: 1
-                    value: 8
+                    value: settings.getSettingsInt("telepromt/speed", 8, 1, 12)
                     onValueChanged: {
+                        if (!tpwindow)
+                            return
                         tpwindow.lineSpeed=value/10.0
                     }
                     wheelEnabled: true
                 }
                 SpinBox {
-                    from: 18
+                    from: 16
                     to: 128
-                    value: 72
+                    value: settings.getSettingsInt("telepromt/fontsize", 64, 16, 128)
                     onValueChanged: {
+                        if (!tpwindow)
+                            return
                         tpwindow.fontSize=value;
+                        settings.setSettings("teleprompt/fontsize, value")
                     }
                     wheelEnabled: true
                 }
