@@ -44,6 +44,11 @@ ApplicationWindow {
 
     Component.onCompleted: {
         oflags=flags;
+        
+        console.debug("Loading settings...")
+        loadSettings()
+        console.debug("...done")
+        
         console.debug("Screens: " + Qt.application.screens.length)
         let l3s=0;
         let tps=0;
@@ -71,21 +76,12 @@ ApplicationWindow {
         
         l3window.maskWindow=maskwindow;
 
-        console.debug("Loading settings...")
-        loadSettings()
-        console.debug("...done")
-        
         mqttClient.connectToHost();
     }
     
     onClosing: {
         Qt.quit();
     }
-    
-    property string primary: ""
-    property string secondary: ""
-    
-    property int counter: 0
     
     function formatSeconds(s) {
         var h = Math.floor(s / 3600);
@@ -107,6 +103,7 @@ ApplicationWindow {
             flip: telepromptFlip.checked
             onFlipChanged: settings.setSettings("teleprompt/flip", flip)
             onMirrorChanged: settings.setSettings("teleprompt/mirror", mirror)
+            onVisibleChanged: settings.setSettings("telepromt/visible", visible)
         }
     }
     
@@ -114,6 +111,7 @@ ApplicationWindow {
         id: maskw
         MaskWindow {
             id: maskWindow
+            onVisibleChanged: settings.setSettings("mask/visible", visible)
         }
     }
     
@@ -1395,6 +1393,7 @@ ApplicationWindow {
                 ScrollView {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.maximumHeight: telepromptDrawer.height/6
                     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                     background: Rectangle {
                         border.color: "black"
