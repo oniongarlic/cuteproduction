@@ -144,6 +144,16 @@ ColumnLayout {
                 savePosition(2)
             }
         }
+        SpinBox {
+            id: animationSpeed
+            from: 0
+            to: 300
+            stepSize: 1
+            value: vo.animationDuration/100
+            onValueChanged: {
+                vo.animationDuration=value*100
+            }
+        }
         Switch {
             id: mediaBorder
             text: "Border"
