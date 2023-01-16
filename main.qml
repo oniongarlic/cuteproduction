@@ -1592,10 +1592,14 @@ ApplicationWindow {
 
     // XML Loader model
     LowerThirdModel {
-        id: l3Model
-        source: "persons.xml"
+        id: l3Model        
         onLoaded: {
             copyToListModel(l3ModelFinal)
+            if (source!='persons.xml')
+                settings.setSettingsStr("thirds", source)
+        }
+        Component.onCompleted: {
+            source=settings.getSettingsStr("thirds", "persons.xml")
         }
     }
     
