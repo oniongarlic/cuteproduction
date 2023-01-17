@@ -74,6 +74,9 @@ void CuteMqttSubscription::handleMessage(const QMqttMessage &qmsg)
     case TopicType::JsonObject:
         handleJsonMessage(qmsg);
         break;
+    case TopicType::Bool:
+        emit messageReceived(qmsg.payload().toInt()==0 ? false : true);
+        break;
     default:
         qWarning() << "Unsupported data type" << m_type;
     break;

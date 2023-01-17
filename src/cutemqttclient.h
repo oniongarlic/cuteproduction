@@ -18,6 +18,7 @@ public:
         ByteArray=QMetaType::QByteArray,
         Integer=QMetaType::Int,
         Double=QMetaType::Double,
+        Bool=QMetaType::Bool,
         JsonObject=QMetaType::QJsonObject
     };
     Q_ENUM(TopicType)
