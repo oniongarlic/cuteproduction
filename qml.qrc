@@ -1,14 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>LowerThirdBase.qml</file>
         <file>person.png</file>
-        <file>TelepromptScroller.qml</file>
-        <file>TextSelector.qml</file>
         <file>persons.xml</file>
-        <file>ParticleAnimation.qml</file>
         <file>snowflake.png</file>
-        <file>MessageListView.qml</file>
+        <file>components/LowerThirdBase.qml</file>
+        <file>components/TelepromptScroller.qml</file>
+        <file>selectors/TextSelector.qml</file>
+        <file>animations/ParticleAnimation.qml</file>
+        <file>components/MessageListView.qml</file>
         <file>windows/TelepromptWindow.qml</file>
         <file>windows/OutputWindow.qml</file>
         <file>animations/SnowAnimation.qml</file>

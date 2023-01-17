@@ -100,6 +100,11 @@ Rectangle {
         x=getXpos(parent.width, width, alignHorizontal);
         y=getYpos(parent.height, height, l3BottomMargin, alignVertical);
     }
+
+
+    Item {
+        id: _dummy
+    }
     
     SequentialAnimation {
         id: l3animation
@@ -119,7 +124,7 @@ Rectangle {
                 to: alignHorizontal==Qt.AlignLeft ? margin : (fullWidth ? margin : l3.parent.width/2+margin)
             }
             NumberAnimation {
-                target: useOpacity ? l3 : undefined;
+                target: useOpacity ? l3 : _dummy;
                 property: "opacity"
                 from: 0
                 to: 1
@@ -141,7 +146,7 @@ Rectangle {
                 from: ypos
             }
             NumberAnimation {
-                target: useOpacity ? l3 : undefined;
+                target: useOpacity ? l3 : _dummy;
                 property: "opacity"
                 from: 1
                 to: 0
