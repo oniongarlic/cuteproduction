@@ -2051,6 +2051,11 @@ ApplicationWindow {
 
             subscribeTopic(topicBase+"l3/left", triggerLowerThirdLeft, MqttSubscription.Bool)
             subscribeTopic(topicBase+"l3/right", triggerLowerThirdRight, MqttSubscription.Bool)
+            subscribeTopic(topicBase+"l3/add", addLowerThird, MqttSubscription.JsonObject)
+
+            subscribeTopic(topicBase+"ticker/show", triggerNewsTicker, MqttSubscription.Bool)
+            subscribeTopic(topicBase+"ticker/clear", clearNewsTicker, MqttSubscription.Bool)
+            subscribeTopic(topicBase+"ticker/add", addNewsTicker, MqttSubscription.JsonObject)
         }
         
         onDisconnected: {
@@ -2080,6 +2085,22 @@ ApplicationWindow {
 
     function showSubtitle(str) {
         l3window.setSubtitle(str)
+    }
+
+    function triggerNewsTicker(v) {
+        menuTickerVisible.checked=v
+    }
+
+    function clearNewsTicker(v) {
+        newsEditorList.model.clear();
+    }
+
+    function addNewsTicker(item) {
+        l3window.addNewsItem(item)
+    }
+
+    function addLowerThird(item) {
+        l3ModelFinal.append(item)
     }
 
     function triggerLowerThirdLeft() {
