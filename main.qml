@@ -2047,7 +2047,10 @@ ApplicationWindow {
             
             subscribeTopic(topicBase+"message", showMessage, MqttSubscription.String)
             subscribeTopic(topicBase+"subtitle", showSubtitle, MqttSubscription.String)
-            subscribeTopic(topicBase+"chat", addChatMessage, MqttSubscription.JsonObject)            
+            subscribeTopic(topicBase+"chat", addChatMessage, MqttSubscription.JsonObject)
+
+            subscribeTopic(topicBase+"l3/left", triggerLowerThirdLeft, MqttSubscription.Bool)
+            subscribeTopic(topicBase+"l3/right", triggerLowerThirdRight, MqttSubscription.Bool)
         }
         
         onDisconnected: {
@@ -2077,6 +2080,16 @@ ApplicationWindow {
 
     function showSubtitle(str) {
         l3window.setSubtitle(str)
+    }
+
+    function triggerLowerThirdLeft() {
+        if (l3selector.currentIndexLeft>-1)
+            l3window.lthirdLeft.show();
+    }
+
+    function triggerLowerThirdRight() {
+        if (l3selector.currentIndexRight>-1)
+            l3window.lthirdRight.show();
     }
 
     function addChatMessage(data) {        
