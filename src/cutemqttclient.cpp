@@ -34,7 +34,8 @@ CuteMqttSubscription* CuteMqttClient::subscribeType(const QString &filter, CuteM
 }
 
 CuteMqttSubscription::CuteMqttSubscription(QMqttSubscription *s, CuteMqttClient *c)
-    : m_sub(s)
+    : QObject(c)
+    , m_sub(s)
     , m_client(c)
 {
     connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleMessage);
@@ -43,7 +44,8 @@ CuteMqttSubscription::CuteMqttSubscription(QMqttSubscription *s, CuteMqttClient 
 }
 
 CuteMqttSubscription::CuteMqttSubscription(QMqttSubscription *s, CuteMqttClient *c, CuteMqttSubscription::TopicType t)
-    : m_sub(s)
+    : QObject(c)
+    , m_sub(s)
     , m_client(c)
 {
     connect(m_sub, &QMqttSubscription::messageReceived, this, &CuteMqttSubscription::handleMessage);
