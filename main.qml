@@ -34,14 +34,14 @@ ApplicationWindow {
     property OutputWindow l3window;
     property MaskWindow maskwindow;
     property TelepromptWindow tpwindow;
-
+    
     FontLoader {
         id: staticFontOxygenMono
         source: "qrc:/data/fonts/OxygenMono-Regular.ttf"
         onNameChanged: console.debug("FontName: "+name)
         onStatusChanged: console.debug("FontStatus: "+status)
     }
-
+    
     Component.onCompleted: {
         oflags=flags;
         
@@ -75,7 +75,7 @@ ApplicationWindow {
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
         
         l3window.maskWindow=maskwindow;
-
+        
         mqttClient.connectToHost();
     }
     
@@ -121,12 +121,12 @@ ApplicationWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             tickerVisible: menuTickerVisible.checked
             mediaPlayer: mp
-
+            
             onTickerItemsVisibleChanged: settings.setSettings("ticker/items", tickerItemsVisible)
             onTickerVisibleChanged: settings.setSettings("ticker/visible", tickerVisible)
         }
     }
-
+    
     function loadSettings() {
         menuTickerVisible.checked=settings.getSettingsBool("ticker/visible", false);
         menuTickerFullWidth.checked=settings.getSettingsInt("ticker/items", 1, 1, 4)===1 ? true : false;
@@ -135,6 +135,14 @@ ApplicationWindow {
     menuBar: MenuBar {
         Menu {
             title: "File"
+            MenuItem {
+                text: "MQTT"
+                enabled: mqttClient.state==MqttClient.Disconnected
+                onClicked:mqttClient.connectToHost();
+            }
+            MenuSeparator {
+                
+            }
             MenuItem {
                 text: "Quit"
                 onClicked: Qt.quit()
@@ -383,36 +391,36 @@ ApplicationWindow {
                     plist.clear()
                 }
             }
-            Menu {                
-                title: "Video input"
-                enabled: l3window.hasVideoInput
-                MenuItem {
-                    text: "Start"                    
-                    onClicked: {
-                        l3window.startCamera();
-                    }
+        }
+        Menu {                
+            title: "Video input"
+            enabled: l3window.hasVideoInput
+            MenuItem {
+                text: "Start"                    
+                onClicked: {
+                    l3window.startCamera();
                 }
-                MenuItem {
-                    text: "Stop"
-                    enabled: l3window.videoInputActive
-                    onClicked: {
-                        l3window.stopCamera();
-                    }
+            }
+            MenuItem {
+                text: "Stop"
+                enabled: l3window.videoInputActive
+                onClicked: {
+                    l3window.stopCamera();
                 }
-                MenuItem {
-                    text: "Select"
-                    enabled: !l3window.videoInputActive
-                    onClicked: {
-                        cameraSelector.open()
-                    }
+            }
+            MenuItem {
+                text: "Select"
+                enabled: !l3window.videoInputActive
+                onClicked: {
+                    cameraSelector.open()
                 }
-                MenuItem {
-                    text: "Show"
-                    checkable: true
-                    checked: true
-                    onClicked: {
-                        l3window.videoOutputVisible(checked)
-                    }
+            }
+            MenuItem {
+                text: "Show"
+                checkable: true
+                checked: true
+                onClicked: {
+                    l3window.videoOutputVisible(checked)
                 }
             }
         }
@@ -497,18 +505,18 @@ ApplicationWindow {
             }
         }
     }
-
+    
     CameraSelectorPopup {
         id: cameraSelector
         onCameraSelected: {
             l3window.setCameraDevice(id)
         }
     }
-
+    
     CameraResolutionPopup {
         id: cameraResolutionSelector
         onCameraResolutionSelected: {
-
+            
         }
     }
     
@@ -1409,13 +1417,13 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.margins: 16
             spacing: 8
-
+            
             ColumnLayout {
                 id: telepromptItemMessage
                 Layout.alignment: Qt.AlignTop
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-
+                
                 ScrollView {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
@@ -1589,7 +1597,7 @@ ApplicationWindow {
     ListModel {
         id: l3ModelFinal
     }
-
+    
     // XML Loader model
     LowerThirdModel {
         id: l3Model        
@@ -1792,7 +1800,7 @@ ApplicationWindow {
                     const data=model.get(currentIndexRight);
                     l3window.lthirdRight.setDetails(data.primary, data.secondary, data.topic, data.image)
                 }
-
+                
                 ScrollIndicator.vertical: ScrollIndicator {}
             }
             
@@ -2000,6 +2008,14 @@ ApplicationWindow {
                         checked=false;
                     }
                 }
+                Switch {
+                    id: switchNewsTickerShow
+                    text: "Newsticker"
+                    checked: true
+                    onCheckedChanged: {
+                        l3window.newsTickerShow=checked
+                    }
+                }
             }
         }
         // 2x2
@@ -2048,11 +2064,11 @@ ApplicationWindow {
             subscribeTopic(topicBase+"message", showMessage, MqttSubscription.String)
             subscribeTopic(topicBase+"subtitle", showSubtitle, MqttSubscription.String)
             subscribeTopic(topicBase+"chat", addChatMessage, MqttSubscription.JsonObject)
-
+            
             subscribeTopic(topicBase+"l3/left", triggerLowerThirdLeft, MqttSubscription.Bool)
             subscribeTopic(topicBase+"l3/right", triggerLowerThirdRight, MqttSubscription.Bool)
             subscribeTopic(topicBase+"l3/add", addLowerThird, MqttSubscription.JsonObject)
-
+            
             subscribeTopic(topicBase+"ticker/show", triggerNewsTicker, MqttSubscription.Bool)
             subscribeTopic(topicBase+"ticker/clear", clearNewsTicker, MqttSubscription.Bool)
             subscribeTopic(topicBase+"ticker/add", addNewsTicker, MqttSubscription.JsonObject)
@@ -2073,7 +2089,7 @@ ApplicationWindow {
             s.setType(type)
             s.messageReceived.connect(cb)
         }
-
+        
         function publishActive(i) {
             publish(topicBase+"active", i, 1, true)
         }
@@ -2082,37 +2098,37 @@ ApplicationWindow {
     function showMessage(str) {
         l3window.setMessage(str)
     }
-
+    
     function showSubtitle(str) {
         l3window.setSubtitle(str)
     }
-
+    
     function triggerNewsTicker(v) {
         menuTickerVisible.checked=v
     }
-
+    
     function clearNewsTicker(v) {
         newsEditorList.model.clear();
     }
-
+    
     function addNewsTicker(item) {
         l3window.addNewsItem(item)
     }
-
+    
     function addLowerThird(item) {
         l3ModelFinal.append(item)
     }
-
+    
     function triggerLowerThirdLeft() {
         if (l3selector.currentIndexLeft>-1)
             l3window.lthirdLeft.show();
     }
-
+    
     function triggerLowerThirdRight() {
         if (l3selector.currentIndexRight>-1)
             l3window.lthirdRight.show();
     }
-
+    
     function addChatMessage(data) {        
         l3window.addMessageLeft(data.topic, data.message);
     }

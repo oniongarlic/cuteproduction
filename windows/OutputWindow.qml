@@ -34,6 +34,7 @@ Window {
     property alias tickerVisible: newsTicker.tickerVisible
 
     property alias newsTickerVisible: newsTicker.visible
+    property alias newsTickerShow: newsTicker.showItem
     property bool lowerThirdsVisible: l3l.visible || l3r.visible
 
     property LowerThirdBase lthirdLeft: l3l
@@ -66,6 +67,7 @@ Window {
 
     onScreenChanged: {
         console.debug("OutputWindowScreen is now: "+screen.name)
+        settings.setSettingsStr("windows/mainwindow", screen.name)
     }
 
     onFrameSwapped: {

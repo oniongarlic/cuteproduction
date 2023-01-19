@@ -21,6 +21,8 @@ ColumnLayout {
     y: pos.y
     width: parent.width-64
     property ItemTemplate position: pos
+    
+    property alias showItem: pos.showItem
 
     ItemTemplate {
         id: pos
