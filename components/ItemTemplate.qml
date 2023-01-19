@@ -8,6 +8,8 @@ Item {
     property int alignX: Qt.AlignCenter
     property int alignY: Qt.AlignCenter
     
+    property int hideAlign: Qt.AlignBottom
+    
     property int customX: 0
     property int customY: 0
 
@@ -23,8 +25,17 @@ Item {
     onAlignXChanged: updatePositionX()
     onAlignYChanged: updatePositionY()
     
-    Behavior on x { NumberAnimation { easing.type: Easing.InOutQuad} }
-    Behavior on y { NumberAnimation { easing.type: Easing.InOutQuad} }
+    Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.InOutQuad} }
+    Behavior on y { NumberAnimation { duration: 300; easing.type: Easing.InOutQuad } }
+    
+    property bool showItem: true
+    
+    onShowItemChanged: {
+        if (showItem)
+            show()
+        else
+            hide()
+    }
     
     Connections {
         target: positionParent
@@ -33,6 +44,32 @@ Item {
         }
         function onHeightChanged() {
             updatePosition()
+        }
+    }
+    
+    function show() {
+        updatePosition();
+    }
+    
+    function hide() {
+        var p=positionParent;
+        switch (hideAlign) {
+        case Qt.AlignLeft:
+            x=-(width+marginLeft)
+            console.debug("AL:"+x)
+            break;
+        case Qt.AlignTop:
+            y=-(height+marginTop)
+            console.debug("AT:"+y)
+            break;
+        case Qt.AlignBottom:
+            y=p.height+marginBottom
+            console.debug("AB:"+y)
+            break;
+        case Qt.AlignRight:
+            x=p.width+marginRight
+            console.debug("AR:"+x)
+            break;
         }
     }
     
