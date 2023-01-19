@@ -29,6 +29,11 @@ Window {
     property alias fontSize: teleprompt.fontSize
     readonly property bool active: teleprompt.running || countdown.active
     readonly property alias paused: teleprompt.paused
+    
+    onScreenChanged: {
+        console.debug("TelepromptWindow is now: "+screen.name)
+        settings.setSettingsStr("windows/teleprompt", screen.name)
+    }
 
     onClosing: {
         close.accepted=false;

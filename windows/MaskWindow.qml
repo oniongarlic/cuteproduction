@@ -16,7 +16,8 @@ Window {
     }
 
     onScreenChanged: {
-        console.debug("MaskWindowScreen is now: "+screen)
+        console.debug("MaskWindow is now: "+screen.name)
+        settings.setSettingsStr("windows/mainmask", screen.name)
     }
 
     Image {
