@@ -1692,10 +1692,10 @@ ApplicationWindow {
                 }
             }
             onClicked: {
-                ListView.view.currentIndex=index;
+                ListView.view.currentIndexLeft=index;
             }
             onDoubleClicked: {
-                ListView.view.currentIndex=index;
+                ListView.view.currentIndexLeft=index;
                 l3window.lthirdLeft.show();
             }
         }
