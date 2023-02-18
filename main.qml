@@ -36,13 +36,6 @@ ApplicationWindow {
     property MaskWindow maskwindow;
     property TelepromptWindow tpwindow;
     
-    FontLoader {
-        id: staticFontOxygenMono
-        source: "qrc:/data/fonts/OxygenMono-Regular.ttf"
-        onNameChanged: console.debug("FontName: "+name)
-        onStatusChanged: console.debug("FontStatus: "+status)
-    }
-    
     Component.onCompleted: {
         oflags=flags;
         

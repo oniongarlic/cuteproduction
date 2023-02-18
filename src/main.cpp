@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QQuickView>
 #include <QQuickStyle>
+#include <QFontDatabase>
 #include <QScreen>
 
 #include "ticker.h"
@@ -26,6 +27,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("tal.org");
     QCoreApplication::setApplicationName("CuteProduction");
     QCoreApplication::setApplicationVersion("0.1");
+
+    const int id = QFontDatabase::addApplicationFont(":/data/fonts/OxygenMono-Regular.ttf");
+    qDebug() << "Font loaded: " << id;
 
     QQuickStyle::setStyle("Universal");
     
