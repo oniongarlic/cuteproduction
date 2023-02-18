@@ -36,6 +36,7 @@
         <file>components/SubTitle.qml</file>
         <file>components/Clapper.qml</file>
         <file>components/TextTemplate.qml</file>
+        <file>drawers/ClapperDrawer.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>

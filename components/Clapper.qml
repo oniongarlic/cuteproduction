@@ -42,6 +42,8 @@ Rectangle {
                     text: production
                     Layout.fillWidth: true
                     fontSizeMode: Text.Fit
+                    wrapMode: Text.WordWrap
+                    maximumLineCount: 2
                 }
             }
         }
@@ -121,6 +123,8 @@ Rectangle {
                     font.pixelSize: 64
                     Layout.fillWidth: true
                     fontSizeMode: Text.Fit
+                    wrapMode: Text.WordWrap
+                    maximumLineCount: 2
                 }
             }
             ColumnLayout {
@@ -138,6 +142,8 @@ Rectangle {
                     font.pixelSize: 64
                     Layout.fillWidth: true
                     fontSizeMode: Text.Fit
+                    wrapMode: Text.WordWrap
+                    maximumLineCount: 2
                 }
             }
             ColumnLayout {
@@ -154,6 +160,7 @@ Rectangle {
                     font.pixelSize: 64
                     Layout.fillWidth: true
                     fontSizeMode: Text.Fit
+                    wrapMode: Text.NoWrap
                 }
             }
             ColumnLayout {

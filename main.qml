@@ -16,6 +16,7 @@ import "selectors"
 import "messaging"
 import "components"
 import "models"
+import "drawers"
 
 ApplicationWindow {
     id: main
@@ -1407,6 +1408,11 @@ ApplicationWindow {
             rssModel.source=src
         }
     }
+
+    ClapperDrawer {
+        id: clapper
+        clapper: l3window.clapper
+    }
     
     Drawer {
         id: telepromptDrawer
@@ -1767,7 +1773,22 @@ ApplicationWindow {
                     window: l3window;
                     item: l3window.txtMessage
                 }
-            }            
+            }
+            RowLayout {
+                Switch {
+                    text: "Clapper"
+                    onCheckedChanged: {
+                        l3window.clapperVisible=checked
+                    }
+                }
+
+                Button {
+                    text: "Clapper..."
+                    onClicked: {
+                        clapper.open()
+                    }
+                }
+            }
         }
         
         // 2x1

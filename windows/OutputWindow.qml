@@ -56,6 +56,7 @@ Window {
     property CustomVideoOutput mediaPlayerOutput: vo
     property CustomVideoOutput videoInputOutput: vovi
 
+    readonly property Clapper clapper: clapper
     property alias clapperVisible: clapper.visible
     
     property alias txtTime: timeCurrent
