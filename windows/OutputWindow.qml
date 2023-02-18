@@ -55,6 +55,8 @@ Window {
 
     property CustomVideoOutput mediaPlayerOutput: vo
     property CustomVideoOutput videoInputOutput: vovi
+
+    property alias clapperVisible: clapper.visible
     
     property alias txtTime: timeCurrent
     property alias txtCountdown: timeCountdown
@@ -462,6 +464,12 @@ Window {
         id: particle
         visible: showAnimation.checked
         emitting: activeAnimation.checked
+    }
+
+    Clapper {
+        id: clapper
+        visible: false
+        anchors.fill: parent
     }
 
 }

@@ -34,6 +34,8 @@
         <file>models/EasingModel.qml</file>
         <file>components/CountDown.qml</file>
         <file>components/SubTitle.qml</file>
+        <file>components/Clapper.qml</file>
+        <file>components/TextTemplate.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
