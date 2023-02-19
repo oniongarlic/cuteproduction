@@ -71,7 +71,7 @@ ColumnLayout {
         ItemDelegate {
             width: tickerList.width/itemsVisible
             highlighted: ListView.isCurrentItem
-            height: c.height+c.padding
+            height: c.height+c.padding*2
             background: Rectangle {
                 color: highlighted ? "#ffffff" : "#b0b0b0"
                 radius: 0
@@ -83,7 +83,7 @@ ColumnLayout {
             Text {
                 id: c
                 color: highlighted ? "#0062ae" : "#0062ae"
-                padding: 8
+                padding: 4
                 font.capitalization: Font.AllUppercase
                 font.weight: Font.Bold
                 text: topic;
