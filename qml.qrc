@@ -37,6 +37,7 @@
         <file>components/Clapper.qml</file>
         <file>components/TextTemplate.qml</file>
         <file>drawers/ClapperDrawer.qml</file>
+        <file>components/NewsPanel.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
