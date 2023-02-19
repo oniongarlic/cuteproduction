@@ -65,6 +65,11 @@ Drawer {
             }
         }
         RowLayout {
+            Layout.fillWidth: true
+            spacing: 16
+            Label {
+                text: "Roll"
+            }
             SpinBox {
                 from: 1
                 value: 1
@@ -72,7 +77,10 @@ Drawer {
                 editable: true
                 onValueModified: {
                     clapper.roll=value
-                }
+                }                
+            }
+            Label {
+                text: "Scene"
             }
             SpinBox {
                 from: 1
@@ -84,6 +92,9 @@ Drawer {
                 }
 
             }
+            Label {
+                text: "Take"
+            }
             SpinBox {
                 from: 1
                 value: 1
@@ -94,7 +105,6 @@ Drawer {
                 }
             }
         }
-
     }
 
 }

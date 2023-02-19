@@ -18,7 +18,7 @@ Rectangle {
     property int take: 1
 
     Component.onCompleted: {
-        // date=new Date()
+        date=Qt.formatDateTime(new Date(), "dd.MM.yyyy")
     }
 
     ColumnLayout {
