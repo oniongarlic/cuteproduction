@@ -22,7 +22,7 @@ Drawer {
             id: telepromptMsgSwitch
             Layout.alignment: Qt.AlignLeft
             text: "Display clapper/slate"
-            checked: false
+            checked: clapper.visible
             onCheckedChanged: {
                 clapper.visible=checked
             }
@@ -106,5 +106,4 @@ Drawer {
             }
         }
     }
-
 }

@@ -1770,6 +1770,7 @@ ApplicationWindow {
             RowLayout {
                 Switch {
                     text: "Clapper"
+                    checked: l3window.clapperVisible
                     onCheckedChanged: {
                         l3window.clapperVisible=checked
                     }
