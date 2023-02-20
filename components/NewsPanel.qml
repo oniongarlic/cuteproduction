@@ -37,6 +37,8 @@ ColumnLayout {
         width: parent.width
         height: parent.height
         positionParent: newsPanel.parent
+        animate: false
+        // Hide it inside layout!
         visible: false
     }   
 
