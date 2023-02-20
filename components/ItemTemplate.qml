@@ -24,9 +24,13 @@ Item {
 
     onAlignXChanged: updatePositionX()
     onAlignYChanged: updatePositionY()
+
+    property bool animate: true
+    property int duration: 300
+    property int behaviourDuration: animate ? duration : 0
     
-    Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.InOutQuad} }
-    Behavior on y { NumberAnimation { duration: 300; easing.type: Easing.InOutQuad } }
+    Behavior on x { NumberAnimation { duration: behaviourDuration; easing.type: Easing.InOutQuad } }
+    Behavior on y { NumberAnimation { duration: behaviourDuration; easing.type: Easing.InOutQuad } }
     
     property bool showItem: true
     
