@@ -49,7 +49,7 @@ ColumnLayout {
         repeat: true
 
         property int ct: 100
-        property int delay: 10
+        property int delay: 20
 
         onTriggered: {
             if (delay>0) {
@@ -66,7 +66,7 @@ ColumnLayout {
                 return;
 
             ct=100;
-            delay=10;
+            delay=20;
 
             if (tickerList.currentIndex<tickerList.count-1)
                 tickerList.currentIndex++
@@ -169,6 +169,7 @@ ColumnLayout {
             textFormat: Text.PlainText
             wrapMode: Text.Wrap
             text: ""
+            lineHeight: 1.2
             Behavior on opacity { NumberAnimation { duration: 250 } }
         }
     }
