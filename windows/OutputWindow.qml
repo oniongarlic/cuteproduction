@@ -31,10 +31,13 @@ Window {
     property alias lowerThirdsMargin: l3l.margin
 
     property alias tickerItemsVisible: newsTicker.itemsVisible
-    property alias tickerVisible: newsTicker.tickerVisible
+    property alias tickerVisible: newsTicker.tickerVisible    
 
     property alias newsTickerVisible: newsTicker.visible
     property alias newsTickerShow: newsTicker.showItem
+
+    property alias newsPanelVisible: newsPanel.visible
+
     property bool lowerThirdsVisible: l3l.visible || l3r.visible
 
     property LowerThirdBase lthirdLeft: l3l
@@ -444,11 +447,19 @@ Window {
         }
     }
 
+    NewsPanel {
+        id: newsPanel
+        model: tickerModel
+        Component.onCompleted: {
+            position.setPosition(Qt.AlignCenter, Qt.AlignTop)
+        }
+    }
+
     NewsTicker {
         id: newsTicker
         model: tickerModel
         needToHide: l3l.visible || l3r.visible
-    }
+    }    
 
     DropShadow {
         visible: useMask && newsTicker.visible && useDropShadows

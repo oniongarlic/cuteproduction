@@ -114,16 +114,21 @@ ApplicationWindow {
         OutputWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             tickerVisible: menuTickerVisible.checked
+            newsPanelVisible: menuPanelVisible.checked
+
             mediaPlayer: mp
             
             onTickerItemsVisibleChanged: settings.setSettings("ticker/items", tickerItemsVisible)
             onTickerVisibleChanged: settings.setSettings("ticker/visible", tickerVisible)
+
+            onNewsTickerVisibleChanged: settings.setSettings("ticker/panelvisible", newsPanelVisible)
         }
     }
     
     function loadSettings() {
-        menuTickerVisible.checked=settings.getSettingsBool("ticker/visible", false);
+        menuTickerVisible.checked=settings.getSettingsBool("ticker/visible", false);        
         menuTickerFullWidth.checked=settings.getSettingsInt("ticker/items", 1, 1, 4)===1 ? true : false;
+        menuPanelVisible.checked=settings.getSettingsBool("ticker/panelvisible", false);
     }
     
     menuBar: MenuBar {
@@ -315,6 +320,12 @@ ApplicationWindow {
                 onClicked: {
                     newsDrawer.open()
                 }
+            }
+            MenuItem {
+                id: menuPanelVisible
+                text: "Panel visible"
+                checkable: true
+                checked: false
             }
             MenuItem {
                 id: menuTickerVisible
