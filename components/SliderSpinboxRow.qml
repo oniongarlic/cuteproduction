@@ -10,6 +10,7 @@ RowLayout {
     property alias to: mp.to
     property alias stepSize: mp.stepSize
     property alias value: mp.value
+    property alias pressed: mp.pressed
 
     property int spinScale: 1000
 
