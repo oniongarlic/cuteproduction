@@ -157,7 +157,7 @@ ColumnLayout {
         Switch {
             id: mediaBorder
             text: "Border"
-            checked: true
+            checked: false
             onCheckedChanged: {
                 vo.borderRect.visible=checked
             }
