@@ -191,26 +191,34 @@ ColumnLayout {
     SliderSpinboxRow {
         id: mpx
         text: "X"
-        onValueChanged: mediaSizing.size.x=value;
+        onValueChanged: {
+            vo.animate=!pressed; mediaSizing.size.x=value; vo.animate=true;
+        }
     }
     SliderSpinboxRow {
         id: mpy
         text: "Y"
-        onValueChanged: mediaSizing.size.y=value;
+        onValueChanged: {
+            vo.animate=!pressed; mediaSizing.size.y=value; vo.animate=true;
+        }
     }
     SliderSpinboxRow {
         id: mpw
         from: 0
         to: 1
         text: "W"
-        onValueChanged: mediaSizing.size.width=value;
+        onValueChanged: {
+            vo.animate=!pressed; mediaSizing.size.width=value; vo.animate=true;
+        }
     }
     SliderSpinboxRow {
         id: mph
         from: 0
         to: 1
         text: "H"
-        onValueChanged: mediaSizing.size.height=value;
+        onValueChanged: {
+            vo.animate=!pressed; mediaSizing.size.height=value; vo.animate=true;
+        }
     }
     SliderSpinboxRow {
         id: mpa
@@ -219,6 +227,8 @@ ColumnLayout {
         to: 360
         spinScale: 1
         text: "A"
-        onValueChanged: mediaSizing.angle=value;
+        onValueChanged: {
+            vo.animate=!pressed; mediaSizing.angle=value; vo.animate=true;
+        }
     }
 }
