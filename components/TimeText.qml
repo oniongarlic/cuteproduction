@@ -16,6 +16,7 @@ Text {
     textFormat: Text.PlainText
     width: parent.width/4
     height: contentHeight
+    wrapMode: Text.NoWrap
 
     property ItemTemplate position: pos
 
