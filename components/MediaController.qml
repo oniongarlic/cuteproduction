@@ -189,31 +189,36 @@ ColumnLayout {
     }
 
     SliderSpinboxRow {
-        id:mpx
+        id: mpx
+        text: "X"
         onValueChanged: mediaSizing.size.x=value;
     }
     SliderSpinboxRow {
-        id:mpy
+        id: mpy
+        text: "Y"
         onValueChanged: mediaSizing.size.y=value;
     }
     SliderSpinboxRow {
-        id:mpw
+        id: mpw
         from: 0
         to: 1
+        text: "W"
         onValueChanged: mediaSizing.size.width=value;
     }
     SliderSpinboxRow {
-        id:mph
+        id: mph
         from: 0
         to: 1
+        text: "H"
         onValueChanged: mediaSizing.size.height=value;
     }
     SliderSpinboxRow {
-        id:mpa
+        id: mpa
         from: -360
         stepSize: 1
         to: 360
         spinScale: 1
+        text: "A"
         onValueChanged: mediaSizing.angle=value;
     }
 }

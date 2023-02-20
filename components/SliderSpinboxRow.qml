@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.12
 
 RowLayout {
     Layout.fillWidth: true
-    spacing: 0
+    spacing: 2
 
     property alias from: mp.from
     property alias to: mp.to
@@ -14,6 +14,11 @@ RowLayout {
 
     property int spinScale: 1000
 
+    property alias text: label.text
+
+    Label {
+        id: label
+    }
     Slider {
         id: mp
         Layout.fillWidth: true
