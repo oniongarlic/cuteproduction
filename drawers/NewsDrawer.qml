@@ -25,6 +25,14 @@ Drawer {
         }
     }
 
+    URLSelector {
+        id: rssUrl
+        title: "RSS Feed URL"
+        onAccepted: {
+            rssModel.source=url
+        }
+    }
+
     Component {
         id: rssItemModel
         ItemDelegate {
@@ -209,9 +217,15 @@ Drawer {
         }
         RowLayout {
             Button {
-                text: "RSS"
+                text: "RSS File"
                 onClicked: {
                     rssFile.startSelector()
+                }
+            }
+            Button {
+                text: "RSS URL"
+                onClicked: {
+                    rssUrl.open()
                 }
             }
             Button {
