@@ -38,6 +38,8 @@
         <file>components/TextTemplate.qml</file>
         <file>drawers/ClapperDrawer.qml</file>
         <file>components/NewsPanel.qml</file>
+        <file>drawers/NewsDrawer.qml</file>
+        <file>models/RssModel.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
