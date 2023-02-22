@@ -78,7 +78,7 @@ ColumnLayout {
     Component {
         id: tickerDelegate
         ItemDelegate {
-            width: tickerList.width/itemsVisible
+            width: tickerList.width
             highlighted: ListView.isCurrentItem
             height: c.height+c.padding*2
             background: Rectangle {
@@ -92,18 +92,18 @@ ColumnLayout {
             Text {
                 id: c
                 color: highlighted ? "#0062ae" : "#0062ae"
+                width: parent.width
                 padding: 4
-                font.capitalization: Font.AllUppercase
-                font.weight: Font.Bold
-                text: topic;
                 anchors.verticalCenter: parent.verticalCenter
                 verticalAlignment: Text.AlignVCenter
+                font.capitalization: Font.AllUppercase
+                font.weight: Font.Bold
+                font.pixelSize: 44
+                text: topic;
                 maximumLineCount: 1
                 elide: Text.ElideRight
-                font.pixelSize: 44
                 textFormat: Text.PlainText
                 wrapMode: Text.NoWrap
-                width: parent.width                
             }
         }
     }
@@ -123,12 +123,11 @@ ColumnLayout {
         height: 58
         interactive: false
         orientation: ListView.Horizontal
-        delegate: tickerDelegate
-        // model: tickerModel
+        delegate: tickerDelegate        
+        snapMode: ListView.SnapToItem
         highlightFollowsCurrentItem: true
         highlight: tickerHighlight
         highlightMoveDuration: 500
-        snapMode: ListView.SnapToItem
         highlightRangeMode: ListView.StrictlyEnforceRange
         onCurrentIndexChanged: {
             console.debug("Tick: "+currentIndex)
