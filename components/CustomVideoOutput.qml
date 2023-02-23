@@ -71,6 +71,7 @@ Item {
             border.width: 1
             color: "transparent"
             antialiasing: true
+            visible: false
             anchors.fill: parent
         }
 
