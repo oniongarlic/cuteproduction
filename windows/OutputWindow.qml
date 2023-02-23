@@ -44,6 +44,7 @@ Window {
     property LowerThirdBase lthirdRight: l3r
 
     property ListModel newsTickerModel: tickerModel
+    property ListModel newsPanelModel: panelModel
 
     property MediaPlayer mediaPlayer;
 
@@ -100,6 +101,10 @@ Window {
         id: tickerModel
     }
 
+    ListModel {
+        id: panelModel
+    }
+
     Timer {
         id: timerGeneric
         interval: 1000
@@ -130,14 +135,6 @@ Window {
         default:
             color='black'
         }
-    }
-
-    function clearNews() {
-        tickerModel.clear()
-    }
-
-    function addNewsItem(item) {
-        tickerModel.append(item)
     }
 
     function setTickerPosition(align) {
@@ -449,7 +446,7 @@ Window {
 
     NewsPanel {
         id: newsPanel
-        model: tickerModel
+        model: panelModel
         Component.onCompleted: {
             position.setPosition(Qt.AlignCenter, Qt.AlignTop)
         }

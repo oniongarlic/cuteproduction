@@ -6,12 +6,28 @@ import QtQuick.Dialogs 1.3
 
 import "../selectors"
 import "../models"
+import "../components"
 
 Drawer {
     id: newsDrawer
     dragMargin: 0
     width: parent.width/1.5
     height: parent.height
+
+    property ListModel tickerModel;
+    property ListModel panelModel;
+
+    function addItemToModel(model, item) {
+        model.append(item)
+        if (clearOnAdd.checked) {
+            newsKeyword.clear()
+            newsBody.clear()
+        }
+    }
+
+    function updateItemInList(list, item) {
+        list.model.set(list.currentIndex, item)
+    }
 
     RssModel {
         id: rssModel
@@ -62,7 +78,7 @@ Drawer {
             onDoubleClicked: {
                 const news=rssModel.get(index)
                 const item={ "topic": news.title, "msg": html.stripTags(news.description) }
-                l3window.addNewsItem(item)
+                tickerModel.append(item)
             }
         }
     }
@@ -149,73 +165,84 @@ Drawer {
         }
         RowLayout {
             spacing: 8
+            Switch {
+                id: clearOnAdd
+                text: "Clear on add"
+                checked: true
+            }
             Button {
-                text: "Add"
+                text: "To Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0
                 onClicked: {
                     const item={ "topic": newsKeyword.text, "msg": newsBody.text }
-                    l3window.addNewsItem(item)
-                    newsKeyword.clear()
-                    newsBody.clear()
+                    addItemToModel(tickerModel, item)
                 }
             }
             Button {
-                text: "Update"
-                enabled: newsKeyword.length>0 && newsBody.length>0 && newsEditorList.currentIndex>-1
+                text: "To Panel"
+                enabled: newsKeyword.length>0 && newsBody.length>0
                 onClicked: {
                     const item={ "topic": newsKeyword.text, "msg": newsBody.text }
-                    newsEditorList.model.set(newsEditorList.currentIndex, item)
-                    newsKeyword.clear()
-                    newsBody.clear()
+                    addItemToModel(panelModel, item)
                 }
             }
             Button {
-                text: "Remove"
-                enabled: newsEditorList.currentIndex>-1
+                text: "Update Ticker"
+                enabled: newsKeyword.length>0 && newsBody.length>0 && newsTickerEditorList.currentIndex>-1
                 onClicked: {
-                    newsEditorList.model.remove(newsEditorList.currentIndex)
+                    const item={ "topic": newsKeyword.text, "msg": newsBody.text }
+                    updateItemInList(newsTickerEditorList, item)
                 }
             }
             Button {
-                text: "Remove all"
+                text: "Update Panel"
+                enabled: newsKeyword.length>0 && newsBody.length>0 && newsPanelEditorList.currentIndex>-1
                 onClicked: {
-                    newsEditorList.model.clear();
+                    const item={ "topic": newsKeyword.text, "msg": newsBody.text }
+                    updateItemInList(newsPanelEditorList, item)
                 }
             }
             Button {
                 text: "Clear"
+                enabled: newsKeyword.length>0 || newsBody.length>0
                 onClicked: {
                     newsKeyword.clear()
                     newsBody.clear()
                 }
-            }
-            Button {
-                text: "Close"
-                onClicked: {
-                    newsDrawer.close()
-                }
-            }
+            }            
         }
-        ListView {
-            id: newsEditorList
+        RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            model: l3window.newsTickerModel
-            delegate: newsEditorDelegate
-            clip: true
-        }
-        Label {
-            text: "Items: "+newsEditorList.count
-        }
+            Layout.minimumHeight: newsDrawer.height/4
+            Layout.maximumHeight: newsDrawer.height/2
+            NewsListView {
+                id: newsTickerEditorList
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: tickerModel
+                delegate: newsEditorDelegate
+            }
+            NewsListView {
+                id: newsPanelEditorList
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: panelModel
+                delegate: newsEditorDelegate                
+            }
+        }        
         ListView {
             id: newsFeedList
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.minimumHeight: newsDrawer.height/4
+            Layout.maximumHeight: newsDrawer.height/2
             model: rssModel
             delegate: rssItemModel
             clip: true
         }
         RowLayout {
+            spacing: 8
             Button {
                 text: "RSS File"
                 onClicked: {
@@ -229,13 +256,24 @@ Drawer {
                 }
             }
             Button {
-                text: "Add all"
+                text: "All to Ticker"
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
                     for (i=0;i<rssModel.count;i++) {
                         const item={ "topic": rssModel.get(i).title, "msg": html.stripTags(rssModel.get(i).description) }
-                        l3window.addNewsItem(item)
+                        tickerModel.append(item)
+                    }
+                }
+            }
+            Button {
+                text: "All to Panel"
+                enabled: rssModel.count>0
+                onClicked: {
+                    let i;
+                    for (i=0;i<rssModel.count;i++) {
+                        const item={ "topic": rssModel.get(i).title, "msg": html.stripTags(rssModel.get(i).description) }
+                        panelModel.append(item)
                     }
                 }
             }

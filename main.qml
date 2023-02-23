@@ -339,6 +339,9 @@ ApplicationWindow {
                 checkable: true
                 checked: false
             }
+            MenuSeparator {
+
+            }
             MenuItem {
                 text: "Align Top"
                 onClicked: l3window.setTickerPosition(Qt.AlignTop)
@@ -346,15 +349,6 @@ ApplicationWindow {
             MenuItem {
                 text: "Align Bottom"
                 onClicked: l3window.setTickerPosition(Qt.AlignBottom)
-            }
-            MenuSeparator {
-                
-            }
-            MenuItem {
-                text: "Clear"
-                onClicked: {
-                    l3window.clearNews()
-                }
             }
         }
         
@@ -1175,7 +1169,9 @@ ApplicationWindow {
     }
     
     NewsDrawer {
-        id: newsDrawer        
+        id: newsDrawer
+        tickerModel: l3window.newsTickerModel
+        panelModel: l3window.newsPanelModel
     }   
 
     ClapperDrawer {
@@ -1899,11 +1895,11 @@ ApplicationWindow {
     }
     
     function clearNewsTicker(v) {
-        newsEditorList.model.clear();
+        l3window.newsTickerModel.clear();
     }
     
     function addNewsTicker(item) {
-        l3window.addNewsItem(item)
+        l3window.newsTickerModel.append(item)
     }
     
     function addLowerThird(item) {

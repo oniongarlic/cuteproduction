@@ -40,6 +40,7 @@
         <file>components/NewsPanel.qml</file>
         <file>drawers/NewsDrawer.qml</file>
         <file>models/RssModel.qml</file>
+        <file>components/NewsListView.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
