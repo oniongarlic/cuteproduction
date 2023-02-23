@@ -30,6 +30,9 @@ Window {
     property alias lowerThirdsFullWidth: l3l.fullWidth
     property alias lowerThirdsMargin: l3l.margin
 
+    property alias messageVisible: msgText.visible
+    property alias messageText: msgText.text
+
     property alias tickerItemsVisible: newsTicker.itemsVisible
     property alias tickerVisible: newsTicker.tickerVisible    
 
@@ -430,7 +433,7 @@ Window {
 
     MessageText {
         id: msgText
-        visible: text!=""
+        visible: false
         Component.onCompleted: {
             position.setPosition(Qt.AlignCenter, Qt.AlignTop)
         }

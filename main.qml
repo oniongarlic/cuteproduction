@@ -1486,36 +1486,52 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.maximumWidth: gl.width/2
-            
-            ScrollView {
-                Layout.fillHeight: true
+
+            RowLayout {
                 Layout.fillWidth: true
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                Layout.minimumHeight: gl.height/7
-                Layout.maximumHeight: gl.height/6
-                background: Rectangle {
-                    border.color: "black"
-                    border.width: 1
+                ScrollView {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                    Layout.minimumHeight: gl.height/7
+                    Layout.maximumHeight: gl.height/6
+                    background: Rectangle {
+                        border.color: "black"
+                        border.width: 1
+                    }
+                    TextArea {
+                        id: textMsg
+                        placeholderText: "Write a message for the talent here"
+                        selectByKeyboard: true
+                        selectByMouse: true
+                        textFormat: TextEdit.PlainText
+                        wrapMode: TextEdit.Wrap
+                    }
                 }
-                TextArea {
-                    id: textMsg
-                    placeholderText: "Write a message for the talent here"
-                    selectByKeyboard: true
-                    selectByMouse: true
-                    textFormat: TextEdit.PlainText
-                    wrapMode: TextEdit.Wrap
+                GroupBox {
+                    title: "Current message"
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: gl.height/7
+                    Layout.maximumHeight: gl.height/6
+                    Layout.fillHeight: true
+                    Text {
+                        id: messageCurrent
+                        text: l3window.messageText
+                        wrapMode: TextEdit.Wrap
+                        textFormat: TextEdit.PlainText
+                        maximumLineCount: 4
+                        font.pixelSize: 12
+                    }
                 }
             }
+            
             RowLayout {
                 Switch {
                     id: msgSwitch
                     Layout.alignment: Qt.AlignLeft
                     text: "Display message"
                     onCheckedChanged: {
-                        if (checked)
-                            l3window.setMessage(textMsg.text)
-                        else
-                            l3window.setMessage("")
+                        l3window.messageVisible=checked
                     }
                 }
                 Button {
@@ -1531,6 +1547,13 @@ ApplicationWindow {
                     onClicked: {
                         l3window.setMessage(textMsg.text)
                         textMsg.text=""
+                        msgSwitch.checked=true
+                    }
+                }
+                Button {
+                    text: "Clear"
+                    onClicked: {
+                        l3window.setMessage("")
                     }
                 }
                 MenuAlignment {
