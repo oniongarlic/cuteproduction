@@ -120,8 +120,7 @@ ApplicationWindow {
             
             onTickerItemsVisibleChanged: settings.setSettings("ticker/items", tickerItemsVisible)
             onTickerVisibleChanged: settings.setSettings("ticker/visible", tickerVisible)
-
-            onNewsTickerVisibleChanged: settings.setSettings("ticker/panelvisible", newsPanelVisible)
+            onNewsPanelVisibleChanged: settings.setSettings("ticker/panelvisible", newsPanelVisible)
         }
     }
     
