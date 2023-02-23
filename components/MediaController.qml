@@ -126,6 +126,14 @@ ColumnLayout {
 
     RowLayout {
         Layout.fillWidth: true
+        Switch {
+            id: mediaVisible
+            text: "Visible"
+            checked: true
+            onCheckedChanged: {
+                vo.visible=checked
+            }
+        }
         Button {
             text: "Set A"
             onClicked: {
