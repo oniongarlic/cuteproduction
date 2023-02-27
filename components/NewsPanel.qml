@@ -98,7 +98,7 @@ ColumnLayout {
                 verticalAlignment: Text.AlignVCenter
                 font.capitalization: Font.AllUppercase
                 font.weight: Font.Bold
-                font.pixelSize: 44
+                font.pixelSize: 46
                 text: topic;
                 maximumLineCount: 1
                 elide: Text.ElideRight
@@ -169,13 +169,15 @@ ColumnLayout {
                 id: tickerMsg
                 color: "#0062ae"
                 padding: 8
-                maximumLineCount: 8 // XXX Make adjustable
+                //maximumLineCount: 8 // XXX Make adjustable
                 elide: Text.ElideRight
                 font.pixelSize: 42
                 textFormat: Text.PlainText
                 wrapMode: Text.Wrap
                 text: ""
                 lineHeight: 1.2
+                minimumPixelSize: 36
+                fontSizeMode: Text.Fit
                 Behavior on opacity { NumberAnimation { duration: 250 } }
             }
             Image {
