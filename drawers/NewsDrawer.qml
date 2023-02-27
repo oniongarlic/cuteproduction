@@ -20,8 +20,7 @@ Drawer {
     function addItemToModel(model, item) {
         model.append(item)
         if (clearOnAdd.checked) {
-            newsKeyword.clear()
-            newsBody.clear()
+            clearInput()
         }
     }
 
@@ -30,8 +29,17 @@ Drawer {
     }
 
     function createItem() {
-        const item={ "topic": newsKeyword.text, "msg": newsBody.text, "url": ""}
+        const item={
+            "topic": newsKeyword.text,
+            "msg": newsBody.text,
+            "url": newsLink.text}
         return item;
+    }
+
+    function clearInput() {
+        newsKeyword.clear()
+        newsBody.clear()
+        newsLink.clear()
     }
 
     RssModel {
@@ -74,11 +82,17 @@ Drawer {
                     maximumLineCount: 2;
                     elide: Text.ElideRight
                 }
+                Text {
+                    text: link;
+                    maximumLineCount: 1;
+                    elide: Text.ElideRight
+                }
             }
             onClicked: {
                 newsFeedList.currentIndex=index;
                 newsKeyword.text=rssModel.get(index).title
                 newsBody.text=html.stripTags(rssModel.get(index).description)
+                newsLink.text=rssModel.get(index).link
             }
             onDoubleClicked: {                
                 tickerModel.append(rssModel.getItem(index))
@@ -106,13 +120,13 @@ Drawer {
                     wrapMode: Text.Wrap;
                 }
             }
-            onClicked: {
-                console.debug(index)
+            onClicked: {                
                 ListView.view.currentIndex=index;
             }
             onDoubleClicked: {
                 newsKeyword.text=ListView.view.model.get(index).topic
                 newsBody.text=ListView.view.model.get(index).msg
+                newsLink.text=ListView.view.model.get(index).url
             }
         }
     }
@@ -166,6 +180,13 @@ Drawer {
                 wrapMode: TextEdit.WordWrap
             }
         }
+        TextField {
+            id: newsLink
+            Layout.fillWidth: true
+            placeholderText: "URL"
+            inputMethodHints: Qt.ImhUrlCharactersOnly
+            selectByMouse: true
+        }
         RowLayout {
             spacing: 8
             Switch {
@@ -205,8 +226,7 @@ Drawer {
                 text: "Clear"
                 enabled: newsKeyword.length>0 || newsBody.length>0
                 onClicked: {
-                    newsKeyword.clear()
-                    newsBody.clear()
+                    clearInput()
                 }
             }            
         }
@@ -252,6 +272,13 @@ Drawer {
                 text: "RSS URL"
                 onClicked: {
                     rssUrl.open()
+                }
+            }
+            Button {
+                text: "Refresh"
+                enabled: rssModel.source!=''
+                onClicked: {
+                    rssModel.reload()
                 }
             }
             Button {
