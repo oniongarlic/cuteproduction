@@ -50,6 +50,8 @@ Window {
     property ListModel newsTickerModel: tickerModel
     property ListModel newsPanelModel: panelModel
 
+    property QrCode qrCode: qrcode
+
     property MediaPlayer mediaPlayer;
 
     property MaskWindow maskWindow;
@@ -460,7 +462,15 @@ Window {
         id: newsTicker
         model: tickerModel
         needToHide: lowerThirdsVisible
-    }    
+    }
+
+    QrCode {
+        id: qrcode
+        visible: false
+        Component.onCompleted: {
+            position.setPosition(Qt.AlignRight, Qt.AlignTop)
+        }
+    }
 
     DropShadow {
         visible: useMask && newsTicker.visible && useDropShadows

@@ -41,6 +41,7 @@
         <file>drawers/NewsDrawer.qml</file>
         <file>models/RssModel.qml</file>
         <file>components/NewsListView.qml</file>
+        <file>components/QrCode.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>

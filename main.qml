@@ -1563,6 +1563,26 @@ ApplicationWindow {
             }
             RowLayout {
                 Switch {
+                    text: "QRCode"
+                    checked: l3window.qrCode.visible
+                    onCheckedChanged: {
+                        l3window.qrCode.visible=checked
+                    }
+                }
+                TextField {
+                    Layout.fillWidth: true
+                    onAccepted: {
+                        l3window.qrCode.setUrl(text)
+                    }
+                }
+                MenuAlignment {
+                    window: l3window;
+                    item: l3window.qrCode
+                }
+            }
+
+            RowLayout {
+                Switch {
                     text: "Clapper"
                     checked: l3window.clapperVisible
                     onCheckedChanged: {
