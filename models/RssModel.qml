@@ -7,6 +7,16 @@ XmlListModel {
 
     XmlRole { name: "title"; query: "title/string()"; }
     XmlRole { name: "description"; query: "description/string()"; }
+    XmlRole { name: "link"; query: "link/string()"; }
+
+    function getItem(i) {
+        const item={
+                "topic": rssModel.get(i).title,
+                "url": rssModel.get(i).link,
+                "msg": html.stripTags(rssModel.get(i).description)
+        }
+        return item;
+    }
 
     onStatusChanged: {
         switch (status) {
