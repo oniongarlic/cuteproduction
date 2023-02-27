@@ -114,7 +114,7 @@ ApplicationWindow {
         OutputWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             tickerVisible: menuTickerVisible.checked
-            newsPanelVisible: menuPanelVisible.checked
+            newsPanelShow: menuPanelVisible.checked
 
             mediaPlayer: mp
             
@@ -1781,25 +1781,7 @@ ApplicationWindow {
                     window: l3window;
                     item: l3window.txtCountdown
                 }
-            }
-            RowLayout {
-                Switch {
-                    id: showAnimation
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Animation"
-                    checked: false
-                }
-                Switch {
-                    id: activeAnimation
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Active"
-                    checked: true
-                }
-                ComboBox {
-                    id: animationSelector
-                    model: [ "Snow" ]
-                }
-            }
+            }            
             RowLayout {
                 Button {
                     text: "Start"
@@ -1819,11 +1801,37 @@ ApplicationWindow {
                 }
                 Switch {
                     id: switchNewsTickerShow
-                    text: "Newsticker"
-                    checked: true
+                    text: "NewsTicker"
+                    checked: l3window.newsTickerShow
                     onCheckedChanged: {
                         l3window.newsTickerShow=checked
                     }
+                }
+                Switch {
+                    id: switchNewsPanelShow
+                    text: "NewsPanel"
+                    checked: l3window.newsPanelShow
+                    onCheckedChanged: {
+                        l3window.newsPanelShow=checked
+                    }
+                }
+            }
+            RowLayout {
+                Switch {
+                    id: showAnimation
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Animation"
+                    checked: false
+                }
+                Switch {
+                    id: activeAnimation
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Active"
+                    checked: true
+                }
+                ComboBox {
+                    id: animationSelector
+                    model: [ "Snow" ]
                 }
             }
         }

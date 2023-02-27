@@ -40,6 +40,7 @@ Window {
     property alias newsTickerShow: newsTicker.showItem
 
     property alias newsPanelVisible: newsPanel.visible
+    property alias newsPanelShow: newsPanel.tickerVisible
 
     property bool lowerThirdsVisible: l3l.visible || l3r.visible
 

@@ -40,7 +40,7 @@ ColumnLayout {
         animate: false
         // Hide it inside layout!
         visible: false
-    }   
+    }
 
     Timer {
         id: tickerTimer
@@ -111,7 +111,7 @@ ColumnLayout {
     Component {
         id: tickerHighlight
         Rectangle {
-            color: "#009bd8"            
+            color: "#009bd8"
         }
     }
 
@@ -123,7 +123,7 @@ ColumnLayout {
         height: 58
         interactive: false
         orientation: ListView.Horizontal
-        delegate: tickerDelegate        
+        delegate: tickerDelegate
         snapMode: ListView.SnapToItem
         highlightFollowsCurrentItem: true
         highlight: tickerHighlight
@@ -134,9 +134,14 @@ ColumnLayout {
             if (currentIndex<0)
                 return;
 
-            tickerMsg.text=tickerModel.get(currentIndex).msg
+            tickerMsg.text=model.get(currentIndex).msg
+            const url=model.get(currentIndex).url
             tickerMsg.opacity=1
             tickerMsgContainer.opacity=1
+            if (url!='')
+                qrcode.source="image://QZXing/encode/" + url
+            else
+                qrcode.source=""
         }
     }
 
@@ -156,20 +161,33 @@ ColumnLayout {
         Layout.fillHeight: true
         color: "#ffffff"
         Behavior on opacity { NumberAnimation { duration: 500 } }
-        Text {
-            id: tickerMsg
-            color: "#0062ae"
-            padding: 8
-            maximumLineCount: 8 // XXX Make adjustable
-            width: parent.width
-            height: parent.height
-            elide: Text.ElideRight
-            font.pixelSize: 42
-            textFormat: Text.PlainText
-            wrapMode: Text.Wrap
-            text: ""
-            lineHeight: 1.2
-            Behavior on opacity { NumberAnimation { duration: 250 } }
+        RowLayout {
+            anchors.fill: parent
+            Text {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                id: tickerMsg
+                color: "#0062ae"
+                padding: 8
+                maximumLineCount: 8 // XXX Make adjustable
+                elide: Text.ElideRight
+                font.pixelSize: 42
+                textFormat: Text.PlainText
+                wrapMode: Text.Wrap
+                text: ""
+                lineHeight: 1.2
+                Behavior on opacity { NumberAnimation { duration: 250 } }
+            }
+            Image {
+                id: qrcode
+                width: 256
+                height: 256
+                sourceSize.width: 256
+                sourceSize.height: 256
+                Layout.margins: 32
+                visible: source!=''
+                cache: false
+            }
         }
     }
 }
