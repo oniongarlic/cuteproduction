@@ -29,6 +29,11 @@ Drawer {
         list.model.set(list.currentIndex, item)
     }
 
+    function createItem() {
+        const item={ "topic": newsKeyword.text, "msg": newsBody.text, "url": ""}
+        return item;
+    }
+
     RssModel {
         id: rssModel
     }
@@ -75,10 +80,8 @@ Drawer {
                 newsKeyword.text=rssModel.get(index).title
                 newsBody.text=html.stripTags(rssModel.get(index).description)
             }
-            onDoubleClicked: {
-                const news=rssModel.get(index)
-                const item={ "topic": news.title, "msg": html.stripTags(news.description) }
-                tickerModel.append(item)
+            onDoubleClicked: {                
+                tickerModel.append(rssModel.getItem(index))
             }
         }
     }
@@ -173,33 +176,29 @@ Drawer {
             Button {
                 text: "To Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0
-                onClicked: {
-                    const item={ "topic": newsKeyword.text, "msg": newsBody.text }
-                    addItemToModel(tickerModel, item)
+                onClicked: {                    
+                    addItemToModel(tickerModel, createItem())
                 }
             }
             Button {
                 text: "To Panel"
                 enabled: newsKeyword.length>0 && newsBody.length>0
-                onClicked: {
-                    const item={ "topic": newsKeyword.text, "msg": newsBody.text }
-                    addItemToModel(panelModel, item)
+                onClicked: {                    
+                    addItemToModel(panelModel, createItem())
                 }
             }
             Button {
                 text: "Update Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0 && newsTickerEditorList.currentIndex>-1
-                onClicked: {
-                    const item={ "topic": newsKeyword.text, "msg": newsBody.text }
-                    updateItemInList(newsTickerEditorList, item)
+                onClicked: {                    
+                    updateItemInList(newsTickerEditorList, createItem())
                 }
             }
             Button {
                 text: "Update Panel"
                 enabled: newsKeyword.length>0 && newsBody.length>0 && newsPanelEditorList.currentIndex>-1
-                onClicked: {
-                    const item={ "topic": newsKeyword.text, "msg": newsBody.text }
-                    updateItemInList(newsPanelEditorList, item)
+                onClicked: {                    
+                    updateItemInList(newsPanelEditorList, createItem())
                 }
             }
             Button {
@@ -260,9 +259,8 @@ Drawer {
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
-                    for (i=0;i<rssModel.count;i++) {
-                        const item={ "topic": rssModel.get(i).title, "msg": html.stripTags(rssModel.get(i).description) }
-                        tickerModel.append(item)
+                    for (i=0;i<rssModel.count;i++) {                        
+                        tickerModel.append(rssModel.getItem(i))
                     }
                 }
             }
@@ -271,9 +269,8 @@ Drawer {
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
-                    for (i=0;i<rssModel.count;i++) {
-                        const item={ "topic": rssModel.get(i).title, "msg": html.stripTags(rssModel.get(i).description) }
-                        panelModel.append(item)
+                    for (i=0;i<rssModel.count;i++) {                        
+                        panelModel.append(rssModel.getItem(i))
                     }
                 }
             }
