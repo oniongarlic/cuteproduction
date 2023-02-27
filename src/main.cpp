@@ -6,6 +6,8 @@
 #include <QFontDatabase>
 #include <QScreen>
 
+#include <QZXing.h>
+
 #include "ticker.h"
 #include "html.h"
 #include "filereader.h"
@@ -50,12 +52,15 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
+
+    QZXing::registerQMLTypes();
+    QZXing::registerQMLImageProvider(engine);
+
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
-
 
     QQmlContext* rootContext = engine.rootContext();
     rootContext->setContextProperty("html", &htmltool);
