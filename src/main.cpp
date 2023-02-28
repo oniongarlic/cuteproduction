@@ -6,7 +6,9 @@
 #include <QFontDatabase>
 #include <QScreen>
 
+#ifdef QZXING_QML
 #include <QZXing.h>
+#endif
 
 #include "ticker.h"
 #include "html.h"
@@ -53,8 +55,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
 
+#ifdef QZXING_QML
     QZXing::registerQMLTypes();
     QZXing::registerQMLImageProvider(engine);
+#endif
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
