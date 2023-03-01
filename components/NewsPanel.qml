@@ -138,10 +138,7 @@ ColumnLayout {
             const url=model.get(currentIndex).url
             tickerMsg.opacity=1
             tickerMsgContainer.opacity=1
-            if (url!='')
-                qrcode.source="image://QZXing/encode/" + url
-            else
-                qrcode.source=""
+            qrcode.url=url
         }
     }
 
@@ -180,15 +177,12 @@ ColumnLayout {
                 fontSizeMode: Text.Fit
                 Behavior on opacity { NumberAnimation { duration: 250 } }
             }
-            Image {
+            QrCode {
                 id: qrcode
                 width: 256
                 height: 256
-                sourceSize.width: 256
-                sourceSize.height: 256
                 Layout.margins: 32
-                visible: source!=''
-                cache: false
+                visible: url!=''
             }
         }
     }

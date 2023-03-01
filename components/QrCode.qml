@@ -1,21 +1,12 @@
 import QtQuick 2.15
 
-Image {
-    id: qrcode
-    width: 256
-    height: 256
-    sourceSize.width: 256
-    sourceSize.height: 256
-    cache: false   
-
-    function setUrl(url) {
-        qrcode.source="image://QZXing/encode/" + url
-    }
-
-    function clear() {
-        qrcode.source=''
-    }
-
+Rectangle {
+    id: qrcodeWrapper
+    width: 256+32
+    height: 256+32
+    color: "white"
+    
+    property string url
     property ItemTemplate position: pos
 
     x: pos.x
@@ -27,7 +18,19 @@ Image {
         alignY: Qt.AlignCenter
         width: parent.width
         height: parent.height
-        positionParent: qrcode.parent
-    }        
-
+        positionParent: qrcodeWrapper.parent
+    }    
+    
+    Image {
+        id: qrcode
+        anchors.fill: parent
+        anchors.margins: 16
+        sourceSize.width: 256
+        sourceSize.height: 256
+        fillMode: Image.PreserveAspectFit
+        cache: false
+        source: url!='' ? "image://QZXing/encode/" + url : ''
+    }
 }
+
+

@@ -1573,10 +1573,17 @@ ApplicationWindow {
                     }
                 }
                 TextField {
+                    id: qrcodeText
                     Layout.fillWidth: true
+                    selectByMouse: true
                     onAccepted: {
-                        l3window.qrCode.setUrl(text)
+                        l3window.qrCode.url=text
                     }
+                }
+                Button {
+                    text: "Paste"
+                    enabled: qrcodeText.canPaste
+                    onClicked: qrcodeText.paste()
                 }
                 MenuAlignment {
                     window: l3window;
