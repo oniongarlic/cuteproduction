@@ -113,8 +113,8 @@ ApplicationWindow {
         id: aws
         OutputWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
-            tickerVisible: menuTickerVisible.checked
-            newsPanelShow: menuPanelVisible.checked
+            tickerVisible: main.newsTickerShow
+            newsPanelShow: main.newsPanelShow
 
             mediaPlayer: mp
             
@@ -123,11 +123,14 @@ ApplicationWindow {
             onNewsPanelVisibleChanged: settings.setSettings("ticker/panelvisible", newsPanelVisible)
         }
     }
+
+    property bool newsTickerShow: false
+    property bool newsPanelShow: false
     
     function loadSettings() {
-        menuTickerVisible.checked=settings.getSettingsBool("ticker/visible", false);        
+        newsTickerShow=settings.getSettingsBool("ticker/visible", false);
         menuTickerFullWidth.checked=settings.getSettingsInt("ticker/items", 1, 1, 4)===1 ? true : false;
-        menuPanelVisible.checked=settings.getSettingsBool("ticker/panelvisible", false);
+        newsPanelShow=settings.getSettingsBool("ticker/panelvisible", false);
     }
     
     menuBar: MenuBar {
@@ -324,13 +327,13 @@ ApplicationWindow {
                 id: menuPanelVisible
                 text: "Panel visible"
                 checkable: true
-                checked: false
+                checked: newsPanelShow
             }
             MenuItem {
                 id: menuTickerVisible
                 text: "Ticker visible"
                 checkable: true
-                checked: false
+                checked: newsTickerShow
             }
             MenuItem {
                 id: menuTickerFullWidth
@@ -1822,17 +1825,17 @@ ApplicationWindow {
                 Switch {
                     id: switchNewsTickerShow
                     text: "NewsTicker"
-                    checked: l3window.newsTickerShow
+                    checked: newsTickerShow
                     onCheckedChanged: {
-                        l3window.newsTickerShow=checked
+                        newsTickerShow=checked
                     }
                 }
                 Switch {
                     id: switchNewsPanelShow
                     text: "NewsPanel"
-                    checked: l3window.newsPanelShow
+                    checked: newsPanelShow
                     onCheckedChanged: {
-                        l3window.newsPanelShow=checked
+                        newsPanelShow=checked
                     }
                 }
             }
