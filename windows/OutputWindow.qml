@@ -413,6 +413,7 @@ Window {
     TimeText {
         id: timeCurrent
         visible: showTime.checked
+        text: Qt.formatTime(main.date, "hh:mm:ss");
         Component.onCompleted: {
             position.setPosition(Qt.AlignCenter, Qt.AlignCenter)
         }

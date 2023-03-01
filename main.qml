@@ -35,6 +35,8 @@ ApplicationWindow {
     property OutputWindow l3window;
     property MaskWindow maskwindow;
     property TelepromptWindow tpwindow;
+
+    property var date;
     
     Component.onCompleted: {
         oflags=flags;
@@ -1400,8 +1402,7 @@ ApplicationWindow {
         running: true
         repeat: true
         onTriggered: {
-            var date = new Date;
-            timeCurrent.text=Qt.formatTime(date, "hh:mm:ss");
+            date = new Date;
         }
     }
     
