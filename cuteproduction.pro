@@ -25,6 +25,7 @@ packagesExist(QZXing) {
 }
 
 win32 {
+    DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
     include(3rdparty/qzxing/src//QZXing-components.pri)
 }
 
