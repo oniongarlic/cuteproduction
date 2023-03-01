@@ -1576,6 +1576,7 @@ ApplicationWindow {
                     id: qrcodeText
                     Layout.fillWidth: true
                     selectByMouse: true
+                    placeholderText: "https://"
                     onAccepted: {
                         l3window.qrCode.url=text
                     }

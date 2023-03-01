@@ -21,6 +21,7 @@ Dialog {
             Layout.fillWidth: true
             id: urlInput
             focus: true
+            selectByMouse: true
             placeholderText: "https://"
         }
         Button {
