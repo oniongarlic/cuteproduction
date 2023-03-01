@@ -44,12 +44,12 @@ ColumnLayout {
 
     Timer {
         id: tickerTimer
-        interval: 100
+        interval: 200
         running: newsPanel.visible && tickerList.count>1
         repeat: true
 
         property int ct: 100
-        property int delay: 20
+        property int delay: 10
 
         onTriggered: {
             if (delay>0) {
@@ -66,7 +66,7 @@ ColumnLayout {
                 return;
 
             ct=100;
-            delay=20;
+            delay=10;
 
             if (tickerList.currentIndex<tickerList.count-1)
                 tickerList.currentIndex++
@@ -84,10 +84,6 @@ ColumnLayout {
             background: Rectangle {
                 color: highlighted ? "#ffffff" : "#b0b0b0"
                 radius: 0
-            }
-            onClicked: {
-                console.debug("Click: "+index)
-                ListView.currentIndex=index
             }
             Text {
                 id: c
@@ -115,30 +111,56 @@ ColumnLayout {
         }
     }
 
-    ListView {
-        id: tickerList
+    RowLayout {
+        id: rl
         Layout.fillWidth: true
-        Layout.margins: 0
-        clip: true
-        height: 58
-        interactive: false
-        orientation: ListView.Horizontal
-        delegate: tickerDelegate
-        snapMode: ListView.SnapToItem
-        highlightFollowsCurrentItem: true
-        highlight: tickerHighlight
-        highlightMoveDuration: 500
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        onCurrentIndexChanged: {
-            console.debug("Tick: "+currentIndex)
-            if (currentIndex<0)
-                return;
+        spacing: 0
+        ListView {
+            id: tickerList
+            Layout.fillWidth: true
+            Layout.margins: 0
+            clip: true
+            height: 68
+            interactive: false
+            orientation: ListView.Horizontal
+            delegate: tickerDelegate
+            snapMode: ListView.SnapToItem
+            highlightFollowsCurrentItem: true
+            highlight: tickerHighlight
+            highlightMoveDuration: 500
+            highlightRangeMode: ListView.StrictlyEnforceRange
+            onCurrentIndexChanged: {
+                console.debug("Tick: "+currentIndex)
+                if (currentIndex<0)
+                    return;
 
-            tickerMsg.text=model.get(currentIndex).msg
-            const url=model.get(currentIndex).url
-            tickerMsg.opacity=1
-            tickerMsgContainer.opacity=1
-            qrcode.url=url
+                tickerMsg.text=model.get(currentIndex).msg
+                const url=model.get(currentIndex).url
+                tickerMsg.opacity=1
+                tickerMsgContainer.opacity=1
+                qrcode.url=url
+            }
+        }
+        Control {
+            height: 68
+            padding: 0
+            background: Rectangle {
+                color: "white"
+                implicitHeight: 68
+                implicitWidth: ctime.width
+            }
+            contentItem: Text {
+                id: ctime
+                color: "#0062ae"
+                text: Qt.formatTime(main.date, "hh:mm:ss");
+                font.bold: true
+                font.pixelSize: 34
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                width: contentWidth+32
+                height: contentHeight
+                wrapMode: Text.NoWrap
+            }
         }
     }
 
@@ -178,6 +200,7 @@ ColumnLayout {
                 Behavior on opacity { NumberAnimation { duration: 250 } }
             }
             QrCode {
+                Layout.alignment: Qt.AlignTop
                 id: qrcode
                 width: 256
                 height: 256
