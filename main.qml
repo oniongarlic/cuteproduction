@@ -1614,6 +1614,25 @@ ApplicationWindow {
                     }
                 }
             }
+
+            RowLayout {
+                Switch {
+                    id: switchNewsTickerShow
+                    text: "NewsTicker"
+                    checked: newsTickerShow
+                    onCheckedChanged: {
+                        newsTickerShow=checked
+                    }
+                }
+                Switch {
+                    id: switchNewsPanelShow
+                    text: "NewsPanel"
+                    checked: newsPanelShow
+                    onCheckedChanged: {
+                        newsPanelShow=checked
+                    }
+                }
+            }
         }
         
         // 2x1
@@ -1836,22 +1855,7 @@ ApplicationWindow {
                         checked=false;
                     }
                 }
-                Switch {
-                    id: switchNewsTickerShow
-                    text: "NewsTicker"
-                    checked: newsTickerShow
-                    onCheckedChanged: {
-                        newsTickerShow=checked
-                    }
-                }
-                Switch {
-                    id: switchNewsPanelShow
-                    text: "NewsPanel"
-                    checked: newsPanelShow
-                    onCheckedChanged: {
-                        newsPanelShow=checked
-                    }
-                }
+
             }
             RowLayout {
                 Switch {
