@@ -19,8 +19,13 @@ ColumnLayout {
 
     x: pos.x
     y: pos.y
-    width: parent.width-64
-    height: parent.height/1.5
+    width: (parent.width/widthAdjustment)-margin*2
+    height: parent.height/heightAdjustment
+
+    property int margin: 32
+
+    property double widthAdjustment: 1
+    property double heightAdjustment: 1.5
 
     property ItemTemplate position: pos
 
