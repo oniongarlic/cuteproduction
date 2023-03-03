@@ -9,6 +9,10 @@ Rectangle {
     property string url
     property ItemTemplate position: pos
 
+    property bool show: false
+
+    visible: show && url!=''
+
     x: pos.x
     y: pos.y
 

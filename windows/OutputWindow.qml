@@ -467,7 +467,6 @@ Window {
 
     QrCode {
         id: qrcode
-        visible: false
         Component.onCompleted: {
             position.setPosition(Qt.AlignRight, Qt.AlignTop)
         }

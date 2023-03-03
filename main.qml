@@ -1568,9 +1568,9 @@ ApplicationWindow {
             RowLayout {
                 Switch {
                     text: "QRCode"
-                    checked: l3window.qrCode.visible
+                    checked: l3window.qrCode.show
                     onCheckedChanged: {
-                        l3window.qrCode.visible=checked
+                        l3window.qrCode.show=checked
                     }
                 }
                 TextField {
@@ -1580,12 +1580,17 @@ ApplicationWindow {
                     placeholderText: "https://"
                     onAccepted: {
                         l3window.qrCode.url=text
-                    }
+                    }                    
                 }
                 Button {
                     text: "Paste"
                     enabled: qrcodeText.canPaste
                     onClicked: qrcodeText.paste()
+                }
+                Button {
+                    text: "Clear"
+                    enabled: qrcodeText.length>0
+                    onClicked: qrcodeText.clear()
                 }
                 MenuAlignment {
                     window: l3window;
