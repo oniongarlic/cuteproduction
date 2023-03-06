@@ -1492,10 +1492,13 @@ ApplicationWindow {
             Layout.maximumWidth: gl.width/2
 
             RowLayout {
+                id: rl11
                 Layout.fillWidth: true
                 ScrollView {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.minimumWidth: rl11.width/2
+                    Layout.maximumWidth: rl11.width/1.5
                     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                     Layout.minimumHeight: gl.height/7
                     Layout.maximumHeight: gl.height/6
@@ -1518,6 +1521,7 @@ ApplicationWindow {
                     Layout.minimumHeight: gl.height/7
                     Layout.maximumHeight: gl.height/6
                     Layout.fillHeight: true
+                    Layout.maximumWidth: rl11.width/2
                     Text {
                         id: messageCurrent
                         text: l3window.messageText
@@ -1539,8 +1543,7 @@ ApplicationWindow {
                     }
                 }
                 Button {
-                    text: "Update"
-                    enabled: msgSwitch.checked
+                    text: "Update"                    
                     onClicked: {
                         l3window.setMessage(textMsg.text)
                     }
