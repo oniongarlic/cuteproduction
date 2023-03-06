@@ -244,15 +244,15 @@ ApplicationWindow {
         Menu {
             title: "Thirds"
             MenuItem {
-                text: "Open..."
-                onClicked: tsf.startSelector();
-            }
-            MenuItem {
                 text: "Manage.."
                 onClicked: {
                     thirdsDrawer.open()
                 }
             }
+            MenuItem {
+                text: "Open..."
+                onClicked: tsf.startSelector();
+            }            
             MenuItem {
                 id: menuThirdsFullWidth
                 text: "Full width"
