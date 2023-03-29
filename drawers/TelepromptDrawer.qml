@@ -103,13 +103,17 @@ Drawer {
                 id: telepromptMirror
                 Layout.alignment: Qt.AlignLeft
                 text: "Mirror"
-                checked: settings.getSettingsBool("telepromt/mirror", false)
+                checked: {
+                    tpwindow.mirror=checked                    
+                }
             }
             Switch {
                 id: telepromptFlip
                 Layout.alignment: Qt.AlignLeft
                 text: "Flip"
-                checked: settings.getSettingsBool("telepromt/flip", false)
+                checked: {
+                    tpwindow.flip=checked                    
+                }
             }
             SpinBox {
                 id: lineSpeed

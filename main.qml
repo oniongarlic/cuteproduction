@@ -95,8 +95,11 @@ ApplicationWindow {
         id: tpw
         TelepromptWindow {
             id: teleWindow
-            mirror: telepromptMirror.checked
-            flip: telepromptFlip.checked
+            objectName: "teleprompt"
+            onScreenChanged: {
+                console.debug("TelepromptWindow is now: "+screen.name)
+                settings.setSettingsStr("windows/teleprompt", screen.name)
+            }
             onFlipChanged: settings.setSettings("teleprompt/flip", flip)
             onMirrorChanged: settings.setSettings("teleprompt/mirror", mirror)
             onVisibleChanged: settings.setSettings("telepromt/visible", visible)
@@ -1185,6 +1188,7 @@ ApplicationWindow {
     
     TelepromptDrawer {
         id: telepromptDrawer
+        tpwindow: main.tpwindow
     }
     
     ListModel {
