@@ -19,30 +19,13 @@ Popup {
         clip: true
         model: QtMultimedia.availableCameras
         ScrollIndicator.vertical: ScrollIndicator { }
-        delegate: Text {
+        delegate: ItemDelegate {
             id: c
-            color: cmlma.pressed ? "#101060" : "#000000"
             text: modelData.displayName
-            font.bold: true
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            elide: Text.ElideRight
-            font.pixelSize: 22
-            leftPadding: 4
-            rightPadding: 4
-            topPadding: 8
-            bottomPadding: 8
             width: parent.width
-            MouseArea {
-                id: cmlma
-                anchors.fill: parent
-                onClicked: {
-                    console.debug(modelData.deviceId)
-                    console.debug(modelData.displayName)
-                    console.debug(modelData.position)
-                    cameraSelected(modelData.deviceId)
-                    cameraPopup.close();
-                }
+            onClicked: {
+                cameraSelected(modelData.deviceId)
+                cameraPopup.close();
             }
         }
     }
