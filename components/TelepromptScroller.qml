@@ -19,6 +19,7 @@ Flickable {
 
     property alias text: txt.text
     property alias fontSize: txt.font.pixelSize
+    property alias textFormat: txt.textFormat
 
     property real scrollSpeed: 1
     property real lineSpeed: 0.6
@@ -100,14 +101,18 @@ Flickable {
     readonly property real relpos: scrollPosition/(svanim.to+topMargin)
     readonly property int positionSeconds: Math.round(scrollSpeedSeconds*relpos)
 
-    onPositionSecondsChanged: console.debug("SECPOS:"+positionSeconds)        
+    property double lineHeight: sv.contentHeight/(txt.lineCount+1)
+
+    onLineHeightChanged: console.debug("LS:"+lineHeight)
+
+    onPositionSecondsChanged: console.debug("SECPOS:"+positionSeconds)
 
     NumberAnimation {
         id: svanim
         target: sv
         property: "contentY"
         duration: scrollSpeedSeconds*1000
-        from: -topMargin
+        from: sv.contentY
         to: sv.contentHeight
         easing.type: Easing.Linear
     }

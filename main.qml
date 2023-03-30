@@ -278,32 +278,10 @@ ApplicationWindow {
                 text: "Manage..."
                 enabled: true
                 onClicked: telepromptDrawer.open()
-            }
-            MenuItem {
-                text: "Load text..."
-                enabled: true
-                onClicked: tsftp.startSelector();
-            }
-            MenuItem {
-                text: "Paste text"
-                enabled: textPrompter.canPaste
-                onClicked: {
-                    textPrompter.paste()
-                    tpwindow.telepromptSetText(textPrompter.text)
-                }
-            }
+            }            
             MenuSeparator {
                 
-            }
-            MenuItem {
-                text: "Clear text"
-                onClicked: {
-                    tpwindow.telepromptSetText("")
-                }
-            }
-            MenuSeparator {
-                
-            }
+            }            
             MenuItem {
                 text: "Show window"
                 checkable: true
@@ -563,16 +541,7 @@ ApplicationWindow {
             settings.setSettingsStr("background/image", src)
             bgImage.image=src;
         }
-    }
-    
-    TextSelector {
-        id: tsftp
-        filter: [ "*.txt" ]
-        onFileSelected: {
-            fr.read(src)
-            textPrompter.text=fr.data();
-        }
-    }
+    }   
     
     TextSelector {
         id: tsf

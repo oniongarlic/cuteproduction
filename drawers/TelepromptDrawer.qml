@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
 import QtQuick.XmlListModel 2.15
+import QtQuick.Window 2.15
 import QtQuick.Dialogs 1.3
 
 import "../selectors"
@@ -16,6 +17,15 @@ Drawer {
     height: parent.height
 
     property TelepromptWindow tpwindow;
+
+    TextSelector {
+        id: tsftp
+        filter: [ "*.txt" ]
+        onFileSelected: {
+            fr.read(src)
+            textPrompter.text=fr.data();
+        }
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -74,6 +84,42 @@ Drawer {
                         telepromptTextMsg.text=""
                     }
                 }
+                Button {
+                    text: "Clear"
+                    onClicked: {
+                        tpwindow.setMessage("")
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            Switch {
+                text: "Show window"
+                checkable: true
+                onCheckedChanged: {
+                    tpwindow.visible=checked
+                }
+            }
+            Switch {
+                text: "Full screen"
+                checkable: true
+                enabled: tpwindow.visible
+                checked: tpwindow.visibility==Window.FullScreen ? true : false
+                onCheckedChanged: tpwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
+            }
+            Button {
+                text: "Load"
+                enabled: true
+                onClicked: tsftp.startSelector();
+            }
+            Button {
+                text: "Paste"
+                enabled: textPrompter.canPaste
+                onClicked: {
+                    textPrompter.paste()
+                    tpwindow.telepromptSetText(textPrompter.text)
+                }
             }
         }
 
@@ -103,7 +149,7 @@ Drawer {
                 id: telepromptMirror
                 Layout.alignment: Qt.AlignLeft
                 text: "Mirror"
-                checked: {
+                onCheckedChanged: {
                     tpwindow.mirror=checked                    
                 }
             }
@@ -111,8 +157,17 @@ Drawer {
                 id: telepromptFlip
                 Layout.alignment: Qt.AlignLeft
                 text: "Flip"
-                checked: {
+                onCheckedChanged: {
                     tpwindow.flip=checked                    
+                }
+            }
+            Switch {
+                id: telepromptFormat
+                Layout.alignment: Qt.AlignLeft
+                text: "Plain"
+                checked: true
+                onCheckedChanged: {
+                    tpwindow.textFormat=checked ? Text.PlainText : Text.MarkdownText
                 }
             }
             SpinBox {
