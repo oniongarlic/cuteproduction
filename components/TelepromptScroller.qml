@@ -23,7 +23,9 @@ Flickable {
 
     property real scrollSpeed: 1
     property real lineSpeed: 0.6
-    property int scrollSpeedSeconds: txt.lineCount/lineSpeed
+
+    readonly property int scrollSpeedSeconds: (txt.lineCount/lineSpeed)*(1-relPos)
+    readonly property real relPos: sv.contentY/sv.contentHeight
 
     property int seconds: 0
 
