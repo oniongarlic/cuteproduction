@@ -20,9 +20,12 @@ Drawer {
 
     TextSelector {
         id: tsftp
-        filter: [ "*.txt" ]
+        filter: [ "*.txt", "*.md" ]
         onFileSelected: {
             fr.read(src)
+            if (src.endsWith('.md')) {
+                telepromptFormat.checked=false
+            }
             textPrompter.text=fr.data();
         }
     }
