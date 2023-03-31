@@ -180,6 +180,7 @@ Drawer {
                 stepSize: 1
                 value: settings.getSettingsInt("telepromt/speed", 8, 1, 12)
                 onValueChanged: {
+                    settings.setSettings("teleprompt/speed", value)
                     if (!tpwindow)
                         return
                     tpwindow.lineSpeed=value/10.0
@@ -189,12 +190,26 @@ Drawer {
             SpinBox {
                 from: 16
                 to: 128
+                editable: true
                 value: settings.getSettingsInt("telepromt/fontsize", 64, 16, 128)
                 onValueChanged: {
+                    settings.setSettings("teleprompt/fontsize", value)
                     if (!tpwindow)
                         return
                     tpwindow.fontSize=value;
-                    settings.setSettings("teleprompt/fontsize", value)
+
+                }
+                wheelEnabled: true
+            }
+            SpinBox {
+                from: 0
+                to: 8
+                value: settings.getSettingsInt("telepromt/countdown", 4, 0, 8)
+                onValueChanged: {
+                    settings.setSettings("teleprompt/countdown", value)
+                    if (!tpwindow)
+                        return
+                    tpwindow.countdownSeconds=value;
                 }
                 wheelEnabled: true
             }
@@ -242,6 +257,9 @@ Drawer {
                 onClicked: {
                     tpwindow.telepromptStop();
                 }
+            }
+            Text {
+                text: tpwindow.position+" %"
             }
         }
 

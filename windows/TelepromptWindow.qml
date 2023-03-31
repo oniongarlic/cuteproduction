@@ -30,7 +30,9 @@ Window {
     property alias textFormat: teleprompt.textFormat
 
     readonly property bool active: teleprompt.running || countdown.active
-    readonly property alias paused: teleprompt.paused        
+    readonly property alias paused: teleprompt.paused
+
+    readonly property int position: Math.round(teleprompt.relPos*100)
 
     onClosing: {
         close.accepted=false;
