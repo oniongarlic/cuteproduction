@@ -1584,12 +1584,13 @@ ApplicationWindow {
                     MouseArea {
                         anchors.fill: parent
                         onDoubleClicked: {
-                            if (!showCountdown.checked)
-                                showCountdown.checked=true
-                            if (!ticker.active)
+                            if (!ticker.active) {
+                                if (!showCountdown.checked)
+                                    showCountdown.checked=true
                                 ticker.start()
-                            else
+                            } else {
                                 ticker.stop()
+                            }
                         }
                         onPressAndHold: {
                             ticker.setCountdownSeconds(0);
