@@ -17,6 +17,35 @@ Drawer {
     function clearL3Input() {
         textl3Primary.clear()
         textl3Secondary.clear()
+        textl3Topic.clear()
+    }
+
+    Component {
+        id: l3drawerDelegate
+        ItemDelegate {
+            id: l3id
+            width: ListView.view.width
+            height: r.height
+            RowLayout {
+                id: r
+                width: parent.width
+                ColumnLayout {
+                    id: c
+                    spacing: 4
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: parent.width/1.5
+                    Text { text: primary; font.bold: true; font.pixelSize: 14 }
+                    Text { text: secondary; font.italic: true; font.pixelSize: 12 }
+                    Text { text: topic; font.pixelSize: 12 }
+                }
+            }
+            onClicked: {
+                ListView.view.currentIndex=index;
+            }
+            onDoubleClicked: {
+                ListView.view.currentIndex=index;
+            }
+        }
     }
 
     ColumnLayout {
@@ -41,6 +70,16 @@ Drawer {
             placeholderText: "Topic/Keyword"
             selectByMouse: true
         }
+        ListView {
+            id: l3edit
+            model: l3ModelFinal
+            delegate: l3drawerDelegate
+            clip: true
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            highlight: Rectangle { color: "lightblue" }
+            ScrollIndicator.vertical: ScrollIndicator {}
+        }
         RowLayout {
             spacing: 8
             Button {
@@ -55,7 +94,7 @@ Drawer {
                 }
             }
             Button {
-                text: "Clear"
+                text: "Clear input"
                 onClicked: {
                     thirdsDrawer.clearL3Input();
                 }
