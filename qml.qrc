@@ -45,6 +45,8 @@
         <file>drawers/TelepromptDrawer.qml</file>
         <file>drawers/ThirdsDrawer.qml</file>
         <file>drawers/IrcChatDrawer.qml</file>
+        <file>delegates/PlaylistDelegate.qml</file>
+        <file>drawers/MediaDrawer.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
