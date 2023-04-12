@@ -43,6 +43,7 @@
         <file>components/NewsListView.qml</file>
         <file>components/QrCode.qml</file>
         <file>drawers/TelepromptDrawer.qml</file>
+        <file>drawers/ThirdsDrawer.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
