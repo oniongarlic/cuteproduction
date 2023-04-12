@@ -44,6 +44,9 @@ Drawer {
             }
             onDoubleClicked: {
                 ListView.view.currentIndex=index;
+                textl3Primary.text=ListView.view.model.get(index).primary
+                textl3Secondary.text=ListView.view.model.get(index).secondary
+                textl3Topic.text=ListView.view.model.get(index).topic
             }
         }
     }
@@ -91,6 +94,18 @@ Drawer {
                         "topic": textl3Topic.text,
                         "image": ""}
                     l3ModelFinal.append(item)
+                }
+            }
+            Button {
+                text: "Update"
+                enabled: l3edit.currentIndex>-1
+                onClicked: {
+                    const item={
+                        "primary": textl3Primary.text,
+                        "secondary": textl3Secondary.text,
+                        "topic": textl3Topic.text,
+                        "image": ""}
+                    l3ModelFinal.set(l3edit.currentIndex, item)
                 }
             }
             Button {
