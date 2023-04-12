@@ -678,7 +678,7 @@ ApplicationWindow {
     Drawer {
         id: mediaDrawer
         dragMargin: 0
-        width: parent.width/1.5
+        width: parent.width/1.25
         height: parent.height
         DropArea {
             id: mediaDropArea
@@ -889,7 +889,7 @@ ApplicationWindow {
     Drawer {
         id: chatDrawer
         dragMargin: 0
-        width: parent.width/1.5
+        width: parent.width/1.25
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
@@ -984,7 +984,7 @@ ApplicationWindow {
     Drawer {
         id: ircDrawer
         dragMargin: 0
-        width: parent.width/1.5
+        width: parent.width/1.25
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
@@ -1085,7 +1085,7 @@ ApplicationWindow {
     Drawer {
         id: thirdsDrawer
         dragMargin: 0
-        width: parent.width/1.5
+        width: parent.width/1.25
         height: parent.height
         
         function clearL3Input() {

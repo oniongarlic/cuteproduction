@@ -11,7 +11,7 @@ import "../components"
 Drawer {
     id: newsDrawer
     dragMargin: 0
-    width: parent.width/1.5
+    width: parent.width/1.25
     height: parent.height
 
     property ListModel tickerModel;
