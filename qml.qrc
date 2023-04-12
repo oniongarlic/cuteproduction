@@ -44,6 +44,7 @@
         <file>components/QrCode.qml</file>
         <file>drawers/TelepromptDrawer.qml</file>
         <file>drawers/ThirdsDrawer.qml</file>
+        <file>drawers/IrcChatDrawer.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
