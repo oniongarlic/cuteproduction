@@ -22,8 +22,8 @@ ApplicationWindow {
     id: main
     width: 1024
     height: 768
-    minimumHeight: 600
     minimumWidth: 800
+    minimumHeight: 480
     visible: true
     title: qsTr("CuteProduction")
     //visibility: Window.FullScreen
