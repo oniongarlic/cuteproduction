@@ -311,12 +311,14 @@ ApplicationWindow {
                 text: "Panel visible"
                 checkable: true
                 checked: newsPanelShow
+                onCheckedChanged: newsPanelShow=checked
             }
             MenuItem {
                 id: menuTickerVisible
                 text: "Ticker visible"
                 checkable: true
                 checked: newsTickerShow
+                onCheckedChanged: newsTickerShow=checked
             }
             MenuItem {
                 id: menuTickerFullWidth
@@ -870,14 +872,17 @@ ApplicationWindow {
                     id: c
                     spacing: 4
                     Layout.fillWidth: true
-                    Layout.preferredWidth: parent.width/1.5
-                    Text { text: primary; font.pixelSize: 14 }
+                    //Layout.preferredWidth: parent.width/1.5
+                    Layout.minimumWidth: parent.width/4
+                    Layout.maximumWidth:  parent.width/1.25
+                    Text { text: primary; font.bold: true; font.pixelSize: 14 }
                     Text { text: secondary; font.pixelSize: 12 }
+                    Text { text: topic; font.pixelSize: 10; visible: text!='' }
                 }
                 RadioButton {
                     text: "L"
                     Layout.fillWidth: false
-                    Layout.preferredWidth: parent.width/5
+                    //Layout.preferredWidth: parent.width/5
                     ButtonGroup.group: l3delegateButtonGroupLeft
                     onCheckedChanged: {
                         if (checked)
@@ -887,7 +892,7 @@ ApplicationWindow {
                 RadioButton {
                     text: "R"
                     Layout.fillWidth: false
-                    Layout.preferredWidth: parent.width/5
+                    //Layout.preferredWidth: parent.width/5
                     ButtonGroup.group: l3delegateButtonGroupRight
                     onCheckedChanged: {
                         if (checked)
