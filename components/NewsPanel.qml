@@ -149,10 +149,10 @@ ColumnLayout {
         Control {
             height: 68
             padding: 0
+            rightPadding: 8
             background: Rectangle {
                 color: "white"
                 implicitHeight: 68
-                implicitWidth: ctime.width
             }
             contentItem: Text {
                 id: ctime
