@@ -553,14 +553,14 @@ ApplicationWindow {
     ColorDialog {
         id: dialogColor
         onAccepted: {
-            l3window.setBackground('custom', dialogColor.selectedColor);
-            backgroundGroup.currentValue=dialogColor.selectedColor;
+            l3window.setBackground('custom', dialogColor.color);
+            backgroundGroup.currentValue=dialogColor.color;
         }
         onRejected: {
             
         }
         Component.onCompleted: {
-            dialogColor.selectedColor=settings.getSettingsStr("background/customColor", "yellow")
+            dialogColor.color=settings.getSettingsStr("background/customColor", "yellow")
         }
         onSelectedColorChanged: {
             settings.setSettingsStr("background/customColor", selectedColor)
