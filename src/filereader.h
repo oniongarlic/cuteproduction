@@ -4,6 +4,15 @@
 #include <QObject>
 #include <QFile>
 #include <QUrl>
+#include <QVariantMap>
+#include <QVariantList>
+
+#ifdef FFMPEG
+extern "C" {
+#include <libavformat/avformat.h>
+#include <libavutil/dict.h>
+}
+#endif
 
 class FileReader : public QObject
 {
@@ -15,7 +24,9 @@ public:
     Q_INVOKABLE bool read(QUrl file);
     Q_INVOKABLE void clear();
 
-    Q_INVOKABLE int getMetaData(const QString file);
+    Q_INVOKABLE QVariantMap getMetaData(const QString file);
+
+    Q_ENUM(AVMediaType);
 signals:
 
 private:
