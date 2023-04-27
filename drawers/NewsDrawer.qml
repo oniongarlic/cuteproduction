@@ -1,8 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
-import QtQuick.XmlListModel 2.15
-import QtQuick.Dialogs 1.3
+import QtQml.XmlListModel
+import QtQuick.Dialogs
 
 import "../selectors"
 import "../models"
