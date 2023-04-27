@@ -1,13 +1,13 @@
 import QtQuick 2.15
-import QtQuick.XmlListModel 2.15
+import QtQml.XmlListModel
 
 XmlListModel {
     id: rssModel
     query: "/rss/channel/item"
 
-    XmlRole { name: "title"; query: "title/string()"; }
-    XmlRole { name: "description"; query: "description/string()"; }
-    XmlRole { name: "link"; query: "link/string()"; }
+    XmlListModelRole { name: "title"; elementName: "title/string()"; }
+    XmlListModelRole { name: "description"; elementName: "description/string()"; }
+    XmlListModelRole { name: "link"; elementName: "link/string()"; }
 
     function getItem(i) {
         const item={
