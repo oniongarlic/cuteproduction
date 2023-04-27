@@ -30,7 +30,7 @@ QVariantMap FileReader::getMetaData(const QString file)
 
     while ((tag = av_dict_get(fmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
         qDebug() << tag->key << tag->value;
-        meta.insert(tag->key, tag->value);
+        meta.insert(tag->key, QString(tag->value));
     }
 
     if (avformat_find_stream_info(fmt_ctx,  NULL) < 0) {
