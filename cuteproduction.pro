@@ -1,7 +1,6 @@
-QT += qml quick quickcontrols2 multimedia mqtt
+QT = core qml quick quickcontrols2 multimedia mqtt
 
-CONFIG += c++11
-
+CONFIG += c++17
 CONFIG += qzxing_qml qzxing_multimedia enable_decoder_1d_barcodes enable_decoder_qr_code enable_encoder_qr_code
 
 unix {
@@ -16,12 +15,17 @@ packagesExist(libavformat) {
     message(libavformat)
 }
 
-packagesExist(QZXing) {
-    PKGCONFIG += QZXing
-    DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
-    message(QZXing)
+#packagesExist(QZXing) {
+#    PKGCONFIG += QZXing
+#    DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
+#    message(QZXing)
+#}
+
 }
 
+unix {
+    DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
+    include(3rdparty/qzxing/src//QZXing-components.pri)
 }
 
 win32 {
@@ -40,7 +44,7 @@ SOURCES += \
         src/settings.cpp \
         src/ticker.cpp \
         src/hyper.cpp \
-        src/cutemqttclient.cpp       
+        src/cutemqttclient.cpp
 
 HEADERS += \
     src/filereader.h \
