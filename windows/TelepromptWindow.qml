@@ -27,13 +27,12 @@ Window {
     property bool flip: false
     
     property alias fontSize: teleprompt.fontSize
+    property alias textFormat: teleprompt.textFormat
+
     readonly property bool active: teleprompt.running || countdown.active
     readonly property alias paused: teleprompt.paused
-    
-    onScreenChanged: {
-        console.debug("TelepromptWindow is now: "+screen.name)
-        settings.setSettingsStr("windows/teleprompt", screen.name)
-    }
+
+    readonly property int position: Math.round(teleprompt.relPos*100)
 
     onClosing: (close) => {
         close.accepted=false;
@@ -41,7 +40,7 @@ Window {
 
     function setMessage(msg) {
         msgText.text=msg;
-    }
+    }        
 
     MouseArea {
         anchors.fill: parent
@@ -60,7 +59,7 @@ Window {
         anchors.bottomMargin: 32
         anchors.leftMargin: 32
         anchors.rightMargin: 32
-        spacing: 8
+        spacing: 8        
 
         Rectangle {
             id: msgContainer
@@ -81,6 +80,7 @@ Window {
                     position.marginBottom=8;
                     position.marginTop=8
                 }
+
             }
         }
 

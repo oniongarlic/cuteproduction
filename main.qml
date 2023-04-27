@@ -23,8 +23,8 @@ ApplicationWindow {
     id: main
     width: 1024
     height: 768
-    minimumHeight: 600
     minimumWidth: 800
+    minimumHeight: 480
     visible: true
     title: qsTr("CuteProduction")
     //visibility: Window.FullScreen
@@ -110,8 +110,11 @@ ApplicationWindow {
         id: tpw
         TelepromptWindow {
             id: teleWindow
-            mirror: telepromptMirror.checked
-            flip: telepromptFlip.checked
+            objectName: "teleprompt"
+            onScreenChanged: {
+                console.debug("TelepromptWindow is now: "+screen.name)
+                settings.setSettingsStr("windows/teleprompt", screen.name)
+            }
             onFlipChanged: settings.setSettings("teleprompt/flip", flip)
             onMirrorChanged: settings.setSettings("teleprompt/mirror", mirror)
             onVisibleChanged: settings.setSettings("telepromt/visible", visible)
@@ -290,32 +293,10 @@ ApplicationWindow {
                 text: "Manage..."
                 enabled: true
                 onClicked: telepromptDrawer.open()
-            }
-            MenuItem {
-                text: "Load text..."
-                enabled: true
-                onClicked: tsftp.startSelector();
-            }
-            MenuItem {
-                text: "Paste text"
-                enabled: textPrompter.canPaste
-                onClicked: {
-                    textPrompter.paste()
-                    tpwindow.telepromptSetText(textPrompter.text)
-                }
-            }
+            }            
             MenuSeparator {
                 
-            }
-            MenuItem {
-                text: "Clear text"
-                onClicked: {
-                    tpwindow.telepromptSetText("")
-                }
-            }
-            MenuSeparator {
-                
-            }
+            }            
             MenuItem {
                 text: "Show window"
                 checkable: true
@@ -345,12 +326,14 @@ ApplicationWindow {
                 text: "Panel visible"
                 checkable: true
                 checked: newsPanelShow
+                onCheckedChanged: newsPanelShow=checked
             }
             MenuItem {
                 id: menuTickerVisible
                 text: "Ticker visible"
                 checkable: true
                 checked: newsTickerShow
+                onCheckedChanged: newsTickerShow=checked
             }
             MenuItem {
                 id: menuTickerFullWidth
@@ -575,16 +558,7 @@ ApplicationWindow {
             settings.setSettingsStr("background/image", src)
             bgImage.image=src;
         }
-    }
-    
-    TextSelector {
-        id: tsftp
-        filter: [ "*.txt" ]
-        onFileSelected: {
-            fr.read(src)
-            textPrompter.text=fr.data();
-        }
-    }
+    }   
     
     TextSelector {
         id: tsf
@@ -659,11 +633,20 @@ ApplicationWindow {
     
     MediaPlayer {
         id: mp
-        //playlist: plist
-        loops: checkLoop.checked ? MediaPlayer.Infinite : 1        
-        audioOutput: AudioOutput {
-            volume: volumeDial.value/100
-            muted: checkMuted.checked
+        playlist: plist
+        autoLoad: true
+        loops: mediaDrawer.loop ? MediaPlayer.Infinite : 1
+        muted: mediaDrawer.muted
+        volume: mediaDrawer.volume/100
+        audioRole: MediaPlayer.VideoRole
+        onPlaying: {
+            //hs.setStatus("playing")
+        }
+        onStopped: {
+            //hs.setStatus("stopped")
+        }
+        onPaused: {
+            //hs.setStatus("stopped")
         }
 
         onPositionChanged: {
@@ -721,221 +704,15 @@ ApplicationWindow {
         }
     }
     
-    Drawer {
+    MediaDrawer {
         id: mediaDrawer
-        dragMargin: 0
-        width: parent.width/1.5
-        height: parent.height
-        DropArea {
-            id: mediaDropArea
-            anchors.fill: parent
-            // XXX: huh?
-            //keys: ["video/quicktime", "video/mp4", "audio/mpeg", "audio/mp3", "audio/flac", "application/ogg"]
-            onDropped: {
-                if (drop.hasUrls) {
-                    console.debug(drop.urls[0])
-                    mediaListView.model.addItems(drop.urls);
-                    drop.acceptProposedAction()
-                }
-            }
-        }
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 16
-            spacing: 8
-            ListView {
-                id: mediaListView
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                model: plist
-                clip: true
-                delegate: playlistDelegate
-                highlight: Rectangle { color: "#f0f0f0"; }
-                ScrollIndicator.vertical: ScrollIndicator { }
-            }
-            
-            RowLayout {
-                spacing: 8
-                Button {
-                    text: "Add"
-                    onClicked: {
-                        ms.startSelector();
-                    }
-                }
-                Button {
-                    text: "Add URL"
-                    onClicked: {
-                        usd.open()
-                    }
-                }
-                Button {
-                    text: "Remove"
-                    enabled: mediaListView.currentIndex>-1
-                    onClicked: {
-                        mediaListView.model.remove(mediaListView.currentIndex)
-                    }
-                }
-                Button {
-                    text: "Clear"
-                    onClicked: {
-                        plist.clear()
-                    }
-                }
-                Button {
-                    text: "Close"
-                    onClicked: {
-                        mediaDrawer.close()
-                    }
-                }
-            }
-            
-            RowLayout {
-                spacing: 8
-                Label {
-                    id: conMsg
-                    text: mp.errorString
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignLeft
-                }
-                Label {
-                    id: bufMsg
-                    text: mp.bufferProgress
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignLeft
-                }
-                Label {
-                    id: itemsMsg
-                    text: 1+plist.currentIndex+" / "+plist.itemCount
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignLeft
-                }
-                Label {
-                    id: itemTime
-                    text: formatSeconds(mp.position/1000)+" / "+formatSeconds(mp.duration/1000)
-                }
-            }
-            
-            RowLayout {
-                spacing: 8
-                Slider {
-                    id: volumeDial
-                    from: 0
-                    to: 100
-                    value: 100
-                    stepSize: 1
-                    wheelEnabled: true
-                    
-                    NumberAnimation {
-                        id: volumeFadeIn
-                        //from: 0
-                        to: 100
-                        target: volumeDial
-                        property: "value"
-                        duration: 500
-                        easing.type: Easing.InOutQuad
-                    }
-                    NumberAnimation {
-                        id: volumeFadeOut
-                        //from: 100
-                        to: 0
-                        target: volumeDial
-                        property: "value"
-                        duration: 500
-                        easing.type: Easing.InOutQuad
-                    }
-                }
-                
-                CheckBox {
-                    id: checkMuted
-                    text: "Mute"
-                    checked: mp.muted
-                }
-                
-                Button {
-                    text: "Fade In"
-                    enabled: !volumeFadeIn.running
-                    onClicked: volumeFadeIn.start()
-                }
-                Button {
-                    text: "Fade Out"
-                    enabled: !volumeFadeOut.running
-                    onClicked: volumeFadeOut.start()
-                }
-                CheckBox {
-                    id: checkLoop
-                    text: "Loop"
-                    checked: mp.loops!=1
-                }
-            }
-            
-            RowLayout {
-                spacing: 8
-                Button {
-                    text: "Play"
-                    enabled: mp.playbackState!=MediaPlayer.PlayingState && mp.status!=MediaPlayer.NoMedia
-                    onClicked: {
-                        mp.play();
-                    }
-                }
-                Button {
-                    text: "Pause"
-                    enabled: mp.playbackState==MediaPlayer.PlayingState
-                    onClicked: {
-                        mp.pause()
-                    }
-                }
-                Button {
-                    text: "Stop"
-                    enabled: mp.playbackState==MediaPlayer.PlayingState
-                    onClicked: {
-                        mp.stop();
-                    }
-                }
-                Button {
-                    text: "Previous"
-                    onClicked: {
-                        previousMediaFile();
-                    }
-                }
-                Button {
-                    text: "Next"
-                    onClicked: {
-                        nextMediaFile();
-                    }
-                }
-            }
-        }
-    }
-    
-    Component {
-        id: playlistDelegate
-        ItemDelegate {
-            width: ListView.view.width
-            height: c.height
-            highlighted: ListView.isCurrentItem
-            RowLayout {
-                id: c
-                spacing: 4
-                width: parent.width
-                Text {
-                    Layout.fillWidth: true
-                    text: source
-                    font.pointSize: 14
-                }
-            }
-            onClicked: {
-                ListView.currentIndex=index;
-            }
-            onDoubleClicked: {
-                setMediaFile(index)
-            }
-        }
+        playlist: plist
     }
     
     Drawer {
         id: chatDrawer
         dragMargin: 0
-        width: parent.width/1.5
+        width: parent.width/1.25
         height: parent.height
         ColumnLayout {
             anchors.fill: parent
@@ -1027,167 +804,12 @@ ApplicationWindow {
         }
     }
     
-    Drawer {
+    IrcChatDrawer {
         id: ircDrawer
-        dragMargin: 0
-        width: parent.width/1.5
-        height: parent.height
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 16
-            spacing: 8
-            TextField {
-                id: ircHostname
-                Layout.fillWidth: true
-                placeholderText: "Hostname"
-                selectByMouse: true
-            }
-            TextField {
-                id: ircPassword
-                Layout.fillWidth: true
-                placeholderText: "Password"
-                selectByMouse: true
-            }
-            Switch {
-                id: ircSecure
-                text: "Secure connection"
-                checked: false
-            }
-            TextField {
-                id: ircNick
-                Layout.fillWidth: true
-                placeholderText: "Nick"
-                selectByMouse: true
-            }
-            TextField {
-                id: ircRealname
-                Layout.fillWidth: true
-                placeholderText: "Real name"
-                selectByMouse: true
-            }
-            TextField {
-                id: ircChannel
-                Layout.fillWidth: true
-                placeholderText: "Channel"
-                selectByMouse: true
-            }
-            TextField {
-                id: ircChannelKey
-                Layout.fillWidth: true
-                placeholderText: "Channel key"
-                selectByMouse: true
-            }
-            RowLayout {
-                Button {
-                    text: "Connect"
-                    enabled: !irc.connected && ircHostname.length>1
-                    onClicked: {
-                        irc.connect();
-                    }
-                }
-                Button {
-                    text: "Disconnect"
-                    enabled: irc.connected
-                    onClicked: {
-                        irc.disconnect();
-                    }
-                }
-            }
-            Frame {
-                visible: true
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                ColumnLayout {
-                    anchors.fill: parent
-                    spacing: 4
-                    Label {
-                        text: "Topic"
-                    }
-                    SplitView {
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        ListView {
-                            id: channel
-                            SplitView.fillWidth: true
-                            model: irc.channelModel
-                            delegate: Label {
-                                text: model.title
-                            }
-                        }
-                        ListView {
-                            id: users
-                            SplitView.fillWidth: true
-                            model: irc.userModel
-                            delegate: Label {
-                                text: model.title
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
     
-    Drawer {
+    ThirdsDrawer {
         id: thirdsDrawer
-        dragMargin: 0
-        width: parent.width/1.5
-        height: parent.height
-        
-        function clearL3Input() {
-            textl3Primary.clear()
-            textl3Secondary.clear()
-        }
-        
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 16
-            spacing: 8
-            TextField {
-                id: textl3Primary
-                Layout.fillWidth: true
-                placeholderText: "Primary (name, etc)"
-                selectByMouse: true
-            }
-            TextField {
-                id: textl3Secondary
-                Layout.fillWidth: true
-                placeholderText: "Secondary (title, e-mail, etc)"
-                selectByMouse: true
-            }
-            TextField {
-                id: textl3Topic
-                Layout.fillWidth: true
-                placeholderText: "Topic/Keyword"
-                selectByMouse: true
-            }
-            RowLayout {
-                spacing: 8
-                Button {
-                    text: "Add"
-                    onClicked: {
-                        const item={
-                            "primary": textl3Primary.text,
-                            "secondary": textl3Secondary.text,
-                            "topic": textl3Topic.text,
-                            "image": ""}
-                        l3ModelFinal.append(item)
-                    }
-                }
-                Button {
-                    text: "Clear"
-                    onClicked: {
-                        thirdsDrawer.clearL3Input();
-                    }
-                }
-                Button {
-                    text: "Close"
-                    onClicked: {
-                        thirdsDrawer.close()
-                    }
-                }
-            }
-        }
     }
     
     NewsDrawer {
@@ -1201,190 +823,9 @@ ApplicationWindow {
         clapper: l3window.clapper
     }
     
-    Drawer {
+    TelepromptDrawer {
         id: telepromptDrawer
-        dragMargin: 0
-        width: parent.width/1.5
-        height: parent.height        
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 16
-            spacing: 8
-            
-            ColumnLayout {
-                id: telepromptItemMessage
-                Layout.alignment: Qt.AlignTop
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                
-                ScrollView {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    Layout.maximumHeight: telepromptDrawer.height/6
-                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                    background: Rectangle {
-                        border.color: "black"
-                        border.width: 1
-                    }
-                    TextArea {
-                        id: telepromptTextMsg
-                        placeholderText: "Write a telepromt message here"
-                        selectByKeyboard: true
-                        selectByMouse: true
-                        textFormat: TextEdit.PlainText
-                        wrapMode: TextEdit.Wrap
-                    }
-                }
-                RowLayout {
-                    Switch {
-                        id: telepromptMsgSwitch
-                        Layout.alignment: Qt.AlignLeft
-                        text: "Display message"
-                        checked: true
-                        onCheckedChanged: {
-                            if (checked)
-                                tpwindow.setMessage(telepromptTextMsg.text)
-                            else
-                                tpwindow.setMessage("")
-                        }
-                    }
-                    Button {
-                        text: "Update"
-                        enabled: telepromptMsgSwitch.checked && telepromptTextMsg.length>0
-                        onClicked: {
-                            tpwindow.setMessage(telepromptTextMsg.text)
-                        }
-                    }
-                    Button {
-                        text: "Send"
-                        enabled: telepromptMsgSwitch.checked && telepromptTextMsg.length>0
-                        onClicked: {
-                            tpwindow.setMessage(telepromptTextMsg.text)
-                            telepromptTextMsg.text=""
-                        }
-                    }
-                }
-            }
-            
-            ScrollView {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.minimumHeight: telepromptDrawer.height/3
-                Layout.maximumHeight: telepromptDrawer.height/2
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                background: Rectangle {
-                    border.color: "black"
-                    border.width: 1
-                }
-                TextArea {
-                    id: textPrompter
-                    placeholderText: "Teleprompt text here"
-                    selectByKeyboard: true
-                    selectByMouse: true
-                    textFormat: TextEdit.PlainText
-                    wrapMode: TextEdit.WordWrap
-                }
-            }
-            
-            RowLayout {
-                spacing: 8
-                Switch {
-                    id: telepromptMirror
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Mirror"
-                    checked: settings.getSettingsBool("telepromt/mirror", false)
-                }
-                Switch {
-                    id: telepromptFlip
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Flip"
-                    checked: settings.getSettingsBool("telepromt/flip", false)
-                }
-                SpinBox {
-                    id: lineSpeed
-                    from: 1
-                    to: 12
-                    stepSize: 1
-                    value: settings.getSettingsInt("telepromt/speed", 8, 1, 12)
-                    onValueChanged: {
-                        if (!tpwindow)
-                            return
-                        tpwindow.lineSpeed=value/10.0
-                    }
-                    wheelEnabled: true
-                }
-                SpinBox {
-                    from: 16
-                    to: 128
-                    value: settings.getSettingsInt("telepromt/fontsize", 64, 16, 128)
-                    onValueChanged: {
-                        if (!tpwindow)
-                            return
-                        tpwindow.fontSize=value;
-                        settings.setSettings("teleprompt/fontsize, value")
-                    }
-                    wheelEnabled: true
-                }
-            }
-            
-            RowLayout {
-                spacing: 8
-                Button {
-                    text: "Update"
-                    onClicked: {
-                        tpwindow.telepromptSetText(textPrompter.text)
-                    }
-                }
-                Button {
-                    text: "Start"
-                    enabled: !tpwindow.active
-                    onClicked: {
-                        tpwindow.telepromptStart();
-                    }
-                }
-                Button {
-                    text: "Stop"
-                    enabled: tpwindow.active
-                    onClicked: {
-                        tpwindow.telepromptStop();
-                    }
-                }
-                Button {
-                    text: "Pause"
-                    enabled: tpwindow.active && !tpwindow.paused
-                    onClicked: {
-                        tpwindow.telepromptPause();
-                    }
-                }
-                Button {
-                    text: "Resume"
-                    enabled: tpwindow.active && tpwindow.paused
-                    onClicked: {
-                        tpwindow.telepromptResume();
-                    }
-                }
-                Button {
-                    text: "Reset"
-                    enabled: tpwindow.active
-                    onClicked: {
-                        tpwindow.telepromptStop();
-                    }
-                }
-            }
-            
-            Slider {
-                Layout.fillWidth: true
-                id: telePromptPos
-                from: 0
-                to: tpwindow.promptHeight
-                value: tpwindow.promptPos
-                onValueChanged: {
-                    if (pressed) {
-                        tpwindow.telepromptSetPosition(value)
-                    }
-                }
-            }
-        }
+        tpwindow: main.tpwindow
     }
     
     ListModel {
@@ -1458,14 +899,17 @@ ApplicationWindow {
                     id: c
                     spacing: 4
                     Layout.fillWidth: true
-                    Layout.preferredWidth: parent.width/1.5
-                    Text { text: primary; font.pixelSize: 14 }
+                    //Layout.preferredWidth: parent.width/1.5
+                    Layout.minimumWidth: parent.width/4
+                    Layout.maximumWidth:  parent.width/1.25
+                    Text { text: primary; font.bold: true; font.pixelSize: 14 }
                     Text { text: secondary; font.pixelSize: 12 }
+                    Text { text: topic; font.pixelSize: 10; visible: text!='' }
                 }
                 RadioButton {
                     text: "L"
                     Layout.fillWidth: false
-                    Layout.preferredWidth: parent.width/5
+                    //Layout.preferredWidth: parent.width/5
                     ButtonGroup.group: l3delegateButtonGroupLeft
                     onCheckedChanged: {
                         if (checked)
@@ -1475,7 +919,7 @@ ApplicationWindow {
                 RadioButton {
                     text: "R"
                     Layout.fillWidth: false
-                    Layout.preferredWidth: parent.width/5
+                    //Layout.preferredWidth: parent.width/5
                     ButtonGroup.group: l3delegateButtonGroupRight
                     onCheckedChanged: {
                         if (checked)
@@ -1811,12 +1255,13 @@ ApplicationWindow {
                     MouseArea {
                         anchors.fill: parent
                         onDoubleClicked: {
-                            if (!showCountdown.checked)
-                                showCountdown.checked=true
-                            if (!ticker.active)
+                            if (!ticker.active) {
+                                if (!showCountdown.checked)
+                                    showCountdown.checked=true
                                 ticker.start()
-                            else
+                            } else {
                                 ticker.stop()
+                            }
                         }
                         onPressAndHold: {
                             ticker.setCountdownSeconds(0);
