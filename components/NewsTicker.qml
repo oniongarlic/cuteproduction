@@ -31,6 +31,7 @@ ColumnLayout {
         marginTop: 32
         marginBottom: newsTicker.height+32
         positionParent: newsTicker.parent
+        visible: false
     }
 
     Timer {
