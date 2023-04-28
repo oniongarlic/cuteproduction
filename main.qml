@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 import QtMultimedia
 import QtQml.XmlListModel
 import QtQuick.Dialogs
@@ -454,7 +454,7 @@ ApplicationWindow {
             ColorMenuItem {
                 id: bgCustom
                 text: "Custom"
-                value: dialogColor.color
+                value: dialogColor.selectedColor
                 checkable: true
                 ButtonGroup.group: backgroundGroup
             }
@@ -471,12 +471,13 @@ ApplicationWindow {
             MenuSeparator {
                 
             }
-            MenuItem {
+            ColorMenuItem {
                 id: bgImage
                 text: "Image"
                 ButtonGroup.group: backgroundGroup
                 enabled: image!=''
                 checkable: true
+                value: ''
                 property string image;
                 onClicked: {
                     l3window.setBackground('image', image);
@@ -536,8 +537,8 @@ ApplicationWindow {
     ColorDialog {
         id: dialogColor
         onAccepted: {
-            l3window.setBackground('custom', dialogColor.color);
-            backgroundGroup.currentValue=dialogColor.color;
+            l3window.setBackground('custom', dialogColor.selectedColor);
+            backgroundGroup.currentValue=dialogColor.selectedColor;
         }
         onRejected: {
             
@@ -632,21 +633,11 @@ ApplicationWindow {
     }
     
     MediaPlayer {
-        id: mp
-        playlist: plist
-        autoLoad: true
+        id: mp        
         loops: mediaDrawer.loop ? MediaPlayer.Infinite : 1
-        muted: mediaDrawer.muted
-        volume: mediaDrawer.volume/100
-        audioRole: MediaPlayer.VideoRole
-        onPlaying: {
-            //hs.setStatus("playing")
-        }
-        onStopped: {
-            //hs.setStatus("stopped")
-        }
-        onPaused: {
-            //hs.setStatus("stopped")
+        audioOutput: AudioOutput {
+            muted: mediaDrawer.muted
+            volume: mediaDrawer.volume/100
         }
 
         onPositionChanged: {
@@ -1409,7 +1400,7 @@ ApplicationWindow {
         
         function subscribeTopic(topic, cb, type) {
             console.debug(MqttSubscription.String)
-            let s=mqttClient.subscribe(topic, 0)
+            let s=mqttClient.subscribe(topic)
             s.setType(type)
             s.messageReceived.connect(cb)
         }

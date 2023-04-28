@@ -97,7 +97,7 @@ Item {
         id: serverBuffer
         sticky: true
         persistent: true
-        name: connection.displayName
+        name: ircConnection.displayName
         Component.onCompleted: ircBuffer.add(serverBuffer)
     }
 

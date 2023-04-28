@@ -264,7 +264,6 @@ Window {
         onErrorOccurred: console.debug("CameraError: "+errorString)
 
         Component.onCompleted: {            
-            console.debug("Camera orientation is: "+orientation)
             // videoInput.exposure.exposureMode=Camera.ExposureAuto
         }
     }
