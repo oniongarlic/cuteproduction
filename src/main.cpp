@@ -17,7 +17,7 @@
 #include "hyper.h"
 #include "cutemqttclient.h"
 
-#include "qmediaplaylist.h"
+#include "playlistmodel.h"
 
 int main(int argc, char *argv[])
 {

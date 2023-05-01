@@ -17,6 +17,11 @@ Component {
                 text: source
                 font.pointSize: 14
             }
+            Text {
+                Layout.fillWidth: false
+                text: formatSeconds(duration/1000)
+                font.pointSize: 14
+            }
         }
         onClicked: {
             ListView.currentIndex=index;

@@ -72,8 +72,8 @@ ApplicationWindow {
         maskwindow=maskw.createObject(null, { screen: Qt.application.screens[mps], visible: false });
         
         l3window.maskWindow=maskwindow;
-
-        mp.videoOutput=l3window.mediaPlayerOutput
+        mp.videoOutput=l3window.mediaPlayerOutput.vo
+        videoCaptureSession.videoOutput=l3window.videoInputOutput.vo
 
         console.debug("Loading settings...")
         loadSettings()
@@ -508,20 +508,6 @@ ApplicationWindow {
         }
     }
     
-    CameraSelectorPopup {
-        id: cameraSelector
-        onCameraSelected: {
-            l3window.setCameraDevice(id)
-        }
-    }
-    
-    CameraResolutionPopup {
-        id: cameraResolutionSelector
-        onCameraResolutionSelected: {
-            
-        }
-    }
-    
     ButtonGroup {
         id: backgroundGroup
         property string currentValue: 'black';
@@ -544,7 +530,7 @@ ApplicationWindow {
             
         }
         Component.onCompleted: {
-            dialogColor.color=settings.getSettingsStr("background/customColor", "yellow")
+            dialogColor.selectedColor=settings.getSettingsStr("background/customColor", "yellow")
         }
         onSelectedColorChanged: {
             settings.setSettingsStr("background/customColor", selectedColor)
@@ -597,24 +583,19 @@ ApplicationWindow {
         ms.startSelector()
     }
     
-    function nextMediaFile() {
-        plist.playbackMode=Playlist.Sequential
+    function nextMediaFile() {        
         plist.next();
-        mp.pause();
-        plist.playbackMode=Playlist.CurrentItemOnce
+        mp.pause();        
     }
     
     function previousMediaFile() {
-        plist.playbackMode=Playlist.Sequential
         plist.previous();
         mp.pause();
-        plist.playbackMode=Playlist.CurrentItemOnce
     }
     
     function setMediaFile(i) {
         plist.currentIndex=i;
         mp.pause();
-        plist.playbackMode=Playlist.CurrentItemOnce
     }
     
     MediaSelector {
@@ -631,9 +612,67 @@ ApplicationWindow {
             //hs.setClips(plist.itemCount)
         }
     }
+
+    CaptureSession {
+        id: videoCaptureSession
+        camera: videoInput
+    }
+
+    Camera {
+        id: videoInput
+        cameraDevice: mediaDevices.defaultVideoInput
+        onErrorOccurred: console.debug("CameraError: "+errorString)
+        Component.onCompleted: {
+            // videoInput.exposure.exposureMode=Camera.ExposureAuto
+        }
+    }
+
+    CameraSelectorPopup {
+        id: cameraSelector
+        model: mediaDevices.videoInputs
+        onCameraSelected: (deviceIndex) => {
+            videoInput.stop();
+            videoInput.cameraDevice=mediaDevices.videoInputs[deviceIndex]
+        }
+    }
+
+    CameraResolutionPopup {
+        id: cameraResolutionSelector
+        onCameraResolutionSelected: {
+
+        }
+    }
+
+    MediaDevices {
+        id: mediaDevices
+        onVideoInputsChanged: {
+            console.debug("VideoInputsChanged")
+            updateVideoInputs()
+        }
+
+        property int videoInputCount: 0
+
+        Component.onCompleted: {
+            updateVideoInputs()
+        }
+
+        function updateVideoInputs() {
+            videoInputCount=videoInputs.length
+            videoInputsModel.clear()
+            for (var i=0;i<videoInputs.length;i++) {
+                var vi=videoInputs[i]
+                console.debug(i+":"+vi.id)
+                videoInputsModel.append(vi)
+            }
+        }
+    }
+
+    ListModel {
+        id: videoInputsModel
+    }
     
     MediaPlayer {
-        id: mp        
+        id: mp
         loops: mediaDrawer.loop ? MediaPlayer.Infinite : 1
         audioOutput: AudioOutput {
             muted: mediaDrawer.muted
@@ -641,13 +680,20 @@ ApplicationWindow {
         }
 
         onPositionChanged: {
+            console.debug(position)
             //hs.setTimecode(position);
         }
         onDurationChanged: {
+            console.debug(duration)
             //hs.setDuration(duration)
         }
 
+        onMediaStatusChanged: {
+            console.debug(mediaStatus)
+        }
+
         onPlaybackStateChanged: {
+            console.debug(playbackState)
             switch (playbackState) {
             case MediaPlayer.PlayingState:
                 break;
@@ -657,18 +703,12 @@ ApplicationWindow {
                 break;
             }
         }
-        
-        //onStatusChanged: console.debug(status)
     }
     
-    Playlist {
+    MediaPlaylistModel {
         id: plist
-        playbackMode: Playlist.CurrentItemOnce
-        onLoaded: {
-            console.debug("Playlist loaded: "+itemCount)
-        }
-        onLoadFailed: {
-            console.debug(errorString)
+        onCurrentIndexChanged: {
+            mp.source=get(currentIndex).source
         }
     }
     
@@ -687,11 +727,7 @@ ApplicationWindow {
             mp.stop();
         }
         onLoopChanged: {
-            if (loop>1) {
-                plist.playbackMode=Playlist.CurrentItemInLoop
-            } else {
-                plist.playbackMode=Playlist.CurrentItemOnce
-            }
+            console.debug("HyperLOOP")
         }
     }
     
@@ -947,14 +983,16 @@ ApplicationWindow {
             RowLayout {
                 id: rl11
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.minimumHeight: gl.height/6
                 ScrollView {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    Layout.minimumWidth: rl11.width/2
-                    Layout.maximumWidth: rl11.width/1.5
+                    //Layout.minimumWidth: rl11.width/2
+                    //Layout.maximumWidth: rl11.width/1.5
                     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                    Layout.minimumHeight: gl.height/7
-                    Layout.maximumHeight: gl.height/6
+                    //Layout.minimumHeight: gl.height/7
+                    //Layout.maximumHeight: gl.height/6
                     background: Rectangle {
                         border.color: "black"
                         border.width: 1
@@ -975,8 +1013,10 @@ ApplicationWindow {
                     Layout.maximumHeight: gl.height/6
                     Layout.fillHeight: true
                     Layout.maximumWidth: rl11.width/2
+                    Layout.alignment: Qt.AlignTop
                     Text {
                         id: messageCurrent
+                        anchors.fill: parent
                         text: l3window.messageText
                         wrapMode: TextEdit.Wrap
                         textFormat: TextEdit.PlainText

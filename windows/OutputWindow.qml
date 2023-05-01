@@ -60,8 +60,8 @@ Window {
 
     property bool useDropShadows: true
 
-    property bool hasVideoInput: videoInput.availability==Camera.Available
-    property bool videoInputActive: videoInput.cameraState==Camera.ActiveState && hasVideoInput
+    property bool hasVideoInput: true // XXX videoInput.availability==Camera.Available
+    property bool videoInputActive: videoInput.active && hasVideoInput
 
     readonly property CustomVideoOutput mediaPlayerOutput: vo
     readonly property CustomVideoOutput videoInputOutput: vovi
@@ -232,11 +232,6 @@ Window {
         videoInput.stop();
     }
 
-    function setCameraDevice(id) {
-        videoInput.stop();
-        videoInput.deviceId=id
-    }
-
     function videoOutputVisible(v) {
         vovi.visible=v;
     }
@@ -249,22 +244,6 @@ Window {
         case 1:
             vo.source=videoInput;
             break;
-        }
-    }
-
-    CaptureSession {
-        id: videoCaptureSession
-        camera: videoInput
-
-    }
-
-    Camera {
-        id: videoInput
-        // deviceId: "/dev/video0"
-        onErrorOccurred: console.debug("CameraError: "+errorString)
-
-        Component.onCompleted: {            
-            // videoInput.exposure.exposureMode=Camera.ExposureAuto
         }
     }
     

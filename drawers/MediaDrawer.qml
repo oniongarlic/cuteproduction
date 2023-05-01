@@ -108,7 +108,7 @@ Drawer {
             }
             Label {
                 id: itemsMsg
-                text: 1+plist.currentIndex+" / "+plist.itemCount
+                text: 1+plist.currentIndex+" / "+plist.count
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft
             }
