@@ -60,7 +60,8 @@ SOURCES += 3rdparty/qmediaplaylist/qmediaplaylist.cpp 3rdparty/qmediaplaylist/pl
 HEADERS += 3rdparty/qmediaplaylist/playlistmodel.h 3rdparty/qmediaplaylist/qmediaplaylist.h 3rdparty/qmediaplaylist/qmediaplaylist_p.h 3rdparty/qmediaplaylist/qplaylistfileparser_p.h
 INCLUDEPATH += 3rdparty/qmediaplaylist/
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    shaders.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
