@@ -27,7 +27,7 @@ Window {
         anchors.fill: parent
         asynchronous: true
         cache: false
-        smooth: false
+        smooth: true
         mipmap: true
     }
     ShaderEffect {
