@@ -60,7 +60,7 @@ Window {
 
     property bool useDropShadows: true
 
-    property bool hasVideoInput: true // XXX videoInput.availability==Camera.Available
+    property bool hasVideoInput: mediaDevices.videoInputCount>0
     property bool videoInputActive: videoInput.active && hasVideoInput
 
     readonly property CustomVideoOutput mediaPlayerOutput: vo
