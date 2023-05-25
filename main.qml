@@ -415,15 +415,7 @@ ApplicationWindow {
                 onClicked: {
                     cameraSelector.open()
                 }
-            }
-            MenuItem {
-                text: "Show"
-                checkable: true
-                checked: true
-                onClicked: {
-                    l3window.videoOutputVisible(checked)
-                }
-            }
+            }            
         }
         
         Menu {
