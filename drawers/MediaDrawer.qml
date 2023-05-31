@@ -52,7 +52,9 @@ Drawer {
             Layout.fillHeight: true
             Layout.fillWidth: true
             clip: true
-            delegate: playlistDelegate
+            delegate: PlaylistDelegate {
+                
+            }
             highlight: Rectangle { color: "#f0f0f0"; }
             ScrollIndicator.vertical: ScrollIndicator { }
         }
@@ -108,7 +110,7 @@ Drawer {
             }
             Label {
                 id: itemsMsg
-                text: 1+plist.currentIndex+" / "+plist.count
+                text: 1+playlist.currentIndex+" / "+playlist.count
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft
             }
