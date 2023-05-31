@@ -12,7 +12,7 @@ ListModel {
     }
 
     function addItems(srcs) {
-        for (var i=0;i<src.length;i++) {
+        for (var i=0;i<srcs.length;i++) {
             addItem(srcs[j])
         }
     }
