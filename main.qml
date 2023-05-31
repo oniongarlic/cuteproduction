@@ -397,21 +397,22 @@ ApplicationWindow {
             title: "Video input"
             enabled: l3window.hasVideoInput
             MenuItem {
-                text: "Start"                    
+                text: "Start"
+                enabled: !videoInput.active
                 onClicked: {
-                    l3window.startCamera();
+                    videoInput.start()
                 }
             }
             MenuItem {
                 text: "Stop"
-                enabled: l3window.videoInputActive
+                enabled: videoInput.active
                 onClicked: {
-                    l3window.stopCamera();
+                    videoInput.stop();
                 }
             }
             MenuItem {
                 text: "Select"
-                enabled: !l3window.videoInputActive
+                enabled: !videoInput.active && videoInputsModel.count>0
                 onClicked: {
                     cameraSelector.open()
                 }
@@ -614,6 +615,7 @@ ApplicationWindow {
         id: videoInput
         cameraDevice: mediaDevices.defaultVideoInput
         onErrorOccurred: console.debug("CameraError: "+errorString)
+        onActiveChanged: console.debug("CameraActive:"+active)
         Component.onCompleted: {
             // videoInput.exposure.exposureMode=Camera.ExposureAuto
         }
@@ -656,10 +658,6 @@ ApplicationWindow {
                 var vi=videoInputs[i]
                 console.debug(i+":"+vi.id)
                 console.debug(vi.description)
-                const item={
-                        "id": vi.id,
-                        "description": vi.description
-                }
                 videoInputsModel.append(vi)
             }
         }
