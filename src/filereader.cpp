@@ -70,6 +70,10 @@ QVariantMap FileReader::getMetaData(const QString file)
     meta.insert("streams", streams);
 
     avformat_free_context(fmt_ctx);
+#else
+    // Fake something if we can't read it
+    meta.insert("duration", 0.0f);
+    meta.insert("streams", 1);
 #endif
 
     qDebug() << meta;
