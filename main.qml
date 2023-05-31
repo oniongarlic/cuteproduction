@@ -621,7 +621,7 @@ ApplicationWindow {
 
     CameraSelectorPopup {
         id: cameraSelector
-        model: mediaDevices.videoInputs
+        model: videoInputsModel
         onCameraSelected: (deviceIndex) => {
             videoInput.stop();
             videoInput.cameraDevice=mediaDevices.videoInputs[deviceIndex]
@@ -651,9 +651,15 @@ ApplicationWindow {
         function updateVideoInputs() {
             videoInputCount=videoInputs.length
             videoInputsModel.clear()
+            console.debug("Video inputs: ")
             for (var i=0;i<videoInputs.length;i++) {
                 var vi=videoInputs[i]
                 console.debug(i+":"+vi.id)
+                console.debug(vi.description)
+                const item={
+                        "id": vi.id,
+                        "description": vi.description
+                }
                 videoInputsModel.append(vi)
             }
         }
