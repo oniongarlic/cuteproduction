@@ -24,15 +24,8 @@ packagesExist(libavformat) {
 
 }
 
-unix {
-    DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
-    include(3rdparty/qzxing/src//QZXing-components.pri)
-}
-
-win32 {
-    DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
-    include(3rdparty/qzxing/src//QZXing-components.pri)
-}
+DEFINES += QZXING_QML ENABLE_ENCODER_GENERIC ENABLE_ENCODER_QR_CODE
+include(3rdparty/qzxing/src/QZXing-components.pri)
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
