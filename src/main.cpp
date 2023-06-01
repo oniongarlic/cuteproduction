@@ -34,8 +34,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("CuteProduction");
     QCoreApplication::setApplicationVersion("0.1");
 
-    const int id = QFontDatabase::addApplicationFont(":/data/fonts/OxygenMono-Regular.ttf");
-    qDebug() << "Font loaded: " << id;
+    QStringList fonts;
+    fonts << ":/data/fonts/OxygenMono-Regular.ttf" << ":/data/fonts/OpenSans-Regular.ttf" << ":/data/fonts/OpenSans-Bold.ttf";
+
+    foreach(const QString &font, fonts) {
+        const int fid = QFontDatabase::addApplicationFont(font);
+        qDebug() << "Font loaded: " << fid << QFontDatabase::applicationFontFamilies(fid);
+    }
 
     QQuickStyle::setStyle("Universal");
     
