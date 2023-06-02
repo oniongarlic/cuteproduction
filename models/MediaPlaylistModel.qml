@@ -4,6 +4,9 @@ ListModel {
 
     property int currentIndex: -1
 
+    property bool hasNext: currentIndex<count
+    property bool hasPrev: currentIndex>0
+
     function addItem(src) {
         var o={'source':src}
         let m=fr.getMetaData(src);
@@ -13,7 +16,7 @@ ListModel {
 
     function addItems(srcs) {
         for (var i=0;i<srcs.length;i++) {
-            addItem(srcs[j])
+            addItem(srcs[i])
         }
     }
 
@@ -23,7 +26,7 @@ ListModel {
     }
 
     function previous() {
-        if (currentIndex>count)
+        if (currentIndex>0)
             currentIndex--
     }
 
