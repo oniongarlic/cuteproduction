@@ -1,3 +1,4 @@
+import QtCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -21,12 +22,9 @@ Item {
 
     FileDialog {
         id: filesDialog
-        //folder: shortcuts.documents
         nameFilters: [ "*.txt" ]
         title: qsTr("Select text file")
-//        selectExisting: true
-//        selectFolder: false
-//        selectMultiple: false
+        currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
         onAccepted: {
             // XXX: Need to convert to string, otherwise sucka
             if (selectedFile!="") {
