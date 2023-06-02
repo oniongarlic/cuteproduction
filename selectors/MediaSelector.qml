@@ -18,10 +18,13 @@ Item {
         id: filesDialog
         title: qsTr("Select media file(s)")
         currentFolder: StandardPaths.standardLocations(StandardPaths.MoviesLocation)[0]
-        nameFilters: [ "*.mp4", "*.mov", "*.mp3", "*.avi", "*.jpg" ]        
-        fileMode: FileDialog.OpenFile
+        nameFilters: [ "Video (*.mp4 *.mov *.avi)", "Audio (*.mp3 *.ogg)", "Image (*.jpg *.png)" ]
+        fileMode: FileDialog.OpenFiles
         onAccepted: {
-            fileSelected(selectedFile);
+            if (selectedFiles.length==1)
+                fileSelected(selectedFile);
+            else
+                filesSelected(selectedFiles)
         }
     }
 }
