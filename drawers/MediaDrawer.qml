@@ -198,12 +198,14 @@ Drawer {
             }
             Button {
                 text: "Previous"
+                enabled: playlist.hasPrev
                 onClicked: {
                     previousMediaFile();
                 }
             }
             Button {
                 text: "Next"
+                enabled: playlist.hasNext
                 onClicked: {
                     nextMediaFile();
                 }
