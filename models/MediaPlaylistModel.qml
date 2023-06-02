@@ -4,8 +4,8 @@ ListModel {
 
     property int currentIndex: -1
 
-    property bool hasNext: currentIndex<count
-    property bool hasPrev: currentIndex>0
+    property bool hasNext: currentIndex<count-1 && count>0
+    property bool hasPrev: currentIndex>0 && count>0
 
     function addItem(src) {
         var o={'source':src}
@@ -21,7 +21,7 @@ ListModel {
     }
 
     function next() {
-        if (currentIndex<count)
+        if (currentIndex<count-1)
             currentIndex++
     }
 
