@@ -596,7 +596,7 @@ ApplicationWindow {
         
         onFileSelected: {
             plist.addItem(src)
-            mp.pause();
+            //mp.pause();
             //hs.setClips(plist.itemCount)
         }
         
@@ -730,6 +730,13 @@ ApplicationWindow {
     MediaDrawer {
         id: mediaDrawer
         playlist: plist
+        onPreviewChanged: {
+            if (preview) {
+                mp.videoOutput=previewVideo
+            } else {
+                mp.videoOutput=l3window.mediaPlayerOutput.vo
+            }
+        }
     }
     
     Drawer {

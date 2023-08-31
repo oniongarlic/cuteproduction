@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import Qt5Compat.GraphicalEffects
 
@@ -77,7 +77,7 @@ Rectangle {
     
     property int l3BottomMargin: margin+8
     
-    readonly property bool isActive: l3animation.running
+    readonly property bool isActive: defaultAnimation.running
     
     property alias mainTitle: txtPrimary.text
     property alias secondaryTitle: txtSecondary.text
@@ -102,6 +102,19 @@ Rectangle {
         y=getYpos(parent.height, height, l3BottomMargin, alignVertical);
     }
 
+    function show() {
+        defaultAnimation.stop()
+        visible=false;
+        resetLocation();
+        defaultAnimation.start()
+    }
+
+    function hide() {
+        resetLocation()
+        visible=false;
+    }
+
+    property Animation defaultAnimation: l3animation
 
     Item {
         id: _dummy
@@ -175,7 +188,7 @@ Rectangle {
 
             Image {
                 id: person
-                source: "person.png"
+                source: "qrc://person.png"
                 visible: showImage && source!='' && status==Image.Ready
                 width: box.width
                 height: width
@@ -253,15 +266,5 @@ Rectangle {
         }
     }
     
-    function show() {        
-        l3animation.stop()
-        visible=false;
-        resetLocation();        
-        l3animation.start()
-    }
 
-    function hide() {
-        resetLocation()
-        visible=false;
-    }
 }
