@@ -1,20 +1,22 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Dialogs
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Dialog {
     id: dialogURL
     title: "Input URL"
     width: 400
-    standardButtons: StandardButton.Ok | StandardButton.Close
+    modal: true
+    standardButtons: Dialog.Ok | Dialog.Close
 
     property alias url: urlInput.text
+    property alias label: label.text
 
     RowLayout {
         anchors.fill: parent
         spacing: 8
         Label {
+            id: label
             text: "URL"
         }
         TextField {
