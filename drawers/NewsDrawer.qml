@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import QtQml.XmlListModel
 import QtQuick.Dialogs
 
@@ -49,7 +49,7 @@ Drawer {
     TextSelector {
         id: rssFile
         filter: [ "*.xml" ]
-        onFileSelected: {
+        onFileSelected: (src) => {
             rssModel.source=src
         }
     }
@@ -57,7 +57,7 @@ Drawer {
     URLSelector {
         id: rssUrl
         title: "RSS Feed URL"
-        onAccepted: {
+        onAccepted: (url) =>{
             rssModel.source=url
         }
     }
