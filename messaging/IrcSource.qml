@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import Communi 3.0
+import QtQuick
+import Communi
 
 Item {
     id: ircSource
