@@ -8,6 +8,8 @@ ColumnLayout {
     property int currentIndex: newsList.currentIndex
     property alias delegate: newsList.delegate
 
+    spacing: 4
+
     ListView {
         id: newsList
         Layout.fillWidth: true
@@ -26,8 +28,16 @@ ColumnLayout {
         }
         Button {
             text: "Remove all"
+            enabled: model.count>0
             onClicked: {
                 newsList.model.clear();
+            }
+        }
+        Button {
+            text: "Shuffle"
+            enabled: model.count>0
+            onClicked: {
+                shuffle(model, model.count)
             }
         }
     }

@@ -42,6 +42,16 @@ Drawer {
         newsLink.clear()
     }
 
+    function shuffle(model, loops) {
+            for (let i = 0; i < loops; i++) {
+                let idx = Math.floor(Math.random() * model.count);
+                let nidx = Math.floor(Math.random() * model.count);
+                if (idx === nidx)
+                    continue;
+                model.move(idx, nidx, 1);
+            }
+        }
+
     RssModel {
         id: rssModel
     }
@@ -228,7 +238,7 @@ Drawer {
                 onClicked: {
                     clearInput()
                 }
-            }            
+            }
         }
         RowLayout {
             Layout.fillWidth: true
@@ -241,13 +251,27 @@ Drawer {
                 Layout.fillHeight: true
                 model: tickerModel
                 delegate: newsEditorDelegate
+                Rectangle {
+                    Layout.margins: 2
+                    border.color: "#000"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
             }
             NewsListView {
                 id: newsPanelEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 model: panelModel
-                delegate: newsEditorDelegate                
+                delegate: newsEditorDelegate
+                Rectangle {
+                    Layout.margins: 2
+                    border.color: "#000"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
             }
         }        
         ListView {
@@ -259,6 +283,13 @@ Drawer {
             model: rssModel
             delegate: rssItemModel
             clip: true
+            Rectangle {
+                Layout.margins: 2
+                border.color: "#000"
+                border.width: 2
+                color: "transparent"
+                anchors.fill: parent
+            }
         }
         RowLayout {
             spacing: 8
