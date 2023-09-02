@@ -80,21 +80,26 @@ Drawer {
             ColumnLayout {
                 id: c
                 spacing: 2
+                width: parent.width
                 Text {
+                    Layout.fillWidth: true
                     text: title;
                     font.bold: true;
                     maximumLineCount: 1;
                     elide: Text.ElideRight
                 }
                 Text {
+                    Layout.fillWidth: true
                     text: description;
                     wrapMode: Text.Wrap;
                     maximumLineCount: 2;
                     elide: Text.ElideRight
                 }
                 Text {
+                    Layout.fillWidth: true
                     text: link;
                     maximumLineCount: 1;
+                    font.italic: true
                     elide: Text.ElideRight
                 }
             }
@@ -120,14 +125,18 @@ Drawer {
                 id: c
                 width: parent.width
                 Text {
+                    Layout.fillWidth: true
                     text: topic;
                     font.bold: true;
                     maximumLineCount: 1;
                     elide: Text.ElideRight
                 }
                 Text {
+                    Layout.fillWidth: true
                     text: msg;
                     wrapMode: Text.Wrap;
+                    maximumLineCount: 3;
+                    elide: Text.ElideRight
                 }
             }
             onClicked: {                
@@ -249,10 +258,10 @@ Drawer {
                 id: newsTickerEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.margins: 2
                 model: tickerModel
                 delegate: newsEditorDelegate
                 Rectangle {
-                    Layout.margins: 2
                     border.color: "#000"
                     border.width: 2
                     color: "transparent"
@@ -263,10 +272,10 @@ Drawer {
                 id: newsPanelEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.margins: 2
                 model: panelModel
                 delegate: newsEditorDelegate
                 Rectangle {
-                    Layout.margins: 2
                     border.color: "#000"
                     border.width: 2
                     color: "transparent"
