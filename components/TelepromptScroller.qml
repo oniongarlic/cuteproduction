@@ -99,6 +99,13 @@ Flickable {
         }
     }
 
+    Timer {
+        id: startDelay
+        repeat: false
+        interval: 1000
+        onTriggered: startScroll()
+    }
+
     property alias scrollPosition: sv.contentY
     readonly property real relpos: scrollPosition/(svanim.to+topMargin)
     readonly property int positionSeconds: Math.round(scrollSpeedSeconds*relpos)
