@@ -201,7 +201,7 @@ ApplicationWindow {
                 checkable: true
                 checked: maskwindow.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: maskwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
-            }            
+            }
         }
         
         Menu {
@@ -270,7 +270,7 @@ ApplicationWindow {
             MenuItem {
                 text: "Open..."
                 onClicked: tsf.startSelector();
-            }            
+            }
             MenuItem {
                 id: menuThirdsFullWidth
                 text: "Full width"
@@ -293,10 +293,10 @@ ApplicationWindow {
                 text: "Manage..."
                 enabled: true
                 onClicked: telepromptDrawer.open()
-            }            
+            }
             MenuSeparator {
                 
-            }            
+            }
             MenuItem {
                 text: "Show window"
                 checkable: true
@@ -377,7 +377,7 @@ ApplicationWindow {
             MenuItem {
                 text: "Open playlist..."
                 onClicked: {
-                    playListSelector.startSelector();                    
+                    playListSelector.startSelector();
                 }
             }
             MenuItem {
@@ -393,7 +393,7 @@ ApplicationWindow {
                 }
             }
         }
-        Menu {                
+        Menu {
             title: "Video input"
             enabled: l3window.hasVideoInput
             MenuItem {
@@ -416,11 +416,11 @@ ApplicationWindow {
                 onClicked: {
                     cameraSelector.open()
                 }
-            }            
+            }
         }
         
         Menu {
-            title: "Background"                       
+            title: "Background"
             
             ColorMenuItem {
                 id: bgBlack
@@ -505,9 +505,9 @@ ApplicationWindow {
         id: backgroundGroup
         property string currentValue: 'black';
         onClicked: (button) => {
-            l3window.setBackground(button.value)
-            currentValue=button.value
-        }
+                       l3window.setBackground(button.value)
+                       currentValue=button.value
+                   }
         onCurrentValueChanged: {
             settings.setSettingsStr("background/color", currentValue)
         }
@@ -538,7 +538,7 @@ ApplicationWindow {
             settings.setSettingsStr("background/image", src)
             bgImage.image=src;
         }
-    }   
+    }
     
     TextSelector {
         id: tsf
@@ -576,9 +576,9 @@ ApplicationWindow {
         ms.startSelector()
     }
     
-    function nextMediaFile() {        
+    function nextMediaFile() {
         plist.next();
-        mp.pause();        
+        mp.pause();
     }
     
     function previousMediaFile() {
@@ -616,8 +616,13 @@ ApplicationWindow {
         cameraDevice: mediaDevices.defaultVideoInput
         onErrorOccurred: console.debug("CameraError: "+errorString)
         onActiveChanged: console.debug("CameraActive:"+active)
+        onCameraDeviceChanged: console.debug(cameraDevice.id)
+        onCameraFormatChanged: console.debug(cameraFormat.resolution)
+        onSupportedFeaturesChanged: console.debug(supportedFeatures)
         Component.onCompleted: {
-            // videoInput.exposure.exposureMode=Camera.ExposureAuto
+            console.debug(cameraDevice.id)
+            console.debug(supportedFeatures)
+            console.debug(cameraFormat.resolution)
         }
     }
 
@@ -625,13 +630,15 @@ ApplicationWindow {
         id: cameraSelector
         model: videoInputsModel
         onCameraSelected: (deviceIndex) => {
-            videoInput.stop();
-            videoInput.cameraDevice=mediaDevices.videoInputs[deviceIndex]
-        }
+                              videoInput.stop();
+                              videoInput.cameraDevice=mediaDevices.videoInputs[deviceIndex]
+                              videoFormats.updateVideoFormats(videoInput.cameraDevice)
+                          }
     }
 
     CameraResolutionPopup {
         id: cameraResolutionSelector
+        model: videoFormats
         onCameraResolutionSelected: {
 
         }
@@ -639,15 +646,40 @@ ApplicationWindow {
 
     MediaDevices {
         id: mediaDevices
-        onVideoInputsChanged: {
-            console.debug("VideoInputsChanged")
-            updateVideoInputs()
-        }
+        onVideoInputsChanged: updateVideoInputs()
+        onAudioInputsChanged: updateAudioInputs()
+        onAudioOutputsChanged: updateAudioOutputs()
 
         property int videoInputCount: 0
 
         Component.onCompleted: {
             updateVideoInputs()
+            updateAudioInputs()
+            updateAudioOutputs()
+
+            console.debug(defaultAudioOutput.description)
+            console.debug(defaultAudioInput.description)
+            console.debug(defaultVideoInput.description)
+        }
+
+        function updateAudioInputs() {
+            for (var i=0;i<audioInputs.length;i++) {
+                var vi=audioInputs[i]
+                console.debug(i+" AudioInput:"+vi.id)
+                console.debug(vi.description)
+                console.debug(vi.isDefault)
+                audioInputsModel.append(vi)
+            }
+        }
+
+        function updateAudioOutputs() {
+            for (var i=0;i<audioOutputs.length;i++) {
+                var vi=audioOutputs[i]
+                console.debug(i+" AudioOuput:"+vi.id)
+                console.debug(vi.description)
+                console.debug(vi.isDefault)
+                audioOutputsModel.append(vi)
+            }
         }
 
         function updateVideoInputs() {
@@ -656,8 +688,17 @@ ApplicationWindow {
             console.debug("Video inputs: ")
             for (var i=0;i<videoInputs.length;i++) {
                 var vi=videoInputs[i]
-                console.debug(i+":"+vi.id)
+                console.debug(i+" VideoInput:"+vi.id)
                 console.debug(vi.description)
+                console.debug(vi.isDefault)
+                var vf=vi.videoFormats
+                console.debug("Supported formats")
+                for (var f=0;f<vf.length;f++) {
+                    console.debug(vf[f].maxFrameRate)
+                    console.debug(vf[f].minFrameRate)
+                    console.debug(vf[f].pixelFormat)
+                    console.debug(vf[f].resolution)
+                }
                 videoInputsModel.append(vi)
             }
         }
@@ -665,6 +706,27 @@ ApplicationWindow {
 
     ListModel {
         id: videoInputsModel
+    }
+    ListModel {
+        id: videoFormats
+        function updateVideoFormats(cameraDevice) {
+            console.debug("Current camera, supported formats")
+            clear();
+            var vf=cameraDevice.videoFormats
+            for (var f=0;f<vf.length;f++) {
+                console.debug(vf[f].maxFrameRate)
+                console.debug(vf[f].minFrameRate)
+                console.debug(vf[f].pixelFormat)
+                console.debug(vf[f].resolution)
+                append(vf)
+            }
+        }
+    }
+    ListModel {
+        id: audioInputsModel
+    }
+    ListModel {
+        id: audioOutputsModel
     }
     
     MediaPlayer {
@@ -846,7 +908,7 @@ ApplicationWindow {
         id: newsDrawer
         tickerModel: l3window.newsTickerModel
         panelModel: l3window.newsPanelModel
-    }   
+    }
 
     ClapperDrawer {
         id: clapper
@@ -864,7 +926,7 @@ ApplicationWindow {
     
     // XML Loader model
     LowerThirdModel {
-        id: l3Model        
+        id: l3Model
         onLoaded: {
             copyToListModel(l3ModelFinal)
             if (source!='persons.xml')
@@ -897,7 +959,7 @@ ApplicationWindow {
     
     Ticker {
         id: ticker
-        onZero: {            
+        onZero: {
             stop();
             // xxx: add option to hide when zero
             // xxx: add option to play a sound when zero
@@ -1039,7 +1101,7 @@ ApplicationWindow {
                     }
                 }
                 Button {
-                    text: "Update"                    
+                    text: "Update"
                     onClicked: {
                         l3window.setMessage(textMsg.text)
                     }
@@ -1079,7 +1141,7 @@ ApplicationWindow {
                     placeholderText: "https://"
                     onAccepted: {
                         l3window.qrCode.url=text
-                    }                    
+                    }
                 }
                 Button {
                     text: "Paste"
@@ -1231,7 +1293,7 @@ ApplicationWindow {
                     text: "00:00:00"
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 18
-                }                
+                }
                 MenuAlignment {
                     window: l3window;
                     item: l3window.txtTime
@@ -1312,7 +1374,7 @@ ApplicationWindow {
                             }
                         }
                     }
-                }                
+                }
                 Button {
                     text: "+10s"
                     onClicked: ticker.addCountdownSeconds(10);
@@ -1337,7 +1399,7 @@ ApplicationWindow {
                     window: l3window;
                     item: l3window.txtCountdown
                 }
-            }            
+            }
             RowLayout {
                 Button {
                     text: "Start"
@@ -1487,7 +1549,7 @@ ApplicationWindow {
             l3window.lthirdRight.show();
     }
     
-    function addChatMessage(data) {        
+    function addChatMessage(data) {
         l3window.addMessageLeft(data.topic, data.message);
     }
 }
