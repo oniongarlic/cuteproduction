@@ -25,7 +25,13 @@ Drawer {
     //ircSource.secure: ircSecure.checked
 
     Connections {
-        //target: ircSource.
+        target: ircSource.userModel
+        onChannelChanged: users.currentIndex = -1
+    }
+
+    Connections {
+        target: ircSource.channelModel
+        onAdded: console.debug('added')
     }
 
     Connections {
@@ -103,16 +109,16 @@ Drawer {
             Layout.fillWidth: true
             Button {
                 text: "Connect"
-                enabled: !irc.connected && ircHostname.length>1
+                enabled: !ircSource.connected && ircHostname.length>1
                 onClicked: {
-                    irc.connect();
+                    ircSource.connect();
                 }
             }
             Button {
                 text: "Disconnect"
                 enabled: irc.connected
                 onClicked: {
-                    irc.disconnect();
+                    ircSource.disconnect();
                 }
             }
         }
@@ -134,7 +140,7 @@ Drawer {
                         id: channel
                         SplitView.minimumWidth: 80
                         SplitView.maximumWidth: 200
-                        model: irc.channelModel
+                        model: ircSource.channelModel
                         delegate: ItemDelegate {
                             text: model.title
                             width: parent.width
@@ -163,7 +169,7 @@ Drawer {
                         SplitView.fillWidth: false
                         SplitView.minimumWidth: 80
                         SplitView.maximumWidth: 200
-                        model: irc.userModel
+                        model: ircSource.userModel
                         delegate: ItemDelegate {
                             text: model.title
                             onClicked: {

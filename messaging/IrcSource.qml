@@ -21,6 +21,7 @@ Item {
 
     property IrcBufferModel channelModel: ircBuffer
     property IrcUserModel userModel: ircUserModel
+    property IrcChannel ircChannel: ircChannel
 
     function connect() {
         ircConnection.open()
@@ -79,17 +80,12 @@ Item {
                 var cmd=incomingParser.parse(message)
                 if (cmd) {
 
+                } else {
+                    if (message.private)
+                        l3window.addMessageLeft("", message.content);
+                    else
+                        l3window.addMessageRight(message.nick, message.content);
                 }
-
-                console.debug(message.nick)
-                console.debug(message.target)
-                console.debug(message.private)
-                console.debug(message.content)
-
-                if (message.private)
-                    l3window.addMessageLeft("", message.content);
-                else
-                    l3window.addMessageRight(message.nick, message.content);
             }
         }
     }
@@ -134,8 +130,7 @@ Item {
     IrcCommandParser {
         id: parser
         tolerant: true
-        channels: ircBuffer.channels
-        //triggers: ircConnection.network.isChannel(target) ? ["!", ircConnection.nickName + ":"] : ["!", ""]
+        channels: ircBuffer.channels        
         triggers: ["/"]
         Component.onCompleted: {
             parser.addCommand(IrcCommand.Join, "JOIN <#channel> (<key>)");
