@@ -1,5 +1,7 @@
 # CuteProduction
 
+Note: This is the OLD Qt 5 based branch and it is not in developed anymore.
+
 A very beta version of a video production helper for streaming. It can 
 be used for example with ATEM Mini switchers for keying information to the video feed.
 
