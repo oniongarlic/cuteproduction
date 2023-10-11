@@ -47,6 +47,7 @@
         <file>drawers/IrcChatDrawer.qml</file>
         <file>delegates/PlaylistDelegate.qml</file>
         <file>drawers/MediaDrawer.qml</file>
+        <file>models/MediaPlaylistModel.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>

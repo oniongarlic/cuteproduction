@@ -1,44 +1,50 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-ColumnLayout {
-
+Item {
+    id: c
     property alias model: newsList.model
     property int currentIndex: newsList.currentIndex
     property alias delegate: newsList.delegate
+    ColumnLayout {
+        id: cl
+        spacing: 4
+        anchors.fill: parent
 
-    ListView {
-        id: newsList
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        clip: true
-        ScrollIndicator.vertical: ScrollIndicator { }
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: "black"
-            border.width: 1
+        ListView {
+            id: newsList
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            clip: true
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
-        Button {
-            text: "Remove"
-            enabled: newsList.currentIndex>-1
-            onClicked: {
-                newsList.model.remove(newsList.currentIndex)
+        RowLayout {
+            spacing: 8
+            Layout.fillWidth: true
+            Button {
+                text: "Remove"
+                enabled: newsList.currentIndex>-1
+                onClicked: {
+                    newsList.model.remove(newsList.currentIndex)
+                }
+            }
+            Button {
+                text: "Remove all"
+                enabled: model.count>0
+                onClicked: {
+                    newsList.model.clear();
+                }
+            }
+            Button {
+                text: "Shuffle"
+                enabled: model.count>0
+                onClicked: {
+                    shuffle(model, model.count)
+                }
             }
         }
-        Button {
-            text: "Remove all"
-            onClicked: {
-                newsList.model.clear();
-            }
+        Label {
+            text: "Items: "+newsList.count
         }
-    }
-    Label {
-        text: "Items: "+newsList.count
     }
 }

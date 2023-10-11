@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import ".."
 import "../components"
@@ -34,7 +34,7 @@ Window {
 
     readonly property int position: Math.round(teleprompt.relPos*100)
 
-    onClosing: {
+    onClosing: (close) => {
         close.accepted=false;
     }
 

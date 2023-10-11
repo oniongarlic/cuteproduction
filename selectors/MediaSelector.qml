@@ -1,7 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.3
-import QtQuick.Layouts 1.15
+import QtCore
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 
 Item {
     id: igs
@@ -15,21 +16,15 @@ Item {
 
     FileDialog {
         id: filesDialog
-        folder: shortcuts.pictures
-        nameFilters: [ "Video (*.mp4 *.mov *.avi *.ogv)", "Music (*.mp3 *.wav *.ogg)", "Images (*.jpg *.png *.gif)", "Mods (*.mod *.s3m *.it)" ]
         title: qsTr("Select media file(s)")
-        selectExisting: true
-        selectFolder: false
-        selectMultiple: true
+        currentFolder: StandardPaths.standardLocations(StandardPaths.MoviesLocation)[0]
+        nameFilters: [ "Video (*.mp4 *.mov *.avi)", "Audio (*.mp3 *.ogg)", "Image (*.jpg *.png)" ]
+        fileMode: FileDialog.OpenFiles
         onAccepted: {
-            // XXX: Need to convert to string, otherwise sucka
-            if (fileUrl!="") {
-                var f=""+fileUrl
-                fileSelected(f);
-            } else {
-                console.debug(fileUrls)
-                filesSelected(fileUrls)
-            }
+            if (selectedFiles.length==1)
+                fileSelected(selectedFile);
+            else
+                filesSelected(selectedFiles)
         }
     }
 }

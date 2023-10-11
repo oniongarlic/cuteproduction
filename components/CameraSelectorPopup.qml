@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.12
-import QtMultimedia 5.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtMultimedia
 
 Popup {
     id: cameraPopup
@@ -11,20 +11,23 @@ Popup {
     width: parent.width/1.5
     height: parent.height/3
 
-    signal cameraSelected(string id)
+    signal cameraSelected(int deviceIndex)
+
+    property alias model: cameraList.model
+    property alias currentItem: cameraList.currentItem
 
     ListView {
         id: cameraList
         anchors.fill: parent
-        clip: true
-        model: QtMultimedia.availableCameras
+        clip: true        
         ScrollIndicator.vertical: ScrollIndicator { }
         delegate: ItemDelegate {
             id: c
-            text: modelData.displayName
+            text: model.description
             width: parent.width
             onClicked: {
-                cameraSelected(modelData.deviceId)
+                ListView.view.currentIndex=index;
+                cameraSelected(index)
                 cameraPopup.close();
             }
         }

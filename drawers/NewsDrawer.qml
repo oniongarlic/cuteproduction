@@ -1,8 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
-import QtQuick.XmlListModel 2.15
-import QtQuick.Dialogs 1.3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQml.XmlListModel
+import QtQuick.Dialogs
 
 import "../selectors"
 import "../models"
@@ -42,6 +42,16 @@ Drawer {
         newsLink.clear()
     }
 
+    function shuffle(model, loops) {
+            for (let i = 0; i < loops; i++) {
+                let idx = Math.floor(Math.random() * model.count);
+                let nidx = Math.floor(Math.random() * model.count);
+                if (idx === nidx)
+                    continue;
+                model.move(idx, nidx, 1);
+            }
+        }
+
     RssModel {
         id: rssModel
     }
@@ -49,7 +59,7 @@ Drawer {
     TextSelector {
         id: rssFile
         filter: [ "*.xml" ]
-        onFileSelected: {
+        onFileSelected: (src) => {
             rssModel.source=src
         }
     }
@@ -57,7 +67,7 @@ Drawer {
     URLSelector {
         id: rssUrl
         title: "RSS Feed URL"
-        onAccepted: {
+        onAccepted: (url) =>{
             rssModel.source=url
         }
     }
@@ -99,7 +109,7 @@ Drawer {
                 newsBody.text=html.stripTags(rssModel.get(index).description)
                 newsLink.text=rssModel.get(index).link
             }
-            onDoubleClicked: {
+            onDoubleClicked: {                
                 tickerModel.append(rssModel.getItem(index))
             }
         }
@@ -124,19 +134,12 @@ Drawer {
                 Text {
                     Layout.fillWidth: true
                     text: msg;
-                    maximumLineCount: 2;
-                    elide: Text.ElideRight
                     wrapMode: Text.Wrap;
-                }
-                Text {
-                    Layout.fillWidth: true
-                    text: link;
-                    maximumLineCount: 1;
-                    font.italic: true
+                    maximumLineCount: 3;
                     elide: Text.ElideRight
                 }
             }
-            onClicked: {
+            onClicked: {                
                 ListView.view.currentIndex=index;
             }
             onDoubleClicked: {
@@ -213,28 +216,28 @@ Drawer {
             Button {
                 text: "To Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0
-                onClicked: {
+                onClicked: {                    
                     addItemToModel(tickerModel, createItem())
                 }
             }
             Button {
                 text: "To Panel"
                 enabled: newsKeyword.length>0 && newsBody.length>0
-                onClicked: {
+                onClicked: {                    
                     addItemToModel(panelModel, createItem())
                 }
             }
             Button {
                 text: "Update Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0 && newsTickerEditorList.currentIndex>-1
-                onClicked: {
+                onClicked: {                    
                     updateItemInList(newsTickerEditorList, createItem())
                 }
             }
             Button {
                 text: "Update Panel"
                 enabled: newsKeyword.length>0 && newsBody.length>0 && newsPanelEditorList.currentIndex>-1
-                onClicked: {
+                onClicked: {                    
                     updateItemInList(newsPanelEditorList, createItem())
                 }
             }
@@ -255,17 +258,31 @@ Drawer {
                 id: newsTickerEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.margins: 2
                 model: tickerModel
                 delegate: newsEditorDelegate
+                Rectangle {
+                    border.color: "#000"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
             }
             NewsListView {
                 id: newsPanelEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.margins: 2
                 model: panelModel
                 delegate: newsEditorDelegate
+                Rectangle {
+                    border.color: "#000"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
             }
-        }
+        }        
         ListView {
             id: newsFeedList
             Layout.fillWidth: true
@@ -275,12 +292,12 @@ Drawer {
             model: rssModel
             delegate: rssItemModel
             clip: true
-            ScrollIndicator.vertical: ScrollIndicator { }
             Rectangle {
+                Layout.margins: 2
+                border.color: "#000"
+                border.width: 2
                 color: "transparent"
                 anchors.fill: parent
-                border.color: "black"
-                border.width: 1
             }
         }
         RowLayout {
@@ -309,7 +326,7 @@ Drawer {
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
-                    for (i=0;i<rssModel.count;i++) {
+                    for (i=0;i<rssModel.count;i++) {                        
                         tickerModel.append(rssModel.getItem(i))
                     }
                 }
@@ -319,7 +336,7 @@ Drawer {
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
-                    for (i=0;i<rssModel.count;i++) {
+                    for (i=0;i<rssModel.count;i++) {                        
                         panelModel.append(rssModel.getItem(i))
                     }
                 }

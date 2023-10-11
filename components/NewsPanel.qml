@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 ColumnLayout {
     id: newsPanel
@@ -190,6 +190,7 @@ ColumnLayout {
             Text {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.minimumHeight: 256+32
                 id: tickerMsg
                 color: "#0062ae"
                 padding: 8
@@ -205,11 +206,11 @@ ColumnLayout {
                 Behavior on opacity { NumberAnimation { duration: 250 } }
             }
             QrCode {
-                Layout.alignment: Qt.AlignTop
                 id: qrcode
-                width: 256
-                height: 256
+                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Layout.margins: 32
+                width: 256
+                height: 256                
                 visible: url!=''
             }
         }

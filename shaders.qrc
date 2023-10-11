@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shaders/mask-fragment.frag</file>
+        <file>shaders/mask-vertex.vert</file>
+        <file>shaders/mask-fragment.qsb</file>
+        <file>shaders/mask-vertex.qsb</file>
+    </qresource>
+</RCC>

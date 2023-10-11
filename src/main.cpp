@@ -10,12 +10,18 @@
 #include <QZXing.h>
 #endif
 
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#endif
+
 #include "ticker.h"
 #include "html.h"
 #include "filereader.h"
 #include "settings.h"
 #include "hyper.h"
 #include "cutemqttclient.h"
+
+#include "playlistmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,8 +38,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("CuteProduction");
     QCoreApplication::setApplicationVersion("0.1");
 
-    const int id = QFontDatabase::addApplicationFont(":/data/fonts/OxygenMono-Regular.ttf");
-    qDebug() << "Font loaded: " << id;
+    QStringList fonts;
+    fonts << ":/data/fonts/OxygenMono-Regular.ttf" << ":/data/fonts/OpenSans-Regular.ttf" << ":/data/fonts/OpenSans-Bold.ttf";
+
+    foreach(const QString &font, fonts) {
+        const int fid = QFontDatabase::addApplicationFont(font);
+        qDebug() << "Font loaded: " << fid << QFontDatabase::applicationFontFamilies(fid);
+    }
 
     QQuickStyle::setStyle("Universal");
     
@@ -51,6 +62,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<CuteMqttClient>("org.tal.mqtt", 1, 0, "MqttClient");
     qRegisterMetaType<CuteMqttSubscription::TopicType>("TopicType");
     qmlRegisterUncreatableType<CuteMqttSubscription>("org.tal.mqtt", 1, 0, "MqttSubscription", QLatin1String("MQTT subscriptions are read-only"));        
+
+    qmlRegisterType<QMediaPlaylist>("org.tal.trdparty", 1, 0, "Playlist");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -73,7 +86,7 @@ int main(int argc, char *argv[])
     engine.load(url);
     
 #ifdef Q_OS_WIN32
-  SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
+    SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
 #endif
     
     return app.exec();
