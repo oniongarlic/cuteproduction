@@ -532,7 +532,7 @@ ApplicationWindow {
     
     TextSelector {
         id: tsimg
-        filter: [ "*.jpg" ]
+        filter: [ "*.jpg *.png *.gif" ]
         onFileSelected: {
             l3window.setBackground('image', src)
             settings.setSettingsStr("background/image", src)
