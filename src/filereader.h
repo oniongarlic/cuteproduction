@@ -25,8 +25,9 @@ public:
     Q_INVOKABLE void clear();
 
     Q_INVOKABLE QVariantMap getMetaData(const QString file);
-
+#ifdef FFMPEG
     Q_ENUM(AVMediaType);
+#endif
 signals:
 
 private:
