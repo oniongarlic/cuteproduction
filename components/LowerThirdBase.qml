@@ -188,7 +188,7 @@ Rectangle {
 
             Image {
                 id: person
-                source: "qrc://person.png"
+                source: "qrc:///person.png"
                 visible: showImage && source!='' && status==Image.Ready
                 width: box.width
                 height: width
