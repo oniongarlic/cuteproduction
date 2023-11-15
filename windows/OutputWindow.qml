@@ -65,6 +65,9 @@ Window {
 
     property CustomVideoOutput mediaPlayerOutput: vo
     property CustomVideoOutput videoInputOutput: vovi
+    
+    property Image outputImage;
+    property bool outputPreview: false
 
     readonly property Clapper clapper: clapper
     property alias clapperVisible: clapper.visible
@@ -84,11 +87,14 @@ Window {
     }
 
     onFrameSwapped: {
-        if (!maskWindow || !useMask)
+        if (!maskWindow || !useMask || !outputPreview)
             return;
-
+        
         contentItem.grabToImage(function(result) {
-            maskWindow.mask = String(result.url);
+            if (maskWindow && useMask)
+                maskWindow.mask = String(result.url);
+            if (outputImage && outputPreview)
+                outputImage.source = String(result.url);
         });
     }
 

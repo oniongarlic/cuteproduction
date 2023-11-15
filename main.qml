@@ -35,7 +35,7 @@ ApplicationWindow {
     property OutputWindow l3window;
     property MaskWindow maskwindow;
     property TelepromptWindow tpwindow;
-
+    
     property var date;
     
     Component.onCompleted: {
@@ -120,15 +120,18 @@ ApplicationWindow {
             tickerItemsVisible: menuTickerFullWidth.checked ? 1 : 4
             tickerVisible: main.newsTickerShow
             newsPanelShow: main.newsPanelShow
-
+            
             mediaPlayer: mp
+            
+            outputImage: outputPreviewImage
+            outputPreview: outputPreviewSwitch.checked
             
             onTickerItemsVisibleChanged: settings.setSettings("ticker/items", tickerItemsVisible)
             onTickerVisibleChanged: settings.setSettings("ticker/visible", tickerVisible)
             onNewsPanelVisibleChanged: settings.setSettings("ticker/panelvisible", newsPanelVisible)
         }
     }
-
+    
     property bool newsTickerShow: false
     property bool newsPanelShow: false
     
@@ -186,7 +189,11 @@ ApplicationWindow {
                 checkable: true
                 checked: maskwindow.visibility==Window.FullScreen ? true : false
                 onCheckedChanged: maskwindow.visibility=!checked ? Window.Windowed : Window.FullScreen
-            }            
+            }
+            MenuItem {
+                text: "Output preview"
+                onClicked: outputDrawer.open()
+            }
         }
         
         Menu {
@@ -327,7 +334,7 @@ ApplicationWindow {
                 checked: false
             }
             MenuSeparator {
-
+                
             }
             MenuItem {
                 text: "Align Top"
@@ -790,7 +797,7 @@ ApplicationWindow {
         tickerModel: l3window.newsTickerModel
         panelModel: l3window.newsPanelModel
     }   
-
+    
     ClapperDrawer {
         id: clapper
         clapper: l3window.clapper
@@ -800,6 +807,40 @@ ApplicationWindow {
         id: telepromptDrawer
         tpwindow: main.tpwindow
     }
+    
+    Drawer {
+        id: outputDrawer
+        dragMargin: 0
+        width: parent.width/1.5
+        height: parent.height
+        
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
+            
+            Switch {
+                id: outputPreviewSwitch
+                text: "Show output"
+                checked: false
+            }
+            
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                color: "black"
+                Image {
+                    id: outputPreviewImage
+                    anchors.fill: parent
+                    asynchronous: true
+                    cache: false
+                    smooth: false
+                    mipmap: true
+                    fillMode: Image.PreserveAspectFit
+                }
+            }
+        }
+    }    
     
     ListModel {
         id: l3ModelFinal
@@ -925,7 +966,7 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.maximumWidth: gl.width/2
-
+            
             RowLayout {
                 id: rl11
                 Layout.fillWidth: true
@@ -1035,7 +1076,7 @@ ApplicationWindow {
                     item: l3window.qrCode
                 }
             }
-
+            
             RowLayout {
                 Switch {
                     text: "Clapper"
@@ -1044,7 +1085,7 @@ ApplicationWindow {
                         l3window.clapperVisible=checked
                     }
                 }
-
+                
                 Button {
                     text: "Clapper..."
                     onClicked: {
@@ -1052,7 +1093,7 @@ ApplicationWindow {
                     }
                 }
             }
-
+            
             RowLayout {
                 Switch {
                     id: switchNewsTickerShow
@@ -1294,7 +1335,7 @@ ApplicationWindow {
                         checked=false;
                     }
                 }
-
+                
             }
             RowLayout {
                 Switch {
