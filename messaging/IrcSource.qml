@@ -14,11 +14,14 @@ Item {
 
     property alias connected: ircConnection.connected
 
+    property alias connection: ircConnection
+
     property string channel;
     property string channelKey;
 
     property IrcBufferModel channelModel: ircBuffer
     property IrcUserModel userModel: ircUserModel
+    property IrcChannel ircChannel: ircChannel
 
     function connect() {
         ircConnection.open()
@@ -31,6 +34,9 @@ Item {
     function joinChannel(channel, key) {
         ircConnection.sendCommand(cmd.createJoin(channel, key))
     }
+
+    signal connected()
+    signal disconnected()
 
     Irc {
         id: irc
@@ -58,26 +64,28 @@ Item {
 
         onConnected: {
             console.debug("IRC: Connected")
-            //connected=true;
+            ircSource.connected()
             if (ircSource.channel.length>0)
                 sendCommand(cmd.createJoin(channel, channelKey))
         }
 
         onDisconnected: {
-            //connected=false;
+            console.debug("IRC: Disconnected")
+            ircSource.disconnected()
         }
 
-        onMessageReceived: {
-            console.debug("IRC: Message")
+        onMessageReceived: (message) => {
+            console.debug("IRC: Message: "+message.type)
             if (message.type === IrcMessage.Private) {
-                console.debug(message.nick)
-                console.debug(message.target)
-                console.debug(message.private)
-                console.debug(message.content)
-                if (message.private)
-                    l3window.addMessageLeft("", message.content);
-                else
-                    l3window.addMessageRight(message.nick, message.content);
+                var cmd=incomingParser.parse(message)
+                if (cmd) {
+
+                } else {
+                    if (message.private)
+                        l3window.addMessageLeft("", message.content);
+                    else
+                        l3window.addMessageRight(message.nick, message.content);
+                }
             }
         }
     }
@@ -90,7 +98,7 @@ Item {
         id: ircBuffer
         sortMethod: Irc.SortByTitle
         connection: ircConnection
-        onMessageIgnored: serverBuffer.receiveMessage(message)
+        onMessageIgnored: (message) => serverBuffer.receiveMessage(message)
     }
 
     IrcBuffer {
@@ -101,12 +109,34 @@ Item {
         Component.onCompleted: ircBuffer.add(serverBuffer)
     }
 
+    function sendMessage(msg) {
+        var c = parser.parse(msg)
+        if (c) {
+            ircConnection.sendCommand(c)
+        }
+    }
+
+    // Incoming messages
     IrcCommandParser {
-        id: parser
+        id: incomingParser
         channels: ircBuffer.channels
         triggers: ircConnection.network.isChannel(target) ? ["!", ircConnection.nickName + ":"] : ["!", ""]
         Component.onCompleted: {
 
         }
     }
+
+    // Outgoing messages
+    IrcCommandParser {
+        id: parser
+        tolerant: true
+        channels: ircBuffer.channels        
+        triggers: ["/"]
+        Component.onCompleted: {
+            parser.addCommand(IrcCommand.Join, "JOIN <#channel> (<key>)");
+            parser.addCommand(IrcCommand.Part, "PART (<#channel>) (<message...>)");
+            parser.addCommand(IrcCommand.Kick, "KICK (<#channel>) <nick> (<reason...>)");
+            parser.addCommand(IrcCommand.CtcpAction, "ME [target] <message...>");
+        }
+    }    
 }
