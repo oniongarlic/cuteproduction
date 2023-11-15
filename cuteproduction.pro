@@ -13,6 +13,7 @@ link_pkgconfig {
 
 packagesExist(libavformat) {
     PKGCONFIG += libavformat libavutil libavcodec
+    DEFINES += FFMPEG
     message(libavformat)
 }
 

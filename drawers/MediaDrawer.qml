@@ -55,6 +55,12 @@ Drawer {
             delegate: playlistDelegate
             highlight: Rectangle { color: "#f0f0f0"; }
             ScrollIndicator.vertical: ScrollIndicator { }
+            Rectangle {
+                color: "transparent"
+                anchors.fill: parent
+                border.color: "black"
+                border.width: 1
+            }
         }
 
         RowLayout {

@@ -1,7 +1,7 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Dialogs 1.3
+import QtQuick.Layouts 1.15
 
 Item {
     id: igs
@@ -16,7 +16,7 @@ Item {
     FileDialog {
         id: filesDialog
         folder: shortcuts.pictures
-        nameFilters: [ "*.mp4", "*.mov", "*.mp3", "*.avi", "*.jpg" ]
+        nameFilters: [ "Video (*.mp4 *.mov *.avi *.ogv)", "Music (*.mp3 *.wav *.ogg)", "Images (*.jpg *.png *.gif)", "Mods (*.mod *.s3m *.it)" ]
         title: qsTr("Select media file(s)")
         selectExisting: true
         selectFolder: false

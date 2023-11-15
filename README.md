@@ -14,6 +14,9 @@ It works best with 2-4 displays:
 * alpha channel output for masking (experimental)
 * teleprompt window
 
+Note: This is the branch that uses Qt 5.15 and will not be developed much further, please
+consider using the Qt 6 branch in the future.
+
 Current features:
 
 * Separate control and output/mask windows
@@ -36,3 +39,9 @@ Planned features:
 * Mastodon feed support
 * ATEM Protocol integration
 * Stream Deck support
+
+Build requirements:
+* Qt 5.15.x
+* QtMQTT 5.15.x
+* libcommuni
+* QZXing (internal copy will be used on Windows)

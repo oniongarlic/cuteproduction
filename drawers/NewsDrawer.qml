@@ -70,21 +70,26 @@ Drawer {
             ColumnLayout {
                 id: c
                 spacing: 2
+                width: parent.width
                 Text {
+                    Layout.fillWidth: true
                     text: title;
                     font.bold: true;
                     maximumLineCount: 1;
                     elide: Text.ElideRight
                 }
                 Text {
+                    Layout.fillWidth: true
                     text: description;
                     wrapMode: Text.Wrap;
                     maximumLineCount: 2;
                     elide: Text.ElideRight
                 }
                 Text {
+                    Layout.fillWidth: true
                     text: link;
                     maximumLineCount: 1;
+                    font.italic: true
                     elide: Text.ElideRight
                 }
             }
@@ -94,7 +99,7 @@ Drawer {
                 newsBody.text=html.stripTags(rssModel.get(index).description)
                 newsLink.text=rssModel.get(index).link
             }
-            onDoubleClicked: {                
+            onDoubleClicked: {
                 tickerModel.append(rssModel.getItem(index))
             }
         }
@@ -110,17 +115,28 @@ Drawer {
                 id: c
                 width: parent.width
                 Text {
+                    Layout.fillWidth: true
                     text: topic;
                     font.bold: true;
                     maximumLineCount: 1;
                     elide: Text.ElideRight
                 }
                 Text {
+                    Layout.fillWidth: true
                     text: msg;
+                    maximumLineCount: 2;
+                    elide: Text.ElideRight
                     wrapMode: Text.Wrap;
                 }
+                Text {
+                    Layout.fillWidth: true
+                    text: link;
+                    maximumLineCount: 1;
+                    font.italic: true
+                    elide: Text.ElideRight
+                }
             }
-            onClicked: {                
+            onClicked: {
                 ListView.view.currentIndex=index;
             }
             onDoubleClicked: {
@@ -197,28 +213,28 @@ Drawer {
             Button {
                 text: "To Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0
-                onClicked: {                    
+                onClicked: {
                     addItemToModel(tickerModel, createItem())
                 }
             }
             Button {
                 text: "To Panel"
                 enabled: newsKeyword.length>0 && newsBody.length>0
-                onClicked: {                    
+                onClicked: {
                     addItemToModel(panelModel, createItem())
                 }
             }
             Button {
                 text: "Update Ticker"
                 enabled: newsKeyword.length>0 && newsBody.length>0 && newsTickerEditorList.currentIndex>-1
-                onClicked: {                    
+                onClicked: {
                     updateItemInList(newsTickerEditorList, createItem())
                 }
             }
             Button {
                 text: "Update Panel"
                 enabled: newsKeyword.length>0 && newsBody.length>0 && newsPanelEditorList.currentIndex>-1
-                onClicked: {                    
+                onClicked: {
                     updateItemInList(newsPanelEditorList, createItem())
                 }
             }
@@ -228,7 +244,7 @@ Drawer {
                 onClicked: {
                     clearInput()
                 }
-            }            
+            }
         }
         RowLayout {
             Layout.fillWidth: true
@@ -247,9 +263,9 @@ Drawer {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 model: panelModel
-                delegate: newsEditorDelegate                
+                delegate: newsEditorDelegate
             }
-        }        
+        }
         ListView {
             id: newsFeedList
             Layout.fillWidth: true
@@ -259,6 +275,13 @@ Drawer {
             model: rssModel
             delegate: rssItemModel
             clip: true
+            ScrollIndicator.vertical: ScrollIndicator { }
+            Rectangle {
+                color: "transparent"
+                anchors.fill: parent
+                border.color: "black"
+                border.width: 1
+            }
         }
         RowLayout {
             spacing: 8
@@ -286,7 +309,7 @@ Drawer {
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
-                    for (i=0;i<rssModel.count;i++) {                        
+                    for (i=0;i<rssModel.count;i++) {
                         tickerModel.append(rssModel.getItem(i))
                     }
                 }
@@ -296,7 +319,7 @@ Drawer {
                 enabled: rssModel.count>0
                 onClicked: {
                     let i;
-                    for (i=0;i<rssModel.count;i++) {                        
+                    for (i=0;i<rssModel.count;i++) {
                         panelModel.append(rssModel.getItem(i))
                     }
                 }
