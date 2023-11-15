@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import "../selectors"
 import "../models"
 import "../components"
+import "../messaging"
 
 Drawer {
     id: ircDrawer
