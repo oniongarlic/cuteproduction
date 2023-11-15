@@ -877,12 +877,15 @@ ApplicationWindow {
     
     IrcSource {
         id: irc
-        channel: ircChannel.text
-        channelKey: ircChannelKey.text
-        host: ircHostname.text
-        nickName: ircNick.text
-        password: ircPassword.text
-        secure: ircSecure.checked
+        
+        Component.onCompleted: {
+            channel=settings.getSettingsStr("ircChannel", "")
+            channelKey=settings.getSettingsStr("ircChannelKey","")
+            host=settings.getSettingsStr("ircHost", "localhost")
+            nickName=settings.getSettingsStr("ircNick", "CuteProduction")
+            password=settings.getSettingsStr("ircPassword", "")
+            secure=settings.getSettingsBool("ircSecure")
+        }
     }
     
     Timer {
