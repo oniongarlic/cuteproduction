@@ -10,9 +10,13 @@ Ticker::Ticker(QObject *parent)
 }
 
 void Ticker::reset()
-{   
+{
+#if defined __MINGW32__ || defined Q_OS_UNIX
     clock_gettime(CLOCK_MONOTONIC, &m_tm);
     m_start=m_tm.tv_sec;
+#else
+    m_start=0;
+#endif
     m_seconds=0;
     emit secondsChanged(m_seconds);
 }
@@ -59,10 +63,12 @@ void Ticker::stop()
 
 void Ticker::ticker()
 {
+#if defined __MINGW32__ || defined Q_OS_UNIX
     clock_gettime(CLOCK_MONOTONIC, &m_tm);
-
     m_seconds=m_tm.tv_sec-m_start;
-
+#else
+    m_seconds++;
+#endif
     emit secondsChanged(m_seconds);
 
     if (m_counter>0) {

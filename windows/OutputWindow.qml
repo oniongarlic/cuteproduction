@@ -2,9 +2,9 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.12
-import QtGraphicalEffects 1.15
-import QtMultimedia 5.15
-import QtQuick.XmlListModel 2.15
+import QtMultimedia
+
+import Qt5Compat.GraphicalEffects
 
 import ".."
 import "../animations"
@@ -60,11 +60,11 @@ Window {
 
     property bool useDropShadows: true
 
-    property bool hasVideoInput: videoInput.availability==Camera.Available
-    property bool videoInputActive: videoInput.cameraState==Camera.ActiveState && hasVideoInput
+    property bool hasVideoInput: mediaDevices.videoInputCount>0
+    property bool videoInputActive: videoInput.active && hasVideoInput
 
-    property CustomVideoOutput mediaPlayerOutput: vo
-    property CustomVideoOutput videoInputOutput: vovi
+    readonly property CustomVideoOutput mediaPlayerOutput: vo
+    readonly property CustomVideoOutput videoInputOutput: vovi
     
     property Image outputImage;
     property bool outputPreview: false
@@ -98,7 +98,7 @@ Window {
         });
     }
 
-    onClosing: {
+    onClosing: (close) => {        
         close.accepted=false;
     }
 
@@ -223,13 +223,11 @@ Window {
     }
 
     CustomVideoOutput {
-        id: vo
-        source: mediaPlayer
+        id: vo        
     }
 
     CustomVideoOutput {
-        id: vovi
-        source: videoInput
+        id: vovi        
     }
 
     function startCamera() {
@@ -238,11 +236,6 @@ Window {
 
     function stopCamera() {
         videoInput.stop();
-    }
-
-    function setCameraDevice(id) {
-        videoInput.stop();
-        videoInput.deviceId=id
     }
 
     function videoOutputVisible(v) {
@@ -259,58 +252,6 @@ Window {
             break;
         }
     }
-
-    Camera {
-        id: videoInput
-        deviceId: "/dev/video0"
-        captureMode: Camera.CaptureViewfinder
-        cameraState: Camera.UnloadedState
-        onErrorStringChanged: console.debug("CameraError: "+errorString)
-        onCameraStateChanged: {
-            console.debug("Camera State: "+cameraState)
-            switch (cameraState) {
-            case Camera.ActiveState:
-                console.debug("DigitalZoom: "+maximumDigitalZoom)
-                console.debug("OpticalZoom: "+maximumOpticalZoom)
-                console.debug(imageCapture.resolution)
-                break;
-            }
-        }
-        onCameraStatusChanged: console.debug("CameraStatus: "+cameraStatus)
-
-        onDigitalZoomChanged: console.debug(digitalZoom)
-
-        focus {
-            focusMode: Camera.FocusContinuous
-            focusPointMode: Camera.FocusPointCenter
-        }
-
-        imageCapture {
-            onImageCaptured: {
-                console.debug("Image captured!")
-                console.debug(camera.imageCapture.capturedImagePath)
-                //                previewImage.source=preview;
-            }
-            onCaptureFailed: {
-                console.debug("Capture failed")
-            }
-            onImageSaved: {
-                console.debug("Image saved: "+path)
-                //                cameraItem.imageCaptured(path)
-            }
-        }
-
-        onError: {
-            console.log("Camera reports error: "+errorString)
-            console.log("Camera Error code: "+errorCode)
-        }
-
-        Component.onCompleted: {
-            console.debug("Camera is: "+deviceId)
-            console.debug("Camera orientation is: "+orientation)
-            videoInput.exposure.exposureMode=Camera.ExposureAuto
-        }
-    }
     
     Grid {
         id: mainGrid
@@ -320,10 +261,10 @@ Window {
         spacing: 16
         
         function bm(ltv, nt) {
-            bm=16;
-            if (ltv) bm+=l3l.height+32
-            if (nt) bm+=newsTicker.height+32
-            return bm;
+            let tbm=16;
+            if (ltv) tbm+=l3l.height+32
+            if (nt) tbm+=newsTicker.height+32
+            return tbm;
         }
         
         move: Transition {

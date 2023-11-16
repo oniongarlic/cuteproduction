@@ -1,7 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.3
-import QtQuick.Layouts 1.15
+import QtCore
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 
 Item {
     id: igs
@@ -14,27 +15,24 @@ Item {
     }
 
     property alias filter: filesDialog.nameFilters
-    property alias selectExisting: filesDialog.selectExisting
-    property alias selectFolder: filesDialog.selectFolder
-    property alias selectMultiple: filesDialog.selectMultiple
-    property alias shortcuts: filesDialog.shortcuts
+    // property alias selectExisting: filesDialog.selectExisting
+    // property alias selectFolder: filesDialog.selectFolder
+    // property alias selectMultiple: filesDialog.selectMultiple
+    // property alias shortcuts: filesDialog.shortcuts
 
     FileDialog {
         id: filesDialog
-        folder: shortcuts.documents
         nameFilters: [ "*.txt" ]
         title: qsTr("Select text file")
-        selectExisting: true
-        selectFolder: false
-        selectMultiple: false
+        currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
         onAccepted: {
             // XXX: Need to convert to string, otherwise sucka
-            if (fileUrl!="") {
-                var f=""+fileUrl
+            if (selectedFile!="") {
+                var f=""+selectedFile
                 fileSelected(f);
             } else {
-                console.debug(fileUrls)
-                filesSelected(fileUrls)
+                console.debug(selectedFiles)
+                filesSelected(selectedFiles)
             }
         }
     }

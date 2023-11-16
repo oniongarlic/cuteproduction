@@ -1,13 +1,13 @@
-import QtQuick 2.15
-import QtQuick.XmlListModel 2.15
+import QtQuick
+import QtQml.XmlListModel
 
 XmlListModel {
     id: rssModel
     query: "/rss/channel/item"
 
-    XmlRole { name: "title"; query: "title/string()"; }
-    XmlRole { name: "description"; query: "description/string()"; }
-    XmlRole { name: "link"; query: "link/string()"; }
+    XmlListModelRole { name: "title"; elementName: "title"; }
+    XmlListModelRole { name: "description"; elementName: "description"; }
+    XmlListModelRole { name: "link"; elementName: "link"; }
 
     function getItem(i) {
         const item={
@@ -27,5 +27,13 @@ XmlListModel {
             console.debug(errorString())
             break;
         }
+    }
+
+    function get(i) {
+        var o = {}
+        for (var j = 0; j < roles.length; ++j) {
+            o[roles[j].name] = data(index(i,0), Qt.UserRole + j)
+        }
+        return o
     }
 }

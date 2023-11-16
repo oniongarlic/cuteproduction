@@ -1,8 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
-import QtQuick.XmlListModel 2.15
-import QtQuick.Dialogs 1.3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQml.XmlListModel
+import QtQuick.Dialogs
 
 import "../selectors"
 import "../models"
@@ -42,6 +42,16 @@ Drawer {
         newsLink.clear()
     }
 
+    function shuffle(model, loops) {
+            for (let i = 0; i < loops; i++) {
+                let idx = Math.floor(Math.random() * model.count);
+                let nidx = Math.floor(Math.random() * model.count);
+                if (idx === nidx)
+                    continue;
+                model.move(idx, nidx, 1);
+            }
+        }
+
     RssModel {
         id: rssModel
     }
@@ -49,7 +59,7 @@ Drawer {
     TextSelector {
         id: rssFile
         filter: [ "*.xml" ]
-        onFileSelected: {
+        onFileSelected: (src) => {
             rssModel.source=src
         }
     }
@@ -57,7 +67,7 @@ Drawer {
     URLSelector {
         id: rssUrl
         title: "RSS Feed URL"
-        onAccepted: {
+        onAccepted: (url) =>{
             rssModel.source=url
         }
     }
@@ -126,7 +136,7 @@ Drawer {
                     text: msg;
                     maximumLineCount: 2;
                     elide: Text.ElideRight
-                    wrapMode: Text.Wrap;
+                    wrapMode: Text.Wrap;                    
                 }
                 Text {
                     Layout.fillWidth: true
@@ -255,15 +265,29 @@ Drawer {
                 id: newsTickerEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.margins: 2
                 model: tickerModel
                 delegate: newsEditorDelegate
+                Rectangle {
+                    border.color: "#000"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
             }
             NewsListView {
                 id: newsPanelEditorList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.margins: 2
                 model: panelModel
                 delegate: newsEditorDelegate
+                Rectangle {
+                    border.color: "#000"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
             }
         }
         ListView {
@@ -277,10 +301,11 @@ Drawer {
             clip: true
             ScrollIndicator.vertical: ScrollIndicator { }
             Rectangle {
+                Layout.margins: 2
+                border.color: "#000"
+                border.width: 2
                 color: "transparent"
                 anchors.fill: parent
-                border.color: "black"
-                border.width: 1
             }
         }
         RowLayout {

@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Particles 2.15
+import QtQuick
+import QtQuick.Particles
 
 ParticleSystem {
     id: sys

@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtMultimedia 5.15
+import QtQuick
+import QtMultimedia
 
 Item {
     id: voContainer
@@ -7,7 +7,7 @@ Item {
 
     property alias vo: voi
     property alias fillMode: voi.fillMode
-    property alias source: voi.source
+    property alias source: voi
     property Rectangle borderRect: mediaBorder
 
     property alias videoAngle: rotation.angle
@@ -37,7 +37,7 @@ Item {
         x: 0
         y: 0
         fillMode: VideoOutput.PreserveAspectFit
-        autoOrientation: true;
+        // autoOrientation: true;
 
         property rect pos: Qt.rect(0, 0, 1, 1)
 

@@ -1,11 +1,11 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.12
-import QtQuick.XmlListModel 2.15
-import QtQuick.Window 2.15
-import QtQuick.Dialogs 1.3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQml.XmlListModel
+import QtQuick.Window
+import QtQuick.Dialogs
 
-import QtMultimedia 5.15
+import QtMultimedia
 
 import "../selectors"
 import "../models"
@@ -24,6 +24,9 @@ Drawer {
     property alias muted: checkMuted.checked
     property alias volume: volumeDial.value
     property alias loop: checkLoop.checked
+    property alias preview: previewSwitch.checked
+
+    property VideoOutput previewVideo: previewOutput
 
     DropArea {
         id: mediaDropArea
@@ -47,19 +50,63 @@ Drawer {
         anchors.fill: parent
         anchors.margins: 16
         spacing: 8
-        ListView {
-            id: mediaListView
-            Layout.fillHeight: true
+
+        RowLayout {
             Layout.fillWidth: true
-            clip: true
-            delegate: playlistDelegate
-            highlight: Rectangle { color: "#f0f0f0"; }
-            ScrollIndicator.vertical: ScrollIndicator { }
-            Rectangle {
-                color: "transparent"
-                anchors.fill: parent
-                border.color: "black"
-                border.width: 1
+            ListView {
+                id: mediaListView
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.minimumWidth: mediaDrawer.width/2
+                clip: true
+                delegate: playlistDelegate
+                highlight: Rectangle { color: "#f0f0f0"; }
+                ScrollIndicator.vertical: ScrollIndicator { }
+                Rectangle {
+                    border.color: "#ffffff"
+                    border.width: 2
+                    color: "transparent"
+                    anchors.fill: parent
+                }
+            }
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+
+                VideoOutput {
+                    id: previewOutput
+                    Layout.preferredWidth: 320
+                    Layout.preferredHeight: 256
+                    Layout.alignment: Qt.AlignTop
+                    fillMode: VideoOutput.PreserveAspectFit
+
+                    Rectangle {
+                        border.color: "#ffffff"
+                        border.width: 2
+                        color: "transparent"
+                        anchors.fill: parent
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    Dial {
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignHCenter
+                        inputMode: Dial.Horizontal
+                        from: 0.1
+                        enabled: mp.seekable
+                        stepSize: 0.1
+                        snapMode: Dial.SnapAlways
+                        to: 4
+                        value: mp.playbackRate
+                        onValueChanged: {
+                            console.debug(value)
+                            mp.playbackRate=value
+                        }
+                    }
+                }
             }
         }
 
@@ -114,7 +161,7 @@ Drawer {
             }
             Label {
                 id: itemsMsg
-                text: 1+plist.currentIndex+" / "+plist.itemCount
+                text: 1+playlist.currentIndex+" / "+playlist.count
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft
             }
@@ -122,6 +169,17 @@ Drawer {
                 id: itemTime
                 text: formatSeconds(mp.position/1000)+" / "+formatSeconds(mp.duration/1000)
             }
+        }
+
+        Slider {
+            Layout.fillWidth: true
+            from: 0
+            enabled: mp.seekable
+            to: mp.duration
+            stepSize: 0.1
+            onValueChanged: if (pressed || !mp.playing) mp.position=value
+            value: mp.position
+            wheelEnabled: true
         }
 
         RowLayout {
@@ -175,15 +233,25 @@ Drawer {
                 text: "Loop"
                 checked: mp.loops!=1
             }
+            Switch {
+                id: previewSwitch
+                text: "Preview"
+            }
+
         }
 
         RowLayout {
             spacing: 8
             Button {
                 text: "Play"
-                enabled: mp.playbackState!=MediaPlayer.PlayingState && mp.status!=MediaPlayer.NoMedia
+                enabled: mp.playbackState!==MediaPlayer.PlayingState && mp.status!==MediaPlayer.NoMedia
                 onClicked: {
-                    mp.play();
+                    if (mp.status===MediaPlayer.NoMedia) {
+                        if (mediaListView.currentIndex>0)
+                            setMediaFile(mediaListView.currentIndex)
+                    } else {
+                        mp.play();
+                    }
                 }
             }
             Button {
@@ -202,12 +270,14 @@ Drawer {
             }
             Button {
                 text: "Previous"
+                enabled: playlist.hasPrev
                 onClicked: {
                     previousMediaFile();
                 }
             }
             Button {
                 text: "Next"
+                enabled: playlist.hasNext
                 onClicked: {
                     nextMediaFile();
                 }
