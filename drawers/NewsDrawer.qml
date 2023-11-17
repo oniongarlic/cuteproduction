@@ -134,9 +134,9 @@ Drawer {
                 Text {
                     Layout.fillWidth: true
                     text: msg;
-                    wrapMode: Text.Wrap;
-                    maximumLineCount: 3;
+                    maximumLineCount: 2;
                     elide: Text.ElideRight
+                    wrapMode: Text.Wrap;
                 }
             }
             onClicked: {                
@@ -292,6 +292,7 @@ Drawer {
             model: rssModel
             delegate: rssItemModel
             clip: true
+            ScrollIndicator.vertical: ScrollIndicator { }
             Rectangle {
                 Layout.margins: 2
                 border.color: "#000"

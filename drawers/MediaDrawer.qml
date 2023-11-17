@@ -53,16 +53,13 @@ Drawer {
 
         RowLayout {
             Layout.fillWidth: true
-
             ListView {
                 id: mediaListView
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.minimumWidth: mediaDrawer.width/2
                 clip: true
-                delegate: PlaylistDelegate {
-
-                }
+                delegate: playlistDelegate
                 highlight: Rectangle { color: "#f0f0f0"; }
                 ScrollIndicator.vertical: ScrollIndicator { }
                 Rectangle {

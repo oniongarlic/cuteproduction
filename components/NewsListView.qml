@@ -17,6 +17,13 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
+            ScrollIndicator.vertical: ScrollIndicator { }
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                border.color: "black"
+                border.width: 1
+            }
         }
         RowLayout {
             spacing: 8
@@ -48,3 +55,4 @@ Item {
         }
     }
 }
+

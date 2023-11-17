@@ -14,6 +14,9 @@ It works best with 2-4 displays:
 * alpha channel output for masking (experimental)
 * teleprompt window
 
+Note: Master is branch is now Qt 6.5 based.
+
+>>>>>>> 89db99f4011b0afe119e80d7d834318a61df4e83
 Current features:
 
 * Separate control and output/mask windows
@@ -38,7 +41,7 @@ Planned features:
 * Stream Deck support
 
 Build requirements:
-* Qt 6.5
-* QtMQTT 6.5
-* libcommuni
+* Qt 6.5.x
+* QtMQTT 6.5.x
+* libcommuni qt6 branch
 * QZXing (internal copy will be used on Windows)
