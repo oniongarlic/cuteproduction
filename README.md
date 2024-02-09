@@ -16,8 +16,7 @@ It works best with 2-4 displays:
 
 Note: Master is branch is now Qt 6.5 based.
 
->>>>>>> 89db99f4011b0afe119e80d7d834318a61df4e83
-Current features:
+## Current features:
 
 * Separate control and output/mask windows
 * Telepromt window
@@ -35,12 +34,12 @@ Current features:
 * QR Code display
 * News panel can display QR Code with URL of news item
 
-Planned features:
+## Planned features:
 * Mastodon feed support
 * ATEM Protocol integration
 * Stream Deck support
 
-Build requirements:
+## Build requirements:
 * Qt 6.5.x
 * QtMQTT 6.5.x
 * libcommuni qt6 branch
