@@ -90,7 +90,7 @@ Drawer {
                 Layout.fillWidth: true
                 placeholderText: "Real name"
                 selectByMouse: true
-                text: ircS
+                text: ircSource.realName
             }
             TextField {
                 id: ircChannel
