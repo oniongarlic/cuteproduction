@@ -988,7 +988,7 @@ ApplicationWindow {
             host=settings.getSettingsStr("ircHost", "localhost")
             nickName=settings.getSettingsStr("ircNick", "CuteProduction")
             password=settings.getSettingsStr("ircPassword", "")
-            secure=settings.getSettingsBool("ircSecure")
+            secure=settings.getSettingsBool("ircSecure", false)
         }
     }
     
