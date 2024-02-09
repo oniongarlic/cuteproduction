@@ -37,7 +37,8 @@ Rectangle {
 
     visible: false
     width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin*2
-    height: cl.height+8
+    //height: cl.height+8
+    height: (parent.height/3)*0.5
     x: xpos
     y: ypos
 
@@ -176,41 +177,45 @@ Rectangle {
         }
     }
     
+    Rectangle {
+        id: topicBox
+        color: "#0062ae"
+        visible: txtTopic.text=='' ? false : true
+        anchors.bottom: l3.top
+        width: l3.width/2
+        height: l3.height/3
+        Text {
+            id: txtTopic
+            anchors.fill: parent
+            color: "#f0f0f0"
+            text: ""
+            font.family: "Helvetica"
+            font.bold: true
+            font.pixelSize: 24
+            minimumPixelSize: 18
+            fontSizeMode: Text.Fit
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
+    
     RowLayout {
         id: rl
         anchors.fill: parent
         spacing: 0
         Rectangle {
             id: box
-            height: parent.height
-            width: height
-            color: "#1e7eec"
-
+            color: "#0062ae"
+            Layout.preferredWidth: l3.height
+            Layout.preferredHeight: l3.height
+            
             Image {
                 id: person
-                source: "qrc:///person.png"
                 visible: showImage && source!='' && status==Image.Ready
-                width: box.width
-                height: width
-                fillMode: Image.PreserveAspectFit
-                anchors.bottom: parent.bottom
-                onStatusChanged: {
-                    console.debug("L3 image status: "+status)
-                }
-            }
-
-            Text {
-                id: txtTopic
                 anchors.fill: parent
-                color: "#f0f0f0"
-                text: ""
-                font.family: "Helvetica"
-                font.bold: false
-                font.pixelSize: 24
-                minimumPixelSize: 18
-                fontSizeMode: Text.Fit
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
+                anchors.margins: 4
+                smooth: true
+                fillMode: Image.PreserveAspectCrop
             }
         }
 
@@ -265,6 +270,4 @@ Rectangle {
             }
         }
     }
-    
-
 }
