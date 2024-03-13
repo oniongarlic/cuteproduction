@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle("Universal");
     
     QList<QScreen *> screens = app.screens();
-    qDebug("Application sees %d screens", screens.count());
+    qDebug("Application sees %lld screens", screens.count());
     qDebug() << screens;
 
     html htmltool;
