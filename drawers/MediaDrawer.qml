@@ -41,9 +41,12 @@ Drawer {
             }
         }
     }
-
-    PlaylistDelegate {
+    
+    Component {
         id: playlistDelegate
+        PlaylistDelegate {
+            
+        }
     }
 
     ColumnLayout {
