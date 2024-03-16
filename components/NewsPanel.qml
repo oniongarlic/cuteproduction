@@ -16,6 +16,7 @@ ColumnLayout {
     property alias counter: tickerTimer.ct
 
     property bool needToHide: false
+    property bool showQrCode: false
 
     x: pos.x
     y: pos.y
@@ -210,8 +211,8 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Layout.margins: 32
                 width: 256
-                height: 256                
-                visible: url!=''
+                height: 256
+                visible: showQrCode && url!=''
             }
         }
     }

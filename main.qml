@@ -149,11 +149,13 @@ ApplicationWindow {
     
     property bool newsTickerShow: false
     property bool newsPanelShow: false
+    property bool newsPanelShowQrCode: false
     
     function loadSettings() {
         newsTickerShow=settings.getSettingsBool("ticker/visible", false);
         menuTickerFullWidth.checked=settings.getSettingsInt("ticker/items", 1, 1, 4)===1 ? true : false;
         newsPanelShow=settings.getSettingsBool("ticker/panelvisible", false);
+        newsPanelShowQrCode=settings.getSettingsBool("ticker/panelqrcode", false);
     }
     
     menuBar: MenuBar {
@@ -331,6 +333,13 @@ ApplicationWindow {
             MenuItem {
                 id: menuPanelVisible
                 text: "Panel visible"
+                checkable: true
+                checked: newsPanelShow
+                onCheckedChanged: newsPanelShow=checked
+            }
+            MenuItem {
+                id: menuPanelQrVisible
+                text: "QR Code visible"
                 checkable: true
                 checked: newsPanelShow
                 onCheckedChanged: newsPanelShow=checked
