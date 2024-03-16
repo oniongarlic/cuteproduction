@@ -190,6 +190,7 @@ Rectangle {
             color: "#f0f0f0"
             text: ""
             font.family: "Helvetica"
+            font.capitalization: Font.AllUppercase
             font.bold: true
             font.pixelSize: 24
             minimumPixelSize: 18
