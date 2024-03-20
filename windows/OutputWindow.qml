@@ -87,7 +87,7 @@ Window {
     }
 
     onFrameSwapped: {
-        if (!maskWindow || !useMask || !outputPreview)
+        if (!maskWindow && !useMask && !outputPreview)
             return;
         
         contentItem.grabToImage(function(result) {
