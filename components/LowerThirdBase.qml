@@ -8,7 +8,7 @@ Rectangle {
     id: l3
     color: "white"
     border.color: "#0062ae"
-    border.width: 2    
+    border.width: 4
     gradient: Gradient {
         orientation: Gradient.Horizontal
         GradientStop {
@@ -41,6 +41,8 @@ Rectangle {
     height: (parent.height/3)*0.5
     x: xpos
     y: ypos
+
+    radius: 6
 
     layer.enabled: useOpacity
     layer.effect: Glow {
