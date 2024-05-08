@@ -6,24 +6,7 @@ import Qt5Compat.GraphicalEffects
 
 Rectangle {
     id: l3
-    color: "white"
-    border.color: "#0062ae"
-    border.width: 4
-    gradient: Gradient {
-        orientation: Gradient.Horizontal
-        GradientStop {
-            position: 0.00;
-            color: "#e0e0e0";
-        }
-        GradientStop {
-            position: 0.90;
-            color: "#ffffff";
-        }
-        GradientStop {
-            position: 1.00;
-            color: "#ffffff";
-        }
-    }
+    color: "#f2f2f2"
 
     property bool fullWidth: true    
     property int margin: 32
@@ -181,7 +164,7 @@ Rectangle {
     
     Rectangle {
         id: topicBox
-        color: "#0062ae"
+        color: "#f2f2f2"
         visible: txtTopic.text=='' ? false : true
         anchors.bottom: l3.top
         width: l3.width/2
@@ -189,7 +172,7 @@ Rectangle {
         Text {
             id: txtTopic
             anchors.fill: parent
-            color: "#f0f0f0"
+            color: "#4e56b1"
             text: ""
             font.family: "Helvetica"
             font.capitalization: Font.AllUppercase
@@ -208,7 +191,7 @@ Rectangle {
         spacing: 0
         Rectangle {
             id: box
-            color: "#0062ae"
+            color: "#f2f2f2"
             Layout.preferredWidth: l3.height
             Layout.preferredHeight: l3.height
             
@@ -242,7 +225,7 @@ Rectangle {
                 id: txtPrimary
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
-                color: "#0062ae"
+                color: "#4e56b1"
                 text: ""
                 font.family: "Helvetica"
                 font.bold: true
@@ -259,7 +242,7 @@ Rectangle {
                 id: txtSecondary
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
-                color: "#0062ae"
+                color: "#4e56b1"
                 text: ""
                 font.family: "Helvetica"
                 font.pixelSize: 32
