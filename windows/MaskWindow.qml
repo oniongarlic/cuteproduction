@@ -6,6 +6,8 @@ Window {
     id: maskWindow
     width: 1024
     height: 768
+    x: screen.virtualX
+    y: screen.virtualY
     visible: true
     title: qsTr("MaskWindow")
 

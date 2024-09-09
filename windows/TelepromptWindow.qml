@@ -13,6 +13,8 @@ Window {
     minimumHeight: 480
     width: 1024
     height: 720
+    x: screen.virtualX
+    y: screen.virtualY
     modality: Qt.NonModal
     transientParent: null
     color: "black"
