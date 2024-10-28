@@ -565,8 +565,8 @@ ApplicationWindow {
         filter: [ "*.xml *.json" ]
         onFileSelected: {
             if (src.endsWith(".json")) {
-                var data=fr.read(src);
-                l3ModelFinal.fromJSON(data);
+                if (fr.read(src))
+                    l3ModelFinal.fromJSON(fr.data());
             } else if (src.endsWith(".xml")) {
                 l3Model.source=src
             }
@@ -599,9 +599,12 @@ ApplicationWindow {
     
     SaveFileSelector {
         id: sfs
-        filter: [ "*.json", "*.xml" ]
+        filter: [ "*.json" ]
         onSaveFile: {
             console.debug(dst)
+            var data=l3ModelFinal.toJSON();
+            if (!fr.write(dst, data))
+                console.debug("Write failed!")
         }
     }
     

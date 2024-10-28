@@ -113,6 +113,11 @@ Drawer {
                     thirdsDrawer.clearL3Input();
                 }
             }
+            DelayButton {
+                text: "Clear all"
+                onActivated: l3ModelFinal.clear()
+            }
+
             Button {
                 text: "Close"
                 onClicked: {

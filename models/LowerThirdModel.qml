@@ -11,11 +11,15 @@ ListModel {
         return JSON.stringify(o)
     }
     function fromJSON(str) {
+        console.debug(str)
         try {
             var o = JSON.parse(str)
             if (!Array.isArray(o)) {
-                  throw new Error("Parsed data is not an array.");
-                }
+                throw new Error("Parsed data is not an array.");
+            }
+            if (o.length<1) {
+                throw new Error("Nothing to load");
+            }
             l3ModelFinal.clear()
             o.forEach((item, index) => {
                 l3ModelFinal.append(item)

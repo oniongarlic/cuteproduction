@@ -84,14 +84,16 @@ QVariantMap FileReader::getMetaData(const QString file)
 bool FileReader::read(QUrl file)
 {
     QFile f(file.toLocalFile());
-
-    if (!f.open(QIODevice::ReadOnly))
+    
+    if (!f.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open file " << file << file.toLocalFile();
         return false;
+    }
 
     m_data=f.readAll();
     f.close();
 
-    return m_data.isEmpty();
+    return !m_data.isEmpty();
 }
 
 bool FileReader::write(QUrl file, QByteArray data)
