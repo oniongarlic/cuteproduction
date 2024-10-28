@@ -281,6 +281,10 @@ ApplicationWindow {
                 onClicked: tsf.startSelector();
             }
             MenuItem {
+                text: "Save..."
+                onClicked: sfs.open();
+            }
+            MenuItem {
                 id: menuThirdsFullWidth
                 text: "Full width"
                 checkable: true
@@ -590,6 +594,14 @@ ApplicationWindow {
         id: usd
         onAccepted: {
             plist.addItem(url)
+        }
+    }
+    
+    SaveFileSelector {
+        id: sfs
+        filter: [ "*.json", "*.xml" ]
+        onSaveFile: {
+            console.debug(dst)
         }
     }
     

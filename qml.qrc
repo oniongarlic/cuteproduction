@@ -49,6 +49,7 @@
         <file>drawers/MediaDrawer.qml</file>
         <file>models/MediaPlaylistModel.qml</file>
         <file>models/LowerThirdModel.qml</file>
+        <file>selectors/SaveFileSelector.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>
