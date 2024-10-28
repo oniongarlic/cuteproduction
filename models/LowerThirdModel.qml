@@ -1,42 +1,30 @@
-import QtQuick
-import QtQml.XmlListModel
+import QtQuick 
 
-XmlListModel {
-    id: l3Model
-    query: "/thirds/item"
-
-    XmlListModelRole { name: "primary"; elementName: "primary"; }
-    XmlListModelRole { name: "secondary"; elementName: "secondary"; }
-    XmlListModelRole { name: "topic"; elementName: "topic"; }
-    XmlListModelRole { name: "image"; elementName: "image"; }
-
-    signal loaded()
-
-    onStatusChanged: {
-        switch (status) {
-        case XmlListModel.Ready:
-            loaded()
-            break;
-        case XmlListModel.Error:
-            console.debug(errorString())
-            break;
+ListModel {
+    id: l3model
+    
+    function toJSON() {
+        var o = []
+        for (var j = 0; j < count; j++) {
+            o[j]=get(j)
         }
+        return JSON.stringify(o)
     }
-
-    function copyToListModel(tmodel) {
-        tmodel.clear();
-        for (let i=0;i<count;i++) {
-            tmodel.append(get(i))
+    function fromJSON(str) {
+        try {
+            var o = JSON.parse(str)
+            if (!Array.isArray(o)) {
+                  throw new Error("Parsed data is not an array.");
+                }
+            l3ModelFinal.clear()
+            o.forEach((item, index) => {
+                l3ModelFinal.append(item)
+            });
+        } catch (e) {
+            console.debug(e)
+            return false;
         }
+        console.debug("*** JSON loaded ok", count)
+        return true;
     }
-
-    function get(i) {
-        var o = {}
-        for (var j = 0; j < roles.length; ++j) {
-            o[roles[j].name] = data(index(i,0), Qt.UserRole + j)
-        }
-        return o
-    }
-
 }
-

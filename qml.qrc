@@ -21,7 +21,7 @@
         <file>windows/MaskWindow.qml</file>
         <file>components/CustomVideoOutput.qml</file>
         <file>components/MediaController.qml</file>
-        <file>models/LowerThirdModel.qml</file>
+        <file>models/XmlLowerThirdModel.qml</file>
         <file>components/ItemTemplate.qml</file>
         <file>selectors/MenuAlignment.qml</file>
         <file>components/NewsTicker.qml</file>
@@ -48,6 +48,7 @@
         <file>delegates/PlaylistDelegate.qml</file>
         <file>drawers/MediaDrawer.qml</file>
         <file>models/MediaPlaylistModel.qml</file>
+        <file>models/LowerThirdModel.qml</file>
     </qresource>
     <qresource prefix="/data">
         <file>fonts/OpenSans-Bold.ttf</file>

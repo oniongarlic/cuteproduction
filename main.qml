@@ -558,9 +558,14 @@ ApplicationWindow {
     
     TextSelector {
         id: tsf
-        filter: [ "*.xml" ]
+        filter: [ "*.xml *.json" ]
         onFileSelected: {
-            l3Model.source=src
+            if (src.endsWith(".json")) {
+                var data=fr.read(src);
+                l3ModelFinal.fromJSON(data);
+            } else if (src.endsWith(".xml")) {
+                l3Model.source=src
+            }
         }
     }
     
@@ -971,17 +976,21 @@ ApplicationWindow {
         }
     }    
     
-    ListModel {
+    LowerThirdModel {
         id: l3ModelFinal
     }
     
     // XML Loader model
-    LowerThirdModel {
+    XmlLowerThirdModel {
         id: l3Model
         onLoaded: {
             copyToListModel(l3ModelFinal)
             if (source!='persons.xml')
                 settings.setSettingsStr("thirds", source)
+            console.debug("************ JSON")
+            var t=l3ModelFinal.toJSON()
+            console.debug(t)
+            l3ModelFinal.fromJSON(t)
         }
         Component.onCompleted: {
             source=settings.getSettingsStr("thirds", "persons.xml")
