@@ -22,12 +22,14 @@ public:
 
     Q_INVOKABLE QByteArray data();
     Q_INVOKABLE bool read(QUrl file);
+    Q_INVOKABLE bool write(QUrl file, QByteArray data);
     Q_INVOKABLE void clear();
 
     Q_INVOKABLE QVariantMap getMetaData(const QString file);
 #ifdef FFMPEG
     Q_ENUM(AVMediaType);
 #endif
+
 signals:
 
 private:

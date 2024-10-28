@@ -86,12 +86,26 @@ bool FileReader::read(QUrl file)
     QFile f(file.toLocalFile());
 
     if (!f.open(QIODevice::ReadOnly))
-        return true;
+        return false;
 
     m_data=f.readAll();
     f.close();
 
     return m_data.isEmpty();
+}
+
+bool FileReader::write(QUrl file, QByteArray data)
+{
+    QFile f(file.toLocalFile());
+    
+    if (!f.open(QIODevice::WriteOnly))
+        return false;
+    
+    auto r=f.write(data);
+    
+    f.close();
+    
+    return r<0 ? false : true;
 }
 
 QByteArray FileReader::data()
