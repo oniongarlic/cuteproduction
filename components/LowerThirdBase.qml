@@ -13,10 +13,12 @@ Rectangle {
     
     property int alignHorizontal: Qt.AlignLeft
     property int alignVertical: Qt.AlignBottom
+    
+    property int alignText: Qt.AlignLeft
 
     property bool useOpacity: false
 
-    property bool showImage: true
+    property bool showImage: false
 
     visible: false
     width: fullWidth ? parent.width-margin*2 : (parent.width/2.0)-margin*2
@@ -188,10 +190,12 @@ Rectangle {
     RowLayout {
         id: rl
         anchors.fill: parent
+        anchors.margins: 6
         spacing: 0
         Rectangle {
             id: box
             color: "#f2f2f2"
+            visible: showImage
             Layout.preferredWidth: l3.height
             Layout.preferredHeight: l3.height
             
@@ -224,7 +228,7 @@ Rectangle {
             Text {
                 id: txtPrimary
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignRight
+                //Layout.alignment: Qt.AlignRight
                 color: "#4e56b1"
                 text: ""
                 font.family: "Helvetica"
@@ -233,7 +237,7 @@ Rectangle {
                 minimumPixelSize: 32
                 fontSizeMode: Text.HorizontalFit
                 verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignRight
+                horizontalAlignment: alignText
                 elide: Text.ElideRight
                 textFormat: Text.PlainText
                 maximumLineCount: 1
@@ -241,7 +245,7 @@ Rectangle {
             Text {
                 id: txtSecondary
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignRight
+                //Layout.alignment: Qt.AlignRight
                 color: "#4e56b1"
                 text: ""
                 font.family: "Helvetica"
@@ -249,7 +253,7 @@ Rectangle {
                 minimumPixelSize: 22
                 fontSizeMode: Text.HorizontalFit
                 verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignRight
+                horizontalAlignment: alignText
                 elide: Text.ElideRight
                 textFormat: Text.PlainText
                 maximumLineCount: 1
