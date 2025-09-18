@@ -33,5 +33,11 @@ Dialog {
                 urlInput.paste()
             }
         }
-    }    
+        Button {
+            text: "Clear"
+            onClicked: {
+                urlInput.text=""
+            }
+        }
+    }
 }

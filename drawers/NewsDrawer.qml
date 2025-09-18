@@ -67,7 +67,7 @@ Drawer {
     URLSelector {
         id: rssUrl
         title: "RSS Feed URL"
-        onAccepted: (url) =>{
+        onAccepted: {
             rssModel.source=url
         }
     }
